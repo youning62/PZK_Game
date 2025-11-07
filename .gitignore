@@ -1,0 +1,16 @@
+*.rpyc
+*.rpymc
+*.rpy.bak
+game/cache/
+game/saves/
+*-dists/
+tmp/
+.DS_Store
+Thumbs.db
+*.pyc
+__pycache__/
+.vscode/
+log.txt
+errors.txt
+traceback.txt
+
