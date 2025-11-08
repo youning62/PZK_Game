@@ -26,20 +26,20 @@ define config.check_conflicting_properties = True
 ## 界面中文本的颜色。
 
 ## 整个界面中使用的强调色，用于标记和突出显示文本。
-define gui.accent_color = '#0099cc'
+define gui.accent_color = '#36f800'
 
 ## 当文本按钮既未被选中也未被悬停时使用的颜色。
-define gui.idle_color = '#888888'
+define gui.idle_color = '#5adc1a'
 
 ## 小的颜色用于小的文本，需要更亮/更暗才能达到同样的效果。
-define gui.idle_small_color = '#aaaaaa'
+define gui.idle_small_color = '#96fe8a'
 
 ## 当按钮和滑条被悬停时使用的颜色。
-define gui.hover_color = '#66c1e0'
+define gui.hover_color = '#056221'
 
 ## 当文本按钮被选中但非焦点时使用的颜色。当一个按钮为当前屏幕或设置选项值时，
 ## 会处于选中状态。
-define gui.selected_color = '#ffffff'
+define gui.selected_color = '#fa43d5fa'
 
 ## 当文本按钮无法被选择时使用的颜色。
 define gui.insensitive_color = '#8888887f'
@@ -88,7 +88,7 @@ define gui.title_text_size = 75
 ## 标题菜单和游戏菜单使用的图像。
 image main_menu_background:
     "gui/main_pic.JPG"
-    zoom 1.5
+    zoom 1.1
     xalign 0.5  # 用align更简单
     yalign 0.5
 
@@ -435,7 +435,6 @@ init python:
 
         gui.history_height = 285
         gui.history_text_width = 1035
-
         gui.quick_button_text_size = 30
 
         ## 文件按钮布局。

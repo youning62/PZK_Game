@@ -2,15 +2,19 @@
 
 # 声明此游戏使用的角色。颜色参数可使角色姓名着色。
 
-define l = Character('pzk')
+define e = Character('pzk')
 
-image pzk meituan = "images/MeiTuan.PNG"
-image pzk meituanwaimai = "images/MeiTuanWithCar.png"
+image pzk meituan :
+    "images/外卖小哥pzk.PNG"
+    xalign 0.5
+    yalign 0.1
+    zoom 0.5
 
 # 游戏在此开始。
 
 label start:
     
+    stop music fadeout 5.0
     # 显示一个背景。此处默认显示占位图，但您也可以在图片目录添加一个文件
     # （命名为 bg room.png 或 bg room.jpg）来显示。
 
@@ -23,19 +27,20 @@ label start:
 
     show pzk meituan
 
-    e "shabi"
+    e "在游戏开始之前，先回答我一个问题"
+    e "..."
+    e "我帅吗？"
+
     
     menu:
         e "回答我！"
-        "你觉得我是谁？":
-            e "你觉得我是谁？"
-        "你知道我是谁吗？":
-            e "你知道我是谁吗？"
-        "你认识我吗？":
-            e "你认识我吗？"
-            hide pzk meituan
+        "你很帅":
+            e "我就知道！"
+            e "走，今天晚上去我房间"
             jump second_choice
-    # 此处为游戏结尾。
+        "我家楼下的野狗都比你有姿色" :
+            e "?"
+            jump second_choice
 
     return
 

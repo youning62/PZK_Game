@@ -290,17 +290,17 @@ screen navigation():
 
         if main_menu:
 
-            textbutton _("开始游戏") action Start()
+            textbutton _("开始草笔") action Start()
 
         else:
 
-            textbutton _("历史") action ShowMenu("history")
+            textbutton _("草笔历史") action ShowMenu("history")
 
-            textbutton _("保存") action ShowMenu("save")
+            textbutton _("保存草笔进度") action ShowMenu("save")
 
-        textbutton _("读取游戏") action ShowMenu("load")
+        textbutton _("读取草笔进度") action ShowMenu("load")
 
-        textbutton _("设置") action ShowMenu("preferences")
+        textbutton _("调教潘子凯") action ShowMenu("preferences")
 
         if _in_replay:
 
@@ -310,17 +310,17 @@ screen navigation():
 
             textbutton _("标题菜单") action MainMenu()
 
-        textbutton _("关于") action ShowMenu("about")
+        textbutton _("关于潘子恺草b大战") action ShowMenu("about")
 
         if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
 
             ## “帮助”对移动设备来说并非必需或相关。
-            textbutton _("帮助") action ShowMenu("help")
+            textbutton _("潘子恺教程") action ShowMenu("help")
 
         if renpy.variant("pc"):
 
             ## 退出按钮在 iOS 上是被禁止使用的，在安卓和网页上也不是必要的。
-            textbutton _("退出") action Quit(confirm=not main_menu)
+            textbutton _("退出(潘子恺不行啊)") action Quit(confirm=not main_menu)
 
 
 style navigation_button is gui_button
@@ -346,13 +346,6 @@ screen main_menu():
 
     add gui.main_menu_background
 
-    ## 此空框可使标题菜单变暗。
-    frame:
-        xalign 0.0
-        yalign 0.5
-        xsize 320  # 宽度，可以调整
-        background "#696969"  # 黑色半透明，或改成 "" 白色半透明
-        padding (40, 50)
 
     ## use 语句将其他的屏幕包含进此屏幕。标题屏幕的实际内容在导航屏幕中。
     use navigation
@@ -546,14 +539,20 @@ screen about():
 
         vbox:
 
-            label "[config.name!t]"
-            text _("版本 [config.version!t]\n")
+            label "{size=80}{b}[config.name!t]{/b}{/size} \n"
+            text _("版本 [config.version!t]\n") color "#36f800"
 
             ## gui.about 通常在 options.rpy 中设置。
-            if gui.about:
-                text "[gui.about!t]\n"
 
-            text _("引擎：{a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only]\n\n[renpy.license!t]")
+            text _("制作人员： 帅比郑又宁, ChatGPT, 豆包 \n") color "#36f800"
+            text _("本游戏人物和剧情纯属虚构， 如有雷同纯属巧合。\n") color "#36f800"
+            text _("郑又宁好帅\n")
+            text _("郑又宁好帅\n")
+            text _("郑又宁好帅\n")
+            text _("郑又宁好帅\n")
+            text _("郑又宁好帅\n")
+            text _("郑又宁好帅\n")
+            text _("郑又宁好帅\n")
 
 
 style about_label is gui_label
