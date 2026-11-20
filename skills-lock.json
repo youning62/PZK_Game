@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "skills": {
+    "renpy-development": {
+      "source": "Urggar25/kami-s-desire",
+      "commit": "15972019aac04d7bd50d8b9b90c9b8097a3ddde5",
+      "sourceType": "github",
+      "skillPath": ".development_pack/plugins/renpy-development/skills/renpy-development/SKILL.md",
+      "computedHash": "5488aaad3ab9e1422b53705eb34638e0b6bb85f1164cc4707f209d2dcdfa1509"
+    },
+    "renpy-storyboard": {
+      "source": "little-KaoKao/renpy-agent",
+      "commit": "9664c1af2d9e2920dcf1d00134e37417770984be",
+      "sourceType": "github",
+      "skillPath": "resources/renpy-storyboard/SKILL.md",
+      "computedHash": "b546df303eb634a545e488adb4eb2dc91748355703ea96b0ad19567403dcc2a0"
+    }
+  }
+}
