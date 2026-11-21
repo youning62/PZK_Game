@@ -9,9 +9,9 @@ shutil.rmtree(logs, ignore_errors=True); os.makedirs(logs)
 shutil.copy(os.path.join(ROOT, "tools", "autotest", "zz_autotest.rpy"), dst)
 try:
     for seed in range(1, n + 1):
-        env = dict(os.environ, PZK_AUTOTEST=str(seed), RENPY_GL_VSYNC="0", SDL_HINT_VIDEO_ALLOW_SCREENSAVER="1")
+        env = dict(os.environ, PZK_AUTOTEST=str(seed), PZK_START=os.environ.get("PZK_START", "start"), RENPY_GL_VSYNC="0", SDL_HINT_VIDEO_ALLOW_SCREENSAVER="1")
         try:
-            r = subprocess.run([RENPY, ROOT, "run"], env=env, timeout=120, capture_output=True)
+            r = subprocess.run([RENPY, ROOT, "run"], env=env, timeout=300, capture_output=True)
             code = r.returncode
         except subprocess.TimeoutExpired:
             code = "TIMEOUT"

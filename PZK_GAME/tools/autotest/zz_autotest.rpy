@@ -41,7 +41,7 @@ init python:
     _at_real_call_screen = renpy.exports.call_screen
     def _at_call_screen(name, *args, **kwargs):
         _at_write(u"SCREEN " + name + u" " + repr(args))
-        if name in ("chapter_card", "chapter_result"):
+        if name in ("chapter_card", "chapter_result", "target_card", "sys_audit_screen"):
             # 先实际渲染一次，确保屏幕本身不报错
             renpy.show_screen(name, *args, **kwargs)
             renpy.hide_screen(name)
@@ -57,8 +57,9 @@ init python:
 
 label main_menu:
     $ config.skipping = "fast"
-    call start
+    $ _at_start = os.environ.get("PZK_START", "start")
+    call expression _at_start
     python:
-        _at_write(u"END ending=%s aff=%s zb=%s shesi=%s sincere=%s income=%s" % (ch1_ending, yyl_aff, zb, shesi, sincere, delivery_income))
+        _at_write(u"END ending=%s aff=%s zb=%s shesi=%s sincere=%s lxx=%s money=%s" % (ch1_ending, yyl_aff, zb, shesi, sincere, targets.get("lxx", {}).get("aff"), money))
         _at_log.close()
         os._exit(0)

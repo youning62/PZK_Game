@@ -25,3 +25,17 @@ define app = Character("岛团外卖", color="#ffcc00", what_color="#fff2b3")
 define guest = Character("邻桌大叔", color="#c8b0ff")
 define mom = Character("妈", color="#ffb0b0")
 define mystery_voice = Character("？？？", color="#aaaaaa", what_color="#cccccc")
+
+## ---- 第二部 ----
+define lx = Character("李轩翔", color="#c9a2ff", who_outlines=[(3, "#2a1046", 0, 0)])
+define zhao = Character("赵磊", color="#a8d0a0")            # 前投行同事
+define landlord = Character("房东老陈", color="#d8b48a")
+define cop = Character("民警", color="#9fb8d8")
+define thug1 = Character("花衬衫大哥", color="#e08080")
+define thug2 = Character("金链子大哥", color="#e08080")
+define thug3 = Character("眼镜大哥", color="#e08080")
+define customer = Character("顾客", color="#c8c8c8")
+define station = Character("站长老刘", color="#e0c070")      # 外卖站点站长
+define guard = Character("保安", color="#a0a0a0")
+define boss_zhang = Character("张总", color="#b0b0b0")
+define shen = Character("？？？", color="#ffb27f")            # 后续登场角色（预告）

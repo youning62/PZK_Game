@@ -157,3 +157,103 @@ image yyl silhouette = sprite("yyl_silhouette.png")
 
 ## 梦里尖叫的路人（用剪影表示）
 image crowd = Transform("images/sprites/yyl_silhouette.png", zoom=0.5, alpha=0.55)
+
+
+## ===========================================================================
+## 第二部：破产 & 纯爱致富系统
+## ===========================================================================
+
+## BGM
+define audio.bgm_scam = A("bgm/scam")              # 仙人跳之夜
+define audio.bgm_broke = A("bgm/broke")            # 破产搞笑
+define audio.bgm_rider = A("bgm/rider")            # 外卖员日常
+define audio.bgm_system = A("bgm/system")          # 系统觉醒
+define audio.bgm_lxx = A("bgm/lxx_theme")          # 李轩翔登场
+define audio.bgm_office = A("bgm/office")          # 投行职场
+define audio.bgm_city_date = A("bgm/city_date")    # 城市夜约会
+define audio.bgm_lxx_soft = A("bgm/lxx_soft")      # 李轩翔的另一面
+
+## 音效
+define audio.sfx_rain = A("sfx/rain")
+define audio.sfx_city = A("sfx/city_ambience")
+define audio.sfx_office = A("sfx/office_ambience")
+define audio.sfx_typing = A("sfx/typing")
+define audio.sfx_elevator = A("sfx/elevator_ding")
+define audio.sfx_ebike_horn = A("sfx/ebike_horn")
+define audio.sfx_ebike_start = A("sfx/ebike_start")
+define audio.sfx_claw = A("sfx/claw_machine")
+define audio.sfx_door_burst = A("sfx/door_burst")
+define audio.sfx_flash = A("sfx/camera_flash")
+define audio.sfx_knock = A("sfx/knock")
+define audio.sfx_call = A("sfx/phone_call")
+define audio.sfx_sad = A("sfx/sad_trombone")
+define audio.sfx_sting = A("sfx/dramatic_sting")
+define audio.sfx_money_rain = A("sfx/money_rain")
+define audio.sfx_glitch = A("sfx/glitch")
+define audio.sfx_seal_unlock = A("sfx/seal_unlock")
+define audio.sfx_sys_ding = A("sfx/system_ding")
+define audio.sfx_coin = A("sfx/coin")
+
+define SFX_SYS_BOOT = A("sfx/system_boot")
+define SFX_SYS_DING = A("sfx/system_ding")
+define SFX_SYS_SCAN = A("sfx/system_scan")
+define SFX_STAMP_OK = A("sfx/stamp_approve")
+define SFX_STAMP_NG = A("sfx/stamp_reject")
+define SFX_ERROR = A("sfx/error_buzz")
+define SFX_COIN = A("sfx/coin")
+define SFX_SEAL_LOCK = A("sfx/seal_lock")
+
+## 背景
+image bg hotel_suite_night = "images/bg/hotel_suite_night.png"
+image bg rental_room = "images/bg/rental_room.png"
+image bg rental_room_night = "images/bg/rental_room_night.png"
+image bg city_street_day = "images/bg/city_street_day.png"
+image bg city_street_night = "images/bg/city_street_night.png"
+image bg city_rain_night = "images/bg/city_rain_night.png"
+image bg office_lobby = "images/bg/office_lobby.png"
+image bg ib_office_night = "images/bg/ib_office_night.png"
+image bg ib_trading_floor = "images/bg/ib_trading_floor.png"
+image bg meeting_room = "images/bg/meeting_room.png"
+image bg elevator = "images/bg/elevator.png"
+image bg arcade_night = "images/bg/arcade_night.png"
+image bg convenience_night = "images/bg/convenience_store_night.png"
+image bg rooftop_night = "images/bg/rooftop_night.png"
+image bg street_food_night = "images/bg/street_food_night.png"
+
+## CG
+image cg scam_night = "images/cg/scam_night.png"
+image cg system_awaken = "images/cg/system_awaken.png"
+image cg rider_rain = "images/cg/rider_rain.png"
+image cg reunion = "images/cg/cg_reunion.png"
+image cg claw_machine = "images/cg/cg_claw_machine.png"
+
+## 潘子恺 · 破产后（外卖制服）新表情
+image pzk delivery gloom = sprite("pzk_delivery_gloom.png", DELIVERY_ZOOM)
+image pzk delivery shock = sprite("pzk_delivery_shock.png", DELIVERY_ZOOM)
+image pzk delivery shy = sprite("pzk_delivery_shy.png", DELIVERY_ZOOM)
+image pzk delivery tired = sprite("pzk_delivery_tired.png", DELIVERY_ZOOM)
+image pzk delivery smug = sprite("pzk_delivery_smug.png", DELIVERY_ZOOM)
+image pzk delivery sealed = sprite("pzk_delivery_sealed.png", DELIVERY_ZOOM)
+image pzk casual sealed = sprite("pzk_casual_sealed.png")
+
+## 李轩翔 · 职业装
+image lxx cold = sprite("lxx_cold.png")
+image lxx smirk = sprite("lxx_smirk.png")
+image lxx angry = sprite("lxx_angry.png")
+image lxx surprised = sprite("lxx_surprised.png")
+image lxx speechless = sprite("lxx_speechless.png")
+image lxx smile = sprite("lxx_smile.png")
+image lxx laugh = sprite("lxx_laugh.png")
+image lxx blush = sprite("lxx_blush.png")
+image lxx tired = sprite("lxx_tired.png")
+image lxx tongue = sprite("lxx_tongue.png")
+image lxx silhouette = sprite("lxx_silhouette.png")
+## 李轩翔 · 深夜卫衣
+image lxx casual cold = sprite("lxx_casual_cold.png")
+image lxx casual smile = sprite("lxx_casual_smile.png")
+image lxx casual blush = sprite("lxx_casual_blush.png")
+image lxx casual surprised = sprite("lxx_casual_surprised.png")
+image lxx casual tongue = sprite("lxx_casual_tongue.png")
+
+## 系统叠加层
+image sys_scanlines = "gui/system/scanlines.png"

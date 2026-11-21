@@ -952,6 +952,4 @@ label ch1_epilogue:
 
     pause 1.0
     tip "—— 第一章 完 ——"
-    call screen chapter_card("第二章 预告", "冲浪课")
-    tip "感谢游玩。第二章正在开发中。"
-    return
+    jump chapter3

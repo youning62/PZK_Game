@@ -14,6 +14,48 @@
       "sourceType": "github",
       "skillPath": "resources/renpy-storyboard/SKILL.md",
       "computedHash": "b546df303eb634a545e488adb4eb2dc91748355703ea96b0ad19567403dcc2a0"
+    },
+    "story-deslop": {
+      "source": "zenstory-ai/oh-story-claudecode",
+      "commit": "3e5a4a1c7a78a51f0eef91b3340a34e2cee0f050",
+      "sourceType": "github",
+      "skillPath": "skills/story-deslop/SKILL.md",
+      "computedHash": "2e7e28a19098367d2f397162f3a6023de0978b2f7eea65de540ffd17e4c1e68a"
+    },
+    "story-short-write": {
+      "source": "zenstory-ai/oh-story-claudecode",
+      "commit": "3e5a4a1c7a78a51f0eef91b3340a34e2cee0f050",
+      "sourceType": "github",
+      "skillPath": "skills/story-short-write/SKILL.md",
+      "computedHash": "29b768208e010c4ac7b3ba075205c0e1015aaddd67d7ce3fddec544e4e1cd25c"
+    },
+    "sw-character-conflict": {
+      "source": "jtydhr88/screenwriting-skills",
+      "commit": "51115f18d160aa8b2ac5813e4432b6f0b425358f",
+      "sourceType": "github",
+      "skillPath": "plugins/screenwriting/skills/sw-character-conflict/SKILL.md",
+      "computedHash": "8d8af42dc2ead91920c0a5440f6cbcf869fabceaca213433bc062f5a27f0ad4a"
+    },
+    "sw-dialogue": {
+      "source": "jtydhr88/screenwriting-skills",
+      "commit": "51115f18d160aa8b2ac5813e4432b6f0b425358f",
+      "sourceType": "github",
+      "skillPath": "plugins/screenwriting/skills/sw-dialogue/SKILL.md",
+      "computedHash": "7feeca92c02531f2a5d62cf0494941c0864a9651ec3fde17ce144d95db5cbf69"
+    },
+    "sw-japanese-screenwriting": {
+      "source": "jtydhr88/screenwriting-skills",
+      "commit": "51115f18d160aa8b2ac5813e4432b6f0b425358f",
+      "sourceType": "github",
+      "skillPath": "plugins/screenwriting/skills/sw-japanese-screenwriting/SKILL.md",
+      "computedHash": "af4d7ab571be445bf45936df1a2ff553c6999503085dac720ca2652930f95fa1"
+    },
+    "sw-sitcom-comedy": {
+      "source": "jtydhr88/screenwriting-skills",
+      "commit": "51115f18d160aa8b2ac5813e4432b6f0b425358f",
+      "sourceType": "github",
+      "skillPath": "plugins/screenwriting/skills/sw-sitcom-comedy/SKILL.md",
+      "computedHash": "eece35b8bf653da7a9dba61f46c5d8bf9e0a05510b0d85791f53dcfa756b2c65"
     }
   }
 }

@@ -8,6 +8,9 @@ with Ogg Vorbis support):
     /tmp/pzk-audio-venv/bin/python tools/audio/generate_all.py            # everything
     /tmp/pzk-audio-venv/bin/python tools/audio/generate_all.py dream boing # just some
 
+Tracks / SFX live in music.py + sfx.py (chapter 1) and music2.py + sfx2.py
+(scam -> broke rider -> system -> LXX arc); all are merged below.
+
 Writes game/audio/bgm/*.ogg (seamless 44.1 kHz stereo loops) and
 game/audio/sfx/*.ogg, then re-reads every file and prints a verification table.
 """
@@ -22,25 +25,31 @@ sys.path.insert(0, HERE)
 import synth as S  # noqa: E402
 import music  # noqa: E402
 import sfx  # noqa: E402
+import music2  # noqa: E402
+import sfx2  # noqa: E402
 
 GAME = os.path.normpath(os.path.join(HERE, '..', '..', 'game'))
 BGM = os.path.join(GAME, 'audio', 'bgm')
 SFXD = os.path.join(GAME, 'audio', 'sfx')
-LOOP_SFX = {'waves', 'wind'}
+LOOP_SFX = {'waves', 'wind'} | sfx2.LOOP
+
+TRACKS = {**music.TRACKS, **music2.TRACKS}
+RMS_TARGET = {**music.RMS_TARGET, **music2.RMS_TARGET}
+SFX = {**sfx.SFX, **sfx2.SFX}
 
 
 def build(names):
     os.makedirs(BGM, exist_ok=True)
     os.makedirs(SFXD, exist_ok=True)
-    for name, fn in music.TRACKS.items():
+    for name, fn in TRACKS.items():
         if names and name not in names:
             continue
         t = time.time()
         x, song = fn()
-        y = S.master_loop(x, peak_db=-3.0, rms_db=music.RMS_TARGET[name])
+        y = S.master_loop(x, peak_db=-3.0, rms_db=RMS_TARGET[name])
         S.write_ogg(os.path.join(BGM, name + '.ogg'), y)
         print(f'bgm/{name}.ogg  {time.time() - t:.1f}s  stems(dB of energy) {song.stem_report()}')
-    for name, fn in sfx.SFX.items():
+    for name, fn in SFX.items():
         if names and name not in names:
             continue
         x, opt = fn()
@@ -57,7 +66,7 @@ def build(names):
 def verify():
     import soundfile as sf
     rows, ok = [], True
-    files = [('bgm', n, True) for n in music.TRACKS] + [('sfx', n, n in LOOP_SFX) for n in sfx.SFX]
+    files = [('bgm', n, True) for n in TRACKS] + [('sfx', n, n in LOOP_SFX) for n in SFX]
     for d, n, loop in files:
         p = os.path.join(GAME, 'audio', d, n + '.ogg')
         if not os.path.exists(p):

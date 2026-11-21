@@ -14,3 +14,6 @@ log.txt
 errors.txt
 traceback.txt
 
+
+# Reference photos of real people and raw AI generations (not shipped, not tracked)
+PZK_GAME/tools/art/ref/

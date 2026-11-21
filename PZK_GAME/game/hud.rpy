@@ -6,7 +6,9 @@
 
 screen stat_hud():
     zorder 90
-    if stats_visible and not _menu:
+    if sys_active and stats_visible and not _menu:
+        use sys_hud
+    elif stats_visible and not _menu:
         frame:
             style "hud_frame"
             vbox:
@@ -35,6 +37,38 @@ screen stat_hud():
 
 init python:
     config.overlay_screens.append("stat_hud")
+
+## 系统觉醒后的 HUD：余额 / 纯爱卡 / 当前目标好感 / 封印状态
+screen sys_hud():
+    frame:
+        style "hud_frame"
+        background Frame("gui/system/card.png", 20, 20)
+        vbox:
+            spacing 6
+            hbox:
+                spacing 10
+                text "¥" style "hud_icon" color "#ffe066"
+                text "余额" style "hud_label"
+                text fmt_money(money) style "hud_num" min_width 180
+            hbox:
+                spacing 10
+                text "◆" style "hud_icon" color "#5ff3ff"
+                text "纯爱卡" style "hud_label"
+                text fmt_money(credit_left()) style "hud_num" min_width 156
+            if current_target:
+                $ _t = targets[current_target]
+                hbox:
+                    spacing 10
+                    text "♥" style "hud_icon" color "#ff7fae"
+                    text _t["name"] style "hud_label"
+                    bar value StaticValue(_t["aff"], 100) style "hud_bar_aff" xsize 140
+                    text "[_t['aff']]%" style "hud_num"
+                text ("纯爱封印：生效中" if _t["sealed"] else "纯爱封印：已解除") style "hud_label" size 18 color ("#ff9fc8" if _t["sealed"] else "#ffe066")
+            hbox:
+                spacing 10
+                text "★" style "hud_icon" color "#ffd34d"
+                text "装逼 [zb]   ☠ 社死 [shesi]" style "hud_label" size 18
+    textbutton "系统" action Show("system_panel") style "hud_toggle" text_style "hud_toggle_text" xpos 1890 xanchor 1.0 ypos 238
 
 style hud_frame:
     xpos 1890 xanchor 1.0 ypos 12
@@ -238,3 +272,21 @@ style choice_button_text:
     hover_color "#ffffff"
     size 34
     outlines [(2, "#06121f88", 0, 0)]
+
+
+## ---------------------------------------------------------------------------
+## 章节选择（标题菜单）
+## ---------------------------------------------------------------------------
+
+screen chapter_select():
+    tag menu
+    use game_menu(_("章节选择")):
+        vbox:
+            spacing 22
+            textbutton "序章 · 入职测试" action Start("start")
+            textbutton "第一章 · 梦里的女人 / 第一次晚餐" action Start("chapter1")
+            textbutton "第二章 · 浪与骗局" action Start("chapter3")
+            textbutton "第三章 · 骑手潘师傅（系统觉醒）" action Start("chapter4")
+            textbutton "第四章 · 前上司李轩翔" action Start("chapter5")
+            null height 20
+            text "从中间章节开始时，之前的选择会按默认值处理。" size 24 color "#9fb6cc"

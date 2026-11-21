@@ -292,6 +292,8 @@ screen navigation():
 
             textbutton _("开始草笔") action Start()
 
+            textbutton _("章节选择") action ShowMenu("chapter_select")
+
         else:
 
             textbutton _("草笔历史") action ShowMenu("history")
