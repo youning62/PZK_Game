@@ -6,34 +6,9 @@
 
 screen stat_hud():
     zorder 90
+    # 系统觉醒之前不显示任何数值；觉醒后显示系统 HUD
     if sys_active and stats_visible and not _menu:
         use sys_hud
-    elif stats_visible and not _menu:
-        frame:
-            style "hud_frame"
-            vbox:
-                spacing 6
-                hbox:
-                    spacing 10
-                    text "♥" style "hud_icon" color "#ff7fae"
-                    text "好感" style "hud_label"
-                    bar value StaticValue(yyl_aff + 50, 150) style "hud_bar_aff"
-                    text "[yyl_aff]" style "hud_num"
-                hbox:
-                    spacing 10
-                    text "★" style "hud_icon" color "#ffd34d"
-                    text "装逼" style "hud_label"
-                    bar value StaticValue(zb, 100) style "hud_bar_zb"
-                    text "[zb]" style "hud_num"
-                hbox:
-                    spacing 10
-                    text "☠" style "hud_icon" color "#b9a6ff"
-                    text "社死" style "hud_label"
-                    bar value StaticValue(shesi, 100) style "hud_bar_shesi"
-                    text "[shesi]" style "hud_num"
-        textbutton "隐藏数值" action SetVariable("stats_visible", False) style "hud_toggle" text_style "hud_toggle_text" xpos 1890 xanchor 1.0 ypos 168
-    elif not stats_visible and not _menu:
-        textbutton "显示数值" action SetVariable("stats_visible", True) style "hud_toggle" text_style "hud_toggle_text" xpos 1890 xanchor 1.0 ypos 12
 
 init python:
     config.overlay_screens.append("stat_hud")
@@ -67,7 +42,7 @@ screen sys_hud():
             hbox:
                 spacing 10
                 text "★" style "hud_icon" color "#ffd34d"
-                text "装逼 [zb]   ☠ 社死 [shesi]" style "hud_label" size 18
+                text "装逼 [zb]" style "hud_label" size 18
     textbutton "系统" action Show("system_panel") style "hud_toggle" text_style "hud_toggle_text" xpos 1890 xanchor 1.0 ypos 238
 
 style hud_frame:
@@ -106,8 +81,6 @@ style hud_bar_aff is hud_bar_base:
     left_bar Solid("#ff7fae")
 style hud_bar_zb is hud_bar_base:
     left_bar Solid("#ffd34d")
-style hud_bar_shesi is hud_bar_base:
-    left_bar Solid("#9d86ff")
 
 style hud_toggle:
     padding (10, 4, 10, 4)
@@ -205,15 +178,9 @@ screen chapter_result(ending_code, ending_title, ending_desc):
         text "【结局 [ending_code]】[ending_title]" font gui.text_font size 48 color "#ffffff" xalign 0.5
         text ending_desc font gui.text_font size 30 color "#d6e6f5" xalign 0.5 text_align 0.5 xmaximum 1300
         null height 10
-        grid 2 5:
+        grid 2 2:
             xalign 0.5
             spacing 14
-            text "杨永麟好感度" style "result_label"
-            text "[yyl_aff]" style "result_value"
-            text "装逼值" style "result_label"
-            text "[zb]" style "result_value"
-            text "社死值" style "result_label"
-            text "[shesi]" style "result_value"
             text "今日外卖收入" style "result_label"
             text "¥[delivery_income]" style "result_value"
             text "已收集结局" style "result_label"

@@ -8,7 +8,6 @@
 
 label start:
     stop music fadeout 1.0
-    $ stats_visible = False
     scene bg black
     with fade
 
@@ -63,10 +62,6 @@ label prologue_pass:
     tip "系统提示：恭喜你通过了潘子恺的入职测试。"
     p "接下来，你将以我的视角，体验一个帅哥平凡的一天。"
     show pzk delivery normal at center_stage
-    p "小提示：右上角有三个数值。"
-    $ stats_visible = True
-    p "「好感」是她对我的好感。「装逼」是我的帅气输出。「社死」……"
-    p "「社死」这个数值是策划强行加的，我这辈子都用不上。"
     p "那么——"
     hide pzk with dissolve
     jump chapter1

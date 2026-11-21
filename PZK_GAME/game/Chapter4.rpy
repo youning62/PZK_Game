@@ -58,7 +58,6 @@ label ch4_return:
             landlord "有。"
             n "他指了指墙上一张泛黄的海报。马尔代夫。边角已经卷起来了。"
             landlord "上一个租客留下的。送你。"
-            $ stat("shesi", 3)
 
         "「能便宜点吗？」":
             p "能便宜点吗？"
@@ -74,7 +73,6 @@ label ch4_return:
             p "租金收益率，大概多少？您考虑过资产证券化吗？"
             landlord "……你到底租不租？"
             $ stat("zb", 3)
-            $ stat("shesi", 3)
 
     play sound sfx_cash
     $ money -= 1600
@@ -162,7 +160,6 @@ label ch4_order1:
             n "顾客备注：「骑手是在路上停下来拍写真了吗」。"
             n "……是的。"
             $ delivery_income -= 5
-            $ stat("shesi", 5)
 
         "不照。现在是打工人":
             show pzk delivery normal at center_stage
@@ -242,7 +239,6 @@ label ch4_order2:
             $ delivery_income += 6
             $ money -= 50
             $ stat("zb", 3)
-            $ stat("shesi", 3)
 
     jump ch4_lunch
 
@@ -626,7 +622,6 @@ label ch4_seal:
             xt "本系统不支持七天无理由退货。"
             p "那十五天呢？"
             xt "不支持任何天数。"
-            $ stat("shesi", 3)
 
         "「为什么要设计这种规则？？」":
             p "为什么要设计这种规则？？"

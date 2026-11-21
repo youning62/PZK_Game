@@ -9,7 +9,6 @@
 
 default yyl_aff = 0          # 杨永麟好感度（-50 ~ 100）
 default zb = 0               # 装逼值（0 ~ 100）：越高越飘
-default shesi = 0            # 社死值（0 ~ 100）：越高越想原地消失
 default sincere = 0          # 真诚值（隐藏）：杨永麟真正在意的东西
 
 default delivery_income = 0  # 今日外卖收入（元）——潘子恺人生中唯一的"真实收入"
@@ -54,14 +53,12 @@ init -5 python:
     STAT_LABELS = {
         "yyl_aff": "杨永麟好感度",
         "zb": "装逼值",
-        "shesi": "社死值",
         "sincere": "真诚",
     }
 
     STAT_LIMITS = {
         "yyl_aff": (-50, 100),
         "zb": (0, 100),
-        "shesi": (0, 100),
         "sincere": (0, 100),
     }
 
@@ -72,15 +69,15 @@ init -5 python:
         new = max(lo, min(hi, old + delta))
         setattr(store, name, new)
 
-        if quiet or name == "sincere":
+        # 系统觉醒前不显示任何数值（只在内部记录，用于结局判定）
+        if quiet or name == "sincere" or not store.sys_active:
             return
 
-        # 好感上升、装逼上升都是"好事"（在潘子恺看来）；社死上升是坏事。
-        good = (delta > 0) if name != "shesi" else (delta < 0)
+        good = delta > 0
         if renpy.loadable(SFX_STAT_UP):
             renpy.sound.play(SFX_STAT_UP if good else SFX_STAT_DOWN, channel="audio")
         sign = "+" if delta > 0 else ""
-        slot = ["yyl_aff", "zb", "shesi"].index(name)
+        slot = ["yyl_aff", "zb"].index(name)
         renpy.show_screen("stat_popup", text="{} {}{}".format(STAT_LABELS[name], sign, delta), good=good,
                           slot=slot, _tag="stat_popup_" + name)
 

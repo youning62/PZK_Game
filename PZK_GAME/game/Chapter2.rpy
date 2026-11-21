@@ -117,7 +117,6 @@ label ch2_closet:
             p "……没关系。"
             p "西装外套搭在肩上，里面穿紧身背心。"
             p "这叫「松弛感」。"
-            $ stat("shesi", 5)
 
         "紧身背心（展示我身上最贵的东西：身体）":
             $ outfit = "casual"
@@ -235,7 +234,6 @@ label ch2_ride:
             p "今天不装了。"
             p "……主要是小蓝今天被贴了罚单，我有心理阴影。"
             $ stat("sincere", 5)
-            $ stat("shesi", 3)
 
         "走路去（三公里，顺便热身）":
             $ ride = "walk"
@@ -261,7 +259,6 @@ label ch2_ride:
         n "海岸公路，日落时分。我在走第二公里。"
         n "热带的傍晚，气温二十九度，湿度百分之八十五。"
         n "我在走第三公里。我的背心已经湿透了。"
-        $ stat("shesi", 3)
 
     jump ch2_arrive
 
@@ -333,7 +330,6 @@ label ch2_arrive:
         show yyl speechless at seated(0.80)
         y "什么？"
         p "没什么。"
-        $ stat("shesi", 3)
     else:
         y "晚上海风大，你穿背心不冷？"
         p "我自带暖气。"
@@ -406,7 +402,6 @@ label ch2_order:
             show yyl tease at seated(0.80)
             y "很好。它会是今晚最低调的一道菜。"
             $ stat("zb", 5)
-            $ stat("shesi", 5)
             if search_tip == "money":
                 pt "攻略说要展示经济实力。我展示了。展示的是一勺盐。"
 
@@ -428,7 +423,6 @@ label ch2_order:
             pt "但为什么我一点都不生气，反而想多问点里昂的事。"
             $ stat("yyl_aff", 3)
             $ stat("zb", 3)
-            $ stat("shesi", 3)
 
         "「你来点吧。」":
             $ ordered = "her"
@@ -553,7 +547,6 @@ label ch2_line_check:
         y "辛苦了。"
         show yyl smile at seated(0.80)
         y "不过——挺好笑的。"
-        $ stat("shesi", 10)
         $ stat("yyl_aff", 2)
         play music bgm_dinner fadein 1.0
 

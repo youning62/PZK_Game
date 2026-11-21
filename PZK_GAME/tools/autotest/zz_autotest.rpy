@@ -60,6 +60,6 @@ label main_menu:
     $ _at_start = os.environ.get("PZK_START", "start")
     call expression _at_start
     python:
-        _at_write(u"END ending=%s aff=%s zb=%s shesi=%s sincere=%s lxx=%s money=%s" % (ch1_ending, yyl_aff, zb, shesi, sincere, targets.get("lxx", {}).get("aff"), money))
+        _at_write(u"END ending=%s aff=%s zb=%s sincere=%s lxx=%s money=%s" % (ch1_ending, yyl_aff, zb, sincere, targets.get("lxx", {}).get("aff"), money))
         _at_log.close()
         os._exit(0)

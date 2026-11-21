@@ -33,7 +33,7 @@ targets = { "lxx": {name, age, job, score, intro, aff, stage, sealed, status, ba
 current_target / tasks[] / sys_panel_tab
 lxx_honest_reunion / lxx_pitch / lxx_meeting_style / lxx_claw / lxx_shark / lxx_suit
 ```
-所有状态均为 `default`，读档兼容。第一部的 `zb` / `shesi` / `sincere` 继续沿用（真诚值影响奖金系数）。
+所有状态均为 `default`，读档兼容。第一部的 `zb` / `sincere` 继续沿用（真诚值影响奖金系数）。系统觉醒前，右上角和飘字都不显示任何数值（数值只在内部记录）。社死值已删除。
 
 ## 李轩翔 · 外形（第三版，Gemini 生成）
 - 以参考照片（`tools/art/ref/lxx_ref_*.jpg`）的脸为基础生成的女性形象：蜂蜜金短发、无框茶色眼镜、红唇。

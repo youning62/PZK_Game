@@ -326,7 +326,6 @@ label ch1_delivery_1:
             n "评价：「外卖员比我还能装。」"
             $ delivery_rating -= 1
             $ stat("zb", 5)
-            $ stat("shesi", 5)
 
         "「您的冰美式，祝您用餐愉快。」":
             show pzk delivery normal at left_stage
@@ -393,7 +392,6 @@ label ch1_delivery_2:
             show pzk delivery awkward at left_stage
             p "不是，我还有——"
             auntie "别说了，阿姨都懂。"
-            $ stat("shesi", 3)
 
         "「……阿姨说得对。」":
             show pzk delivery normal at left_stage
@@ -619,7 +617,6 @@ label ch1_collision:
             p "不是，我是说……在别的地方。比如梦里？"
             y "这句话我今年听过十一次。"
             y "你是第一个躺在地上说的。"
-            $ stat("shesi", 5)
 
         "「你好，我是本岛最有钱的外卖员。」":
             $ first_line = "richest"
@@ -689,12 +686,10 @@ label ch1_collision:
         y "你冲浪板都没带。"
         p "……"
         y "小朋友给你的饼干，你还揣在兜里。"
-        $ stat("shesi", 5)
     elif wait_style == "pose":
         y "你刚刚靠着救生塔摆了五分钟姿势。"
         p "那是在看海。"
         y "救生员以为你中暑了，问了我两次要不要叫救护车。"
-        $ stat("shesi", 5)
     else:
         y "嗯。低调到插一根吸管插了三次。"
         p "……你看见了？"
@@ -869,7 +864,6 @@ label ch1_invite:
             n "她说这句话的时候没有笑，但声音比刚才软了一点。"
             y "第八次。你还挺能扛的。"
             $ stat("yyl_aff", 6)
-            $ stat("shesi", 10)
 
         "作弊：把冲浪板放在沙滩上，站上去":
             $ surf_test = "cheat"
@@ -886,7 +880,6 @@ label ch1_invite:
             y "冲浪不算，脸皮厚度可以算。"
             $ stat("yyl_aff", 3)
             $ stat("zb", 5)
-            $ stat("shesi", 5)
 
     scene bg beach_day
     with dissolve

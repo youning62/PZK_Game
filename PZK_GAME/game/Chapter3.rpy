@@ -177,7 +177,6 @@ label ch3_scam:
             n "浴巾掉了。"
             play sound sfx_flash
             n "金链子大哥默默按下了快门。"
-            $ stat("shesi", 15)
 
         "「我要报警。」":
             p "我要报警。"

@@ -68,7 +68,6 @@ label ch5_approach:
             n "我被请了出去。"
             xt "提醒：这不叫偶遇。这叫蹲守。"
             xt "再蹲一次，系统建议你直接去派出所自首。"
-            $ stat("shesi", 5)
 
         "给她发微信":
             show pzk delivery normal at left_stage
@@ -84,7 +83,6 @@ label ch5_approach:
             n "没有回复。"
             xt "消息发送成功。对方已读。"
             xt "系统为宿主分析：这条消息信息量为零。她没有理由回复。"
-            $ stat("shesi", 3)
 
         "找前同事赵磊帮忙":
             show pzk delivery normal at left_stage
@@ -432,7 +430,6 @@ label ch5_pitch_barge:
     guard "先生，请你出去。"
     show pzk delivery awkward at left_stage
     n "我被保安架出了会议室。像一只被拎出厨房的龙虾。"
-    $ stat("shesi", 15)
     $ love("lxx", -3)
 
     scene bg office_lobby
@@ -632,7 +629,6 @@ label ch5_meeting:
             show lxx cold at right_stage
             lx "他的数据是真的。他的故事是废话。"
             $ stat("zb", 10)
-            $ stat("shesi", 10)
             $ love("lxx", 2)
 
     boss_zhang "……行。项目暂停。补充尽调。"
