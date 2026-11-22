@@ -39,3 +39,9 @@ define station = Character("站长老刘", color="#e0c070")      # 外卖站点�
 define guard = Character("保安", color="#a0a0a0")
 define boss_zhang = Character("张总", color="#b0b0b0")
 define shen = Character("？？？", color="#ffb27f")            # 后续登场角色（预告）
+
+## ---- 第五章 ----
+define qin = Character("秦受", color="#7fb0ff", who_outlines=[(3, "#0a1a3a", 0, 0)])
+define zhou = Character("[zhou_name]", color="#ffb6d9", who_outlines=[(3, "#3a0a24", 0, 0)])
+define clerk = Character("店长", color="#d9c6a5")
+define mall_guard = Character("商场保安", color="#a0a0a0")

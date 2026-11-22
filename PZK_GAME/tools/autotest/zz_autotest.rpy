@@ -63,3 +63,24 @@ label main_menu:
         _at_write(u"END ending=%s aff=%s zb=%s sincere=%s lxx=%s money=%s" % (ch1_ending, yyl_aff, zb, sincere, targets.get("lxx", {}).get("aff"), money))
         _at_log.close()
         os._exit(0)
+
+## 小游戏逻辑自测：脚本化输入跑模拟（不需要窗口），PZK_START=mg_selftest
+label mg_selftest:
+    python:
+        _g = EscapeGame()
+        _wp = [(820, 380), (1340, 400), (1420, 300), (1535, 105)]
+        _t = 0.0; _wi = 0
+        while _t < 120 and not _g.result:
+            tx, ty = _wp[_wi]
+            if abs(_g.px - tx) < 25 and abs(_g.py - ty) < 25 and _wi < len(_wp) - 1:
+                _wi += 1
+            _g.keys = set()
+            if tx > _g.px + 5: _g.keys.add("d")
+            if tx < _g.px - 5: _g.keys.add("a")
+            if ty > _g.py + 5: _g.keys.add("s")
+            if ty < _g.py - 5: _g.keys.add("w")
+            _every = float(os.environ.get("MG_ATK", "0.4"))
+            if int(_t / 0.02) % max(1, int(_every / 0.02)) == 0: _g.attack()
+            _g.update(0.02); _t += 0.02
+        _at_write(u"MG result=%s hp=%s t=%.1f pos=(%d,%d)" % (_g.result, _g.hp, _t, _g.px, _g.py))
+    return

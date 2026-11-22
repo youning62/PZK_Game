@@ -990,5 +990,4 @@ label ch5_end:
     scene bg black
     with fade
     tip "—— 第四章 完 ——"
-    call screen chapter_card("未完待续", "李轩翔攻略篇 · 下 ／ 新角色：沈眠")
-    return
+    jump chapter6

@@ -48,6 +48,21 @@ init -4 python:
         )
         store.current_target = tid
 
+    def unlock_candidate(tid, name, age, job, score, intro):
+        """扫描到新的符合条件的女神：只存入候选，不切换当前攻略对象（一次只开一条攻略线）。"""
+        if score < 90:
+            raise Exception("颜值评分不足 90 的对象不能成为候选：%s" % name)
+        if tid in store.targets:
+            return
+        store.targets[tid] = dict(
+            name=name, age=age, job=job, score=score, intro=intro,
+            aff=0, stage="候选（未绑定）", sealed=False, status="候选",
+            base_bonus=store.FIRST_TARGET_BASE_BONUS, notes=[],
+        )
+        renpy.show_screen("sys_toast", title="新女神解锁", body="{}（候选，未绑定）".format(name), _tag="sys_toast")
+        if renpy.loadable(SFX_SYS_DING):
+            renpy.sound.play(SFX_SYS_DING, channel="audio")
+
     def tgt(tid=None):
         return store.targets.get(tid or store.current_target)
 
@@ -295,7 +310,10 @@ screen target_card(tid):
                     text "攻略进度：[t['stage']]" style "sys_text"
                 vbox:
                     spacing 10
-                    if t["sealed"]:
+                    if t.get("status") == "候选":
+                        add "gui/system/seal_icon.png" xalign 0.5 alpha 0.4
+                        text "纯爱封印：未绑定" style "sys_small" color "#9fb6cc" xalign 0.5
+                    elif t["sealed"]:
                         add "gui/system/seal_icon.png" xalign 0.5
                         text "纯爱封印：生效中" style "sys_small" color "#ff9fc8" xalign 0.5
                     else:
@@ -423,6 +441,9 @@ screen system_panel():
                     text ("纯爱封印：" + ("生效中" if t["sealed"] else "已解除")) style "sys_text"
                     text ("预计攻略奖金：" + fmt_money(bonus_estimate(current_target))) style "sys_text" color "#ffe066"
                     null height 8
+                    $ _cands = [v["name"] for k, v in targets.items() if v.get("status") == "候选"]
+                    if _cands:
+                        text ("女神候选：" + "、".join(_cands)) style "sys_small" color "#ffe066"
                     text "系统备注：" style "sys_small"
                     for nline in t["notes"][-5:]:
                         text "· " + nline style "sys_small"

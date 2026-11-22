@@ -255,5 +255,6 @@ screen chapter_select():
             textbutton "第二章 · 浪与骗局" action Start("chapter3")
             textbutton "第三章 · 骑手潘师傅（系统觉醒）" action Start("chapter4")
             textbutton "第四章 · 前上司李轩翔" action Start("chapter5")
+            textbutton "第五章 · 九分袖与校花" action Start("chapter6")
             null height 20
             text "从中间章节开始时，之前的选择会按默认值处理。" size 24 color "#9fb6cc"

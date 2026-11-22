@@ -308,3 +308,35 @@ image lxx casual tongue = sprite("lxx_casual_tongue.png")
 
 ## 系统叠加层
 image sys_scanlines = "gui/system/scanlines.png"
+
+
+## ===========================================================================
+## 第五章（Chapter6.rpy）
+## ===========================================================================
+image bg mall_atrium = "images/bg/mall_atrium.png"
+image bg boutique = "images/bg/boutique.png"
+image bg food_court = "images/bg/food_court.png"
+
+## 李轩翔 · 周末便装（米色针织开衫 + 白T + 牛仔裤 + 小白鞋）
+image lxx weekend cold = sprite("lxx_weekend_cold.png")
+image lxx weekend smile = sprite("lxx_weekend_smile.png")
+image lxx weekend smirk = sprite("lxx_weekend_smirk.png")
+image lxx weekend angry = sprite("lxx_weekend_angry.png")
+image lxx weekend blush = sprite("lxx_weekend_blush.png")
+image lxx weekend laugh = sprite("lxx_weekend_laugh.png")
+image lxx weekend surprised = sprite("lxx_weekend_surprised.png")
+image lxx weekend tongue = sprite("lxx_weekend_tongue.png")
+
+## 秦受 · 富二代追求者
+image qin smug = sprite("qin_smug.png")
+image qin sneer = sprite("qin_sneer.png")
+image qin angry = sprite("qin_angry.png")
+image qin shock = sprite("qin_shock.png")
+image qin pale = sprite("qin_pale.png")
+
+## 周沫 · 高中校花 / 精品店柜姐
+image zhou pro_smile = sprite("zhou_pro_smile.png")
+image zhou surprised = sprite("zhou_surprised.png")
+image zhou grin = sprite("zhou_grin.png")
+image zhou awkward = sprite("zhou_awkward.png")
+image zhou tease = sprite("zhou_tease.png")
