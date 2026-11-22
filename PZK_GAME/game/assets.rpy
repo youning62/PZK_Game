@@ -258,6 +258,7 @@ define SFX_SEAL_LOCK = A("sfx/seal_lock")
 image bg hotel_suite_night = "images/bg/hotel_suite_night.png"
 image bg rental_room = "images/bg/rental_room.png"
 image bg rental_room_night = "images/bg/rental_room_night.png"
+image bg foot_spa_night = "images/bg/foot_spa_night.png"
 image bg city_street_day = "images/bg/city_street_day.png"
 image bg city_street_night = "images/bg/city_street_night.png"
 image bg city_rain_night = "images/bg/city_rain_night.png"

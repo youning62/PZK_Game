@@ -41,7 +41,7 @@ init python:
     _at_real_call_screen = renpy.exports.call_screen
     def _at_call_screen(name, *args, **kwargs):
         _at_write(u"SCREEN " + name + u" " + repr(args))
-        if name in ("chapter_card", "chapter_result", "target_card", "sys_audit_screen"):
+        if name in ("chapter_card", "chapter_result", "person_card", "sys_audit_screen", "fund_card", "fund_recharge_screen"):
             # 先实际渲染一次，确保屏幕本身不报错
             renpy.show_screen(name, *args, **kwargs)
             renpy.hide_screen(name)
@@ -60,7 +60,7 @@ label main_menu:
     $ _at_start = os.environ.get("PZK_START", "start")
     call expression _at_start
     python:
-        _at_write(u"END ending=%s aff=%s zb=%s sincere=%s lxx=%s money=%s" % (ch1_ending, yyl_aff, zb, sincere, targets.get("lxx", {}).get("aff"), money))
+        _at_write(u"END ending=%s aff=%s zb=%s sincere=%s stage=%s people=%s money=%s fund=%s" % (ch1_ending, yyl_aff, zb, sincere, sys_stage, {k: (v["unlocked"], v["aff"]) for k, v in people_state.items()}, money, fund))
         _at_log.close()
         os._exit(0)
 
@@ -83,4 +83,36 @@ label mg_selftest:
             if int(_t / 0.02) % max(1, int(_every / 0.02)) == 0: _g.attack()
             _g.update(0.02); _t += 0.02
         _at_write(u"MG result=%s hp=%s t=%.1f pos=(%d,%d)" % (_g.result, _g.hp, _t, _g.px, _g.py))
+    return
+
+## 系统规则自测：PZK_START=sys_selftest
+label sys_selftest:
+    python:
+        people_state = {}; owned_rewards = []; focus_target = None; sys_pending_announce = []
+        sys_stage = "primary"; money = 200; fund = 0
+        _fails = []
+        def _ok(c, m):
+            if not c: _fails.append(m)
+        _ok(give_gift("dhy", "花", 9) == "not_scanned", "未扫描不解锁")
+        scan("dhy"); scan("spa_new"); scan("pzk")
+        _ok(give_gift("spa_new", "花", 9) == "ineligible", "81 分不符合")
+        _ok(give_gift("dhy", "红包", 10, accepted=False) == "refused", "拒收")
+        _ok(give_gift("dhy", "转账", 10, completed=False) == "incomplete", "未完成")
+        _ok(not unlocked("dhy"), "拒收/未完成不解锁")
+        _ok(give_gift("dhy", "红包", 10) == "unlocked" and sealed("dhy") and ps("dhy")["aff"] == 0, "成功赠与解锁+封印，好感不变")
+        sys_stage = "active"
+        _ok(fund_check(1, "dhy")[0] == "rejected", "基金余额不足")
+        _ok(fund_recharge(100) == 1000000 and fund == 1000000 and money == 100, "1 元 = 10000")
+        _ok(fund_check(10, "pzk")[0] == "rejected", "自购驳回")
+        _ok(fund_check(10, None)[0] == "rejected", "无关消费驳回")
+        _ok(fund_check(10, "spa_new")[0] == "rejected", "不到 90 驳回")
+        _ok(fund_check(10, "dhy", cashout=True)[0] == "rejected", "套现驳回")
+        _ok(fund_check(10, "lxx")[0] == "approved", "未解锁的 90 分以上女性也可以花")
+        scan("lxx"); give_gift("lxx", "咖啡", 38)
+        _ok(set(pursuing()) == {"dhy", "lxx"}, "多目标")
+        love("dhy", 90, quiet=True)
+        _ok(ps("dhy")["success"] and not sealed("dhy") and owned_rewards == ["super_body"] and sealed("lxx"), "成功：只解她的封印、只发她的奖励")
+        _at_write(u"SELFTEST " + (u"PASS" if not _fails else u"FAIL " + u" | ".join(_fails)))
+        _at_log.close()
+        os._exit(0)
     return

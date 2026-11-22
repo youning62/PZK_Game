@@ -1,678 +1,771 @@
-## Chapter4.rpy —— 第三章「骑手潘师傅」
+## Chapter4.rpy —— 第三章「十块钱的纯爱」
 ##
-## 流程：回城 → 城中村出租屋 → 成为真正的外卖员（三单 + 一场雨）→ 疲惫入睡
-##       → 第二天早上「纯爱致富系统」觉醒 → 逐条认识规则 → 发现第一个攻略对象是前上司李轩翔
+## 时间线：仙人跳破产之后，已经送了两年外卖（2068 年，潘子恺 25 岁）。
+## 流程：两年后的早晨 → 糟糕的一单 → 足疗店（熟悉的技师离职）→ 门口的「新人」→ 初级扫描出现
+##       → 系统说明激活条件 → 自扫 -250 → 翻旧照片（前女友全是 89 分）→ 想起高中校花丁虹依，加回微信
+##       → 10 元红包 → 系统正式激活（档案解锁、纯爱封印）→ 规则 → 舔狗基金充值 ¥100 → ¥1,000,000
+##       → 三次违规操作被驳回 → 丁虹依的嘲讽和朋友圈 → 一百万基金，一包泡面 →「后续剧情待更新」
 
 label chapter4:
     stop music fadeout 1.0
-    $ money = 1872
+    $ money = 52.5
     $ delivery_income = 0
+    $ sys_stage = "none"
+    $ sys_active = False
     scene bg black
-    call screen chapter_card("第三章", "骑手潘师傅")
-    jump ch4_return
+    call screen chapter_card("第三章", "十块钱的纯爱")
+    jump ch4_morning
 
 
 ## ---------------------------------------------------------------------------
-## 回城 & 出租屋
+## 两年后的早晨
 ## ---------------------------------------------------------------------------
 
-label ch4_return:
-    play music bgm_broke fadein 1.0
-    play ambient sfx_city fadein 1.0 volume 0.4
-    scene bg city_street_day
-    with fade
-
-    n "一周后。城里。"
-    n "我拖着一个行李箱，推着小黄，站在城中村的巷子口。"
-    n "小黄是跟我一起坐货运回来的。运费一百八。"
-    n "它是我身上唯一一件升值的资产：从「零」，涨到了「一百八」。"
-
-    show pzk delivery gloom at center_stage
-    with dissolve
-    p "……行吧。"
-    p "潘子恺，你曾经站在财富的顶点。"
-    p "现在，你只是暂时站在了一个……比较低的点。"
-    pt "比较低的点。比如下水道井盖。"
-
+label ch4_morning:
+    scene bg black
+    tip "—— 两年后 ——"
+    play sound sfx_alarm_old
     scene bg rental_room
-    with dissolve
-    play sound sfx_door
-    show pzk delivery normal at left_stage
-    with dissolve
-
-    landlord "就这间。八平米，独立卫生间。"
-    p "卫生间在哪？"
-    landlord "你左手边那个帘子后面。"
-    p "那不是衣柜吗？"
-    landlord "衣柜在你右手边那个帘子后面。"
-
-    n "房东老陈，五十多岁，穿着拖鞋，手里转着一串钥匙。"
-    n "他看我的眼神，像在看一个刚从精神病院出来的人。"
-    n "也可能是因为我问了一句——"
-
-    menu:
-        "看房的时候，问点什么？"
-
-        "「有海景吗？」":
-            p "有海景吗？"
-            landlord "有。"
-            n "他指了指墙上一张泛黄的海报。马尔代夫。边角已经卷起来了。"
-            landlord "上一个租客留下的。送你。"
-
-        "「能便宜点吗？」":
-            p "能便宜点吗？"
-            landlord "八百。押一付三。"
-            p "我只有一千八。"
-            landlord "……那押一付一。"
-            landlord "小伙子，城中村不养闲人，但也不赶穷人。"
-            $ stat("sincere", 3)
-
-        "「这房子的投资回报率怎么样？」":
-            p "这房子的投资回报率怎么样？"
-            landlord "啥？"
-            p "租金收益率，大概多少？您考虑过资产证券化吗？"
-            landlord "……你到底租不租？"
-            $ stat("zb", 3)
-
-    play sound sfx_cash
-    $ money -= 1600
-    n "押一付一，一千六。"
-    n "我的余额从一千八百七十二，变成了二百七十二。"
-    n "我打开窗。窗外一米，是对面楼的墙。墙上晾着一条红色秋裤。"
-    pt "这就是我的海景房。"
-    pt "海是海报里的，景是秋裤做的。"
-
-    jump ch4_station
-
-
-## ---------------------------------------------------------------------------
-## 外卖站点
-## ---------------------------------------------------------------------------
-
-label ch4_station:
-    stop ambient fadeout 1.0
-    scene bg city_street_day
     with fade
-    play music bgm_rider fadein 1.0
+    play music bgm_broke fadein 1.5
 
-    n "第二天，我去了附近的外卖站点。"
-    station "以前跑过吗？"
-    show pzk delivery proud at left_stage
+    n "2068 年。早上五点五十。"
+    n "闹钟响到第二声，我已经坐起来了。"
+    n "两年前，我的闹钟是管家。现在，我的闹钟是房租。"
+
+    show pzk home normal at center_stage
     with dissolve
-    p "跑过。开兰博基尼跑的。"
-    station "……"
-    station "行，吹牛的我见多了。这个月第三个了。"
-    station "上一个说他开直升机送过外卖。"
-    show pzk delivery awkward at left_stage
-    p "我是真的——"
-    station "车自备，衣服押金一百，手机下载这个App。"
-    station "超时扣钱，差评扣钱，丢餐赔钱。好评……好评没钱，但是心情好。"
 
-    play sound sfx_cash
-    $ money -= 100
-    n "我交了一百块押金，领了一套黄色制服。"
-    n "穿上的那一刻，我照了一下站点门口的玻璃门。"
-    show pzk delivery normal at left_stage
-    n "嗯。"
-    n "还是很帅。"
-    n "只是这次，帅是唯一的了。"
+    n "起床第一件事：看天气。"
+    n "小雨转阴。小雨天订单多，但是摔一跤，一天白干。"
+    n "第二件事：看电量。"
+    n "小黄，电量百分之三十七。昨晚充电站排队，我排到第九个就睡着了。"
+    n "第三件事：抢券。"
 
-    play sound sfx_ebike_start
     play sound sfx_phone
-    app "骑手「潘师傅」上线成功！今日已为您匹配附近订单，祝您配送愉快～"
-    pt "……这句台词怎么跟岛上的一模一样。"
-    pt "那时候我觉得它很可爱。现在我觉得它在嘲讽我。"
+    n "五点五十九分五十八秒，我的手指悬在屏幕上方。"
+    n "六点整。点击。"
+    play sound sfx_cash
+    show pzk home smug at center_stage, hop
+    n "「满二十减五」早餐券，到手。"
+    p "漂亮。"
+    pt "开盘一秒建仓，零滑点，收益率百分之二十五。"
+    pt "两年前，我做一单这样的交易，交易员要给我鼓掌。"
+    pt "两年后，鼓掌的是楼下煎饼摊老板，因为我又去照顾他生意了。"
+    $ stat("zb", 3)
 
-    jump ch4_order1
+    show pzk home normal at center_stage
+    n "墙上那张马尔代夫海报还在。边角卷得更厉害了。"
+    if got_sea_glass:
+        n "窗台上放着一块蓝色的海玻璃。两年了，我没扔，也没再拿起来看过。"
+    else:
+        n "窗台上压着一张折好的便签纸，上面只有一个字母。两年了，我没扔，也没再打开过。"
+    n "我现在会算一些以前从来不算的东西。"
+    n "一顿盒饭十五块，等于三单配送费。一次差评罚五块，等于一顿早饭。"
+    n "一件新衣服，等于不存在。"
+    pt "但脸还是那张脸。"
+    pt "就是晒黑了一点，瘦了一点，眼神里多了一点「这单能不能准时」。"
+
+    show pzk delivery normal at center_stage
+    with dissolve
+    n "黄色制服，头盔，护膝。"
+    n "我推着小黄出了门。"
+    jump ch4_order
 
 
 ## ---------------------------------------------------------------------------
-## 第一单：超时
+## 糟糕的一单
 ## ---------------------------------------------------------------------------
 
-label ch4_order1:
-    play music bgm_delivery fadein 0.3
+label ch4_order:
     scene bg city_street_day
     with wipeleft
-    play sound sfx_ebike_horn
+    play music bgm_delivery fadein 1.0
+    play ambient sfx_city fadein 1.0 volume 0.4
 
-    n "第一单：奶茶两杯，三公里，限时二十五分钟。"
-    n "小黄的极速是二十五公里每小时。"
-    n "理论上，我有十八分钟的冗余。"
+    app "岛团外卖提醒您：新订单。翠湖花园 9 栋 1803。黄焖鸡米饭 ×1。备注：送上楼，不要放门口，不要按门铃，要敲三下。"
+    show pzk delivery normal at center_stage
+    with dissolve
+    pt "要求很多。配送费四块二。"
+    pt "按每个要求一块钱算，这位顾客应该倒找我。"
 
-    n "路过一家服装店的时候，橱窗玻璃反光，照出了我的侧脸。"
+    n "翠湖花园 9 栋。电梯门口贴着一张 A4 纸。"
+    n "「电梯维修中」。"
+    show pzk delivery tired at center_stage
+    n "十八楼。"
+    n "爬到第十楼的时候，App 提醒我：「即将超时」。"
+    n "爬到第十五楼的时候，我想起两年前我住的别墅有电梯，三部。"
+    n "其中一部只用来运红酒。"
+    n "爬到第十八楼的时候，我什么都没想。我只想活着。"
+
+    play sound sfx_knock
+    n "敲门。三下。"
+    customer "怎么这么慢？超时两分钟了。"
+    show pzk delivery awkward at center_stage
+
+    menu:
+        "怎么回？"
+
+        "「电梯坏了，不好意思。」（赔笑）":
+            p "电梯坏了，我是爬上来的，不好意思啊。"
+            customer "电梯坏了你不会早点出发吗？"
+            pt "我早点出发，您早点下单了吗？"
+            n "我没说出口。两年了，这句话我在心里说过两百次。"
+            $ stat("sincere", 3)
+
+        "「但是我很帅，算是补偿吧。」":
+            show pzk delivery smug at center_stage
+            p "但您看，送餐的是我。这个颜值，也算是一种补偿。"
+            customer "……"
+            n "门关上了。"
+            n "三秒后，App 提示：您收到一条差评。"
+            n "评价内容：「骑手精神状态堪忧」。"
+            $ stat("zb", 5)
+
+        "「两年前，我连黄焖鸡都不吃。」":
+            show pzk delivery proud at center_stage
+            p "说出来您可能不信，两年前，我连黄焖鸡这三个字都没听过。"
+            customer "那你现在听过了，能给我吗？"
+            n "我把黄焖鸡递了过去。"
+            $ stat("zb", 3)
+
+    play sound sfx_vibrate
+    station "潘子恺，翠湖花园那单超时，罚五块，你自己去 App 上申诉。"
+    show pzk delivery gloom at center_stage
+    $ money -= 5
+    p "申诉成功率多少？"
+    station "你上次申诉成功，是去年。"
+    pt "……一年一次。比我的股票分红还稳定。"
+
+    n "那天剩下的时间，就是这样过的。"
+    n "送单，等餐，被催，送单。"
+    $ delivery_income += 96
+    $ money += 96
+    app "今日配送已完成 23 单。今日收入：¥[delivery_income]。"
+    pt "九十六块。"
+    pt "两年前，我在海岛上一顿早餐的小费，是九十六块的十倍。"
+    pt "两年后，九十六块，是我今天跟这个城市讨价还价赢回来的全部。"
+    stop ambient fadeout 1.0
+    jump ch4_spa
+
+
+## ---------------------------------------------------------------------------
+## 足疗店
+## ---------------------------------------------------------------------------
+
+label ch4_spa:
+    scene bg foot_spa_night
+    with fade
+    play music bgm_comedy fadein 1.0
+
+    n "晚上九点半。我常去的那家足疗店。"
+    n "门口挂着两块招牌。一块写着「足疗店」，另一块也写着「足疗店」。"
+    n "老板说，店名叫什么不重要，重要的是让人知道这是足疗店。"
+    n "六十八块一个钟，会员价五十八。"
+    n "两年来，这是我唯一的「奢侈消费」。一个月一次。"
+    pt "以前我做 SPA，按摩师是从泰国请的，按完给我递一杯冰镇椰子水。"
+    pt "现在我做足疗，技师是从隔壁县来的，按完给我递一杯热水，问我要不要办卡。"
+    pt "说实话，热水更暖。"
+
+    show pzk delivery normal at center_stage
+    with dissolve
+    play sound sfx_door
+    wangjie "哟，潘师傅，又来啦？"
+    p "王姐，小芳在吗？还是老样子，四十分钟。"
+    wangjie "小芳？小芳上礼拜走了，回老家结婚了。"
+    show pzk delivery shock at center_stage
+    p "……结婚？"
+    wangjie "嫁了个开超市的。人家现在是老板娘了。"
+    pt "开超市的。"
+    pt "两年前，我能买下那个超市。"
+    pt "两年后，那个超市的老板，娶走了我唯一会给我留一杯热水的人。"
+    show pzk delivery gloom at center_stage
+    wangjie "给你换个新来的？手法也挺好。"
 
     menu:
         "……"
 
-        "停下来，照一下":
-            $ stat("zb", 3)
+        "「算了，下次吧。」":
+            p "算了，王姐，下次吧。"
+            n "五十八块，等于两顿盒饭。没有小芳的话，我算得出来这笔账。"
+            $ stat("sincere", 2)
+
+        "「新来的是哪里人？泰国的吗？」":
             show pzk delivery smug at center_stage
-            with dissolve
-            n "我停下来，照了一下。"
-            n "又换了个角度，照了一下。"
-            n "又整理了一下头盔下面的刘海，照了一下。"
-            play sound sfx_phone
-            app "您的订单即将超时！"
-            show pzk delivery shock at center_stage, shake
-            n "我照了十二分钟。"
-            n "超时三分钟。扣款五元。"
-            n "顾客备注：「骑手是在路上停下来拍写真了吗」。"
-            n "……是的。"
-            $ delivery_income -= 5
-
-        "不照。现在是打工人":
-            show pzk delivery normal at center_stage
-            with dissolve
-            n "我咬着牙，从橱窗前骑了过去。"
-            n "这是我人生第一次，路过一面镜子没有照。"
-            n "我感觉自己失去了什么。"
-            n "大概是自我。"
-            n "提前四分钟送达。顾客给了五星。"
-            $ delivery_income += 6
-            $ stat("sincere", 3)
-
-    jump ch4_order2
-
-
-## ---------------------------------------------------------------------------
-## 第二单：前同事
-## ---------------------------------------------------------------------------
-
-label ch4_order2:
-    stop music fadeout 1.0
-    scene bg office_lobby
-    with wipeleft
-    play music bgm_office fadein 1.0
-
-    n "第二单：CBD，环球金融中心，A座大堂。咖啡一杯。"
-    n "这栋楼我很熟。"
-    n "四年前，我每天早上八点走进这里，四十八楼，投资银行部。"
-    n "现在，我被保安拦在了闸机外面。"
-
-    guard "外卖放那边架子上。"
-    show pzk delivery awkward at left_stage
-    with dissolve
-
-    zhao "潘……潘子恺？？"
-    n "取餐的人看到我，咖啡差点掉地上。"
-    n "赵磊。我以前的同组同事。现在看他的工牌，已经是VP了。"
-
-    zhao "你不是财富自由了吗？？朋友圈天天晒游艇？"
-    p "……体验生活。"
-    zhao "体验……多久了？"
-    p "体验到我有钱为止。"
-
-    zhao "我靠。真的假的。"
-    zhao "那你知道吗，轩翔姐现在是MD了。全行最年轻的董事总经理。"
-    show pzk delivery shock at left_stage
-    p "李轩翔？？"
-    zhao "嗯。上个月开了三个VP。我每天上班跟上战场一样。"
-    zhao "她还是那样，开会不许超过二十分钟，PPT 字号必须统一，错一个标点打回重做。"
-    pt "……我记得。"
-    pt "我入职第一个月，一份PPT被她打回了十七次。"
-    pt "第十七次的批注只有两个字：「重做」。"
-    pt "第十八次她通过了，批注还是两个字：「可以」。"
-    pt "那是我那一年收到过最好的评价。"
-
-    n "赵磊掏出手机。"
-    zhao "那个……兄弟，我给你转点小费吧。"
-
-    menu:
-        "收不收？"
-
-        "收。现在不是要面子的时候":
-            show pzk delivery normal at left_stage
-            p "……谢了。"
-            play sound sfx_cash
-            n "他转了二十块。"
-            n "我说了谢谢。说出口的时候，比想象中容易。"
-            $ delivery_income += 26
-            $ stat("sincere", 3)
-
-        "不收。「我送外卖，又不是要饭」":
-            show pzk delivery proud at left_stage
-            p "不用。我送外卖，又不是要饭。"
-            zhao "行……行吧。你还是你。"
-            n "我潇洒地转身离开。"
-            n "然后在门口发现，小黄被贴了一张违停条。罚款五十。"
-            $ delivery_income += 6
-            $ money -= 50
-            $ stat("zb", 3)
-
-    jump ch4_lunch
-
-
-## ---------------------------------------------------------------------------
-## 午饭：旧习惯
-## ---------------------------------------------------------------------------
-
-label ch4_lunch:
-    stop music fadeout 1.0
-    scene bg city_street_day
-    with dissolve
-    play music bgm_broke fadein 1.0
-
-    n "中午。"
-    n "我的身体，自动走进了一家轻食餐厅。"
-    n "以前在这栋楼上班的时候，我每天中午都来这里。"
-    n "牛油果吐司，六十八。冷萃咖啡，四十二。"
-    n "店员递过来菜单，我才反应过来——"
-    show pzk delivery shock at center_stage
-    pt "一百一十块。"
-    pt "是我今天上午全部收入的三倍。"
-
-    menu:
-        "怎么办？"
-
-        "装作若无其事，点一杯白开水":
-            show pzk delivery proud at center_stage
-            p "一杯水，谢谢。常温。"
-            n "店员愣了一下，给我倒了一杯水。"
-            n "我坐在落地窗前，优雅地喝完了这杯水。"
-            n "全程保持着在曼哈顿喝下午茶的表情。"
-            n "出门后在街角买了个煎饼。八块。加了两个蛋。"
-            $ money -= 8
-            $ stat("zb", 5)
-
-        "转身就走，去街角买煎饼":
-            show pzk delivery normal at center_stage
-            p "……不好意思，走错了。"
-            n "我在街角买了一个煎饼。八块。加了两个蛋。"
-            n "坐在马路牙子上吃完。"
-            n "说实话，比牛油果吐司好吃。"
-            n "可能是因为饿。也可能是因为，这是我自己挣的钱买的。"
-            $ money -= 8
-            $ stat("sincere", 3)
-
-    jump ch4_rain
-
-
-## ---------------------------------------------------------------------------
-## 晚上：雨
-## ---------------------------------------------------------------------------
-
-label ch4_rain:
-    stop music fadeout 1.0
-    play ambient sfx_rain fadein 1.0
-    scene cg rider_rain
-    with fade
-    play music bgm_rider fadein 2.0 volume 0.7
-
-    n "晚上八点，下雨了。"
-    n "雨天单价高，我一直跑到十一点。"
-    n "雨衣是站长送的，袖子短一截。"
-    n "红绿灯的时候，旁边停着一辆蓝色的跑车。"
-    n "不是兰博基尼。只是蓝色的。"
-    n "我看了它很久，直到绿灯亮起来，它一脚油门走了，溅了我一身水。"
-    pt "……以前，我就是那个溅别人一身水的人。"
-    pt "原来被溅的感觉是这样的。"
-    pt "我回去以后，要给那些被我溅过的人道歉。"
-    pt "……不对，我根本不知道他们是谁。"
-
-    $ delivery_income += 61
-    play sound sfx_phone
-    app "今日配送已完成 14 单。今日收入：¥[delivery_income]。"
-    pt "我曾经一分钟的利息，比这多。"
-    pt "但我从来没有像现在这样，记得每一块钱是从哪来的。"
-
-    jump ch4_night
-
-
-## ---------------------------------------------------------------------------
-## 出租屋的夜晚
-## ---------------------------------------------------------------------------
-
-label ch4_night:
-    stop music fadeout 2.0
-    scene bg rental_room_night
-    with fade
-    play ambient sfx_rain fadein 1.0 volume 0.4
-
-    show pzk delivery tired at center_stage
-    with dissolve
-    n "回到出租屋，十一点四十。"
-    n "我湿着头发，躺在一米二的床上。床板响了一下，像在抱怨。"
-    $ money += delivery_income
-    n "我把口袋里的东西掏出来，放在枕头边。"
-    if got_sea_glass:
-        n "手机。钥匙。还有那块蓝色的海玻璃。"
-    else:
-        n "手机。钥匙。还有那张写着「K」的便签纸。"
-    n "我想了一会儿那个冲浪的女人。"
-    n "想她是真的不知道，还是全都知道。"
-    n "想着想着，就睡着了。"
+            p "新来的是哪里人？泰国的吗？"
+            wangjie "隔壁县的。你要泰国的，你自己坐飞机去。"
+            p "……我会去的。等我有钱了。"
+            wangjie "行，那你先把上个月欠的十块钱给了。"
+            pt "我忘了还欠这个。"
+            $ money -= 10
+            $ stat("zb", 2)
 
     hide pzk with dissolve
-    stop ambient fadeout 3.0
-    scene bg black
-    with Dissolve(2.0)
+    n "我在门口的台阶上坐下来。"
+    n "电动车停在旁边，电量百分之十二。"
+    n "我想歇五分钟，再骑回去。"
+    jump ch4_stranger
+
+
+## ---------------------------------------------------------------------------
+## 门口的「新人」 & 初级扫描
+## ---------------------------------------------------------------------------
+
+label ch4_stranger:
+    play music bgm_awkward fadein 1.0
+    show pzk delivery tired at left_stage
+    with dissolve
+    play sound sfx_heels
+    n "高跟鞋的声音停在了我旁边。"
+    xue "大哥，一个人啊？"
+    n "一个穿着亮片短裙的女人，在我旁边坐了下来。"
+    n "香水味很重。是那种把整条街都包下来的重。"
+    xue "我叫小雪，十九岁，今天第一天来上班。"
+    xue "大哥，你看着好面熟啊。你是不是……以前很有钱？"
+
+    show pzk delivery awkward at left_stage
+    pt "这一句。"
+    pt "两年前，在海岛上，也有人这么开头。"
+
+    stop music
+    play sound sfx_glitch
+    with vpunch
+    n "就在那一瞬间——"
+    n "我的脑子里，响起了一个不属于我的声音。"
+
+    xt jaw_drop "叮——！！"
+    xt rage_scream "检测到宿主处于高危社交环境。紧急启动：初级扫描模式。"
+    $ sys_stage = "primary"
+    show pzk delivery shock at left_stage, shake
+    p "谁？？"
+    xue "啊？什么谁？"
+    xt side_eye "她听不见。别出声。看她头顶。"
+
+    call sys_scan("spa_new")
+
+    pt "刘翠芬。"
+    pt "三十四岁。"
+    pt "八十一分。"
+    pt "……十九岁？"
+    xt cry_laugh "扫描结果只显示姓名、年龄、颜值评分。其余信息，本系统不负责。"
+    xt evil_grin "但宿主可以自己动动脑子。"
+
+    xue "大哥，楼上有个 VIP 包间，第一次来免费喝茶。加个微信呗？"
+    show pzk delivery gloom at left_stage
+    n "免费喝茶。VIP 包间。加个微信。"
+    show cg scam_night
+    with dissolve
+    n "两年前，那间酒店顶层套房的门，也是这么打开的。"
+    n "先夸我，再请我，最后，进来三个大哥。"
+    hide cg scam_night
+    with dissolve
+    pt "我不是第一次进这种剧本了。"
+    pt "上一次，我交的学费是全部身家。"
+    pt "这一次，我身上只有一百多块钱。人家要是知道，大概会觉得被侮辱了。"
+
+    menu:
+        "怎么脱身？"
+
+        "「我电动车没锁。」":
+            p "不好意思，我电动车没锁，先走了。"
+            xue "电动车就在你旁边啊。"
+            p "对，所以它现在很危险。"
+            $ stat("zb", 2)
+
+        "「我老婆在家等我。」":
+            p "不了，我老婆在家等我。"
+            xt mock_laugh "检测到宿主说谎。宿主没有老婆。宿主连女朋友都两年没有了。"
+            pt "你闭嘴。"
+            $ stat("zb", 1)
+
+        "「我没钱。真的。」":
+            p "小雪，不，刘……小雪。我跟你说实话，我没钱。"
+            p "我身上最值钱的东西，是那辆电动车。它电量百分之十二。"
+            xue "……"
+            n "她站起来，拍了拍裙子，走了。走得很快。"
+            n "比我那天任何一单都快。"
+            $ stat("sincere", 4)
+
+    hide pzk with dissolve
+    play sound sfx_ebike_start
+    n "我骑上小黄，逃离了足疗店。"
+    jump ch4_primary
+
+
+## ---------------------------------------------------------------------------
+## 初级扫描：激活条件 & 自扫 -250
+## ---------------------------------------------------------------------------
+
+label ch4_primary:
+    scene bg convenience_night
+    with fade
+    play music bgm_system fadein 1.0
+    show pzk delivery shock at center_stage
+    with dissolve
+
+    n "我把车停在便利店门口，在玻璃门前站住了。"
+    p "你到底是什么东西？"
+    xt idle "本系统：「纯爱致富系统」。"
+    xt grimace "当前状态：初级扫描。功能：扫描任何人的姓名、年龄、颜值评分。"
+    xt side_eye "男女老少，活人照片，都能扫。"
+    p "纯爱……致富？"
+    p "致富？？"
+    show pzk delivery smug at center_stage, hop
+    play sound sfx_sparkle
+    p "我就知道！老天爷不会让一个这么帅的男人一直送外卖！"
+    xt mock_laugh "帅不帅，扫一下就知道了。"
+
+    n "便利店的玻璃门上，映出一个穿黄色制服的人。"
+    call sys_scan("pzk")
+
+    show pzk delivery shock at center_stage, shake
+    play sound sfx_shock
+    p "负？？？二百五？？？"
+    p "评分区间是多少？"
+    xt eyeroll "零到一百。"
+    p "那我为什么是负的！！"
+    xt soul_leave "本系统也是第一次见。"
+    xt cry_laugh "建议宿主不要在玻璃前站太久。可能会继续下降。"
+    show pzk delivery gloom at center_stage
+    pt "两年前，有人说我帅得像一笔不良资产重组成功。"
+    pt "两年后，一个系统说我是负二百五。"
+    pt "……这个系统不专业。"
+
+    xt evil_grin "说正事。初级扫描只是试用版。"
+    xt rage_scream "要正式激活「纯爱致富系统」，宿主需要完成一个条件："
+    xt jaw_drop "向一名颜值评分九十分以上的成年女性，完成一次有效的赠与。"
+    p "赠与？送钱？"
+    xt grimace "红包、转账、礼物、请客，都行。金额不限。"
+    xt side_eye "但必须真实完成，并且对方接受。发出去没人领，不算。"
+    p "九十分以上……"
+    p "这个点，我上哪找九十分以上的女人？足疗店里最高的，刚才那位，八十一。"
+    xt mock_laugh "宿主可以翻翻手机。照片也能扫。"
+    jump ch4_photos
+
+
+## ---------------------------------------------------------------------------
+## 翻旧照片
+## ---------------------------------------------------------------------------
+
+label ch4_photos:
+    scene bg rental_room_night
+    with fade
+    play music bgm_broke fadein 1.0
+    show pzk home normal at center_stage
+    with dissolve
+
+    n "回到出租屋。八平米。"
+    n "我躺在床上，打开相册，往上划。"
+    n "最近两年：盒饭、差评截图、电动车充电二维码、盒饭。"
+    n "再往上划。"
+    show pzk home smug at center_stage
+    n "两年前：游艇、香槟、小蓝、私人飞机的舷窗、米其林三星的甜点。"
+    pt "那时候，我不是在拍照，是在给世界发财报。"
+
+    n "游艇派对的合照。中间那个穿白裙子的，是我那时候的女朋友。"
+    call sys_scan("ex_su", photo=True)
+    n "米其林生日宴。帮我吹蜡烛的那个，也是我那时候的女朋友。"
+    call sys_scan("ex_lin", photo=True)
+    n "滑雪场。在缆车上比心的那个，还是我那时候的女朋友。"
+    call sys_scan("ex_zhou", photo=True)
+
+    show pzk home shock at center_stage, shake
+    p "八十九、八十九、八十八？？"
+    p "我谈过的，全是八十九？？"
+    xt cry_laugh "宿主当年的品位，非常稳定地，差一点。"
+    xt side_eye "建议宿主不要伤心。评分只是系统内部的数字。"
+    xt evil_grin "况且她们后来都离开了宿主。说明她们的判断力是九十分以上的。"
+    p "……"
+
+    n "一张公司年会合照。我旁边是赵磊，比着剪刀手。"
+    call sys_scan("zhao", photo=True)
+    pt "六十二。我心里平衡了一点。"
+    $ stat("zb", 1)
+
+    show pzk home normal at center_stage
+    n "然后，我划到了最上面。"
+    n "最早的一张照片，是我高中毕业那年。三中，高三七班，毕业照。"
+    n "我站在最后一排，头发是那年最流行的样子。"
+    n "第一排，从左数第四个——"
+    pt "丁虹依。"
+    pt "三中的校花。"
+    pt "那年我给她写过一封情书，被她当着全班的面，改了三个错别字。"
+
+    n "后来我发了财，换了手机号，把高中同学全删了。"
+    n "那时候我觉得，他们配不上我的朋友圈。"
+    pt "现在想想，是我的朋友圈配不上我的未来。"
+    pt "因为我的未来，就是这间八平米的出租屋。"
+
+    n "高中班级群我还在。三年没说过话，没退。"
+    n "群成员里，她的头像是一张自拍。"
+    show dhy base at right_stage
+    with dissolve
+    n "照片里的她，比毕业照上更好看了。"
+    call sys_scan("dhy", photo=True)
+
+    play sound sfx_sparkle
+    show pzk home smug at left_stage
+    xt jaw_drop "九十三分！！"
+    xt rage_scream "符合激活条件！"
+    p "……九十三。"
+    pt "高中的时候我就知道。"
+    pt "我只是没想到，十年后，她会变成我的救命稻草。"
+    hide dhy with dissolve
+
+    play sound sfx_phone
+    n "我点开她的头像。添加到通讯录。"
+    n "验证消息，我删了四遍。"
+    menu:
+        "最后发的是——"
+
+        "「我是潘子恺。」":
+            n "我是潘子恺。"
+            n "五个字。我曾经用这五个字，在饭局上让一桌人站起来敬酒。"
+            $ stat("sincere", 2)
+
+        "「好久不见，老同学，我是三中最帅的那个。」":
+            n "好久不见，老同学，我是三中最帅的那个。"
+            xt side_eye "建议宿主附上颜值评分。负二百五。"
+            $ stat("zb", 3)
+
+    n "发送。"
+    n "然后是等待。"
+    n "十分钟。"
+    xt mock_laugh "对方可能在思考你是谁。"
+    n "二十分钟。"
+    xt eyeroll "对方可能在问别人你是谁。"
+    n "四十分钟。"
+    xt soul_leave "对方可能已经知道你是谁了。"
+    play sound sfx_vibrate
+    n "四十三分钟。"
+    n "「丁虹依通过了你的好友验证。」"
+    jump ch4_redpacket
+
+
+## ---------------------------------------------------------------------------
+## 十块钱
+## ---------------------------------------------------------------------------
+
+label ch4_redpacket:
+    show pzk home shock at center_stage
+    $ chat_open("丁虹依")
+    $ chat("note", "你已添加了丁虹依，现在可以开始聊天了。")
+    $ chat("her", "？？？")
+    $ chat("her", "潘子恺？？三中那个潘子恺？？")
+    $ chat("her", "你不是把我们全删了吗")
+    pt "她还记得。"
+    pt "被删这件事，她记得比我清楚。"
+    $ chat("me", "好久不见。之前换号，误删了。")
+    $ chat("her", "哦。误删了三十几个人。")
+    pt "……这个女人，十年前改我错别字，十年后改我谎话。"
+
+    xt evil_grin "发吧。"
+    n "我打开红包界面。"
+    n "余额：¥[money]。"
+    pt "两年前，我发红包，是按「零」的个数算的。"
+    pt "两年后，我发红包，是按「明天吃什么」算的。"
+
+    menu:
+        "金额"
+
+        "¥1.00（试探一下）":
+            xt mock_laugh "可以。对方可能会以为你手滑。"
+            p "……那还是十块吧。"
+
+        "¥10.00（体面）":
+            p "十块。体面。"
+            xt side_eye "宿主对「体面」的定义，这两年变化很大。"
+
+        "¥100.00（赌一把）":
+            xt jaw_drop "然后宿主明天吃什么？"
+            p "……十块。"
+            $ stat("sincere", 1)
+
+    $ chat("me", "10.00", "rp")
+    $ chat("me", "一点心意，请你喝杯奶茶")
+    play sound sfx_phone
+    n "发送。"
+    $ money -= 10
+    n "我盯着屏幕。"
+    n "两年前，我盯着纳斯达克开盘，都没这么紧张。"
     pause 1.0
+    play sound sfx_coin
+    $ chat("note", "丁虹依领取了你的红包")
+    n "「丁虹依领取了你的红包。」"
+    $ love("dhy", 15, quiet=True)
+    $ give_gift("dhy", "微信红包", 10, "微信红包")
     jump ch4_awaken
 
 
 ## ---------------------------------------------------------------------------
-## 系统觉醒
+## 系统正式激活
 ## ---------------------------------------------------------------------------
 
 label ch4_awaken:
-    scene bg rental_room
-    with fade
-    n "第二天早上，六点零三分。"
-    n "我被一个声音叫醒了。"
-    n "不是闹钟。不是对面楼的广场舞音响。"
-    n "是我脑子里的声音。"
-
+    $ chat_close()
+    stop music
+    play sound sfx_glitch
+    with vpunch
+    xt jaw_drop "叮——！！！！"
     call sys_boot
     play music bgm_system fadein 1.0
+    play sound sfx_money_rain
     scene cg system_awaken
     with flash
 
-    xt idle "叮。"
-    xt grimace "检测到宿主：潘子恺。男。二十七岁。前投行分析师。前亿万富翁。现外卖骑手。"
-    xt jaw_drop "宿主资产状况：极度贫困。"
-    xt mock_laugh "宿主自恋指数：极度富裕。"
-    xt side_eye "绑定条件全部满足。"
-    xt jaw_drop "「纯爱致富系统」绑定成功。"
+    xt rage_scream "激活条件达成！"
+    xt jaw_drop "赠与对象：丁虹依。颜值评分九十三。赠与金额：十元。"
+    xt cry_laugh "本系统运行史上，最低激活金额：十元。"
+    xt evil_grin "「纯爱致富系统」——正式激活！"
 
-    p "……"
-    p "我是不是昨天淋雨淋出脑炎了。"
-
-    xt eyeroll "宿主当前余额：¥[money]。"
-    xt cry_laugh "另有五毛钱不在账上。是一枚硬币，在你左脚的袜子里。"
-    n "我脱下袜子。"
-    n "叮当。一枚五毛硬币掉在了地上。"
-    p "……卧槽。"
-
+    $ sys_stage = "active"
     $ sys_active = True
     $ stats_visible = True
 
-    scene bg rental_room
+    scene bg rental_room_night
     with dissolve
     show pzk home shock at center_stage
     with dissolve
+    n "八平米的出租屋里，金光乱闪。"
+    n "隔壁大哥砸了一下墙：「几点了还蹦迪！」"
+    p "……对不起！"
 
-    p "你是系统？那种小说里的系统？"
-    p "那我是主角了？？"
-    xt mock_laugh "严格来说，你是我能找到的最穷的帅哥。"
-    show pzk home smug at center_stage
-    p "你也觉得我帅？"
-    xt eyeroll "这不是重点。"
-    p "这就是重点。"
+    xt mock_laugh "检测宿主资产状况：极度贫困。"
+    xt eyeroll "宿主当前余额：¥[money]。"
+    xt grimace "另有五毛钱不在账上。是一枚硬币，在你左脚的袜子里。"
+    n "我脱下袜子。"
+    n "叮当。一枚五毛硬币掉在了地上。"
+    p "……卧槽。"
+    $ money += 0.5
+    p "你连这个都知道？"
+    xt side_eye "本系统还知道，宿主是本系统能找到的最穷的……人。"
+    p "你本来想说帅哥对吧？"
+    xt soul_leave "负二百五。"
 
-    xt evil_grin "本系统的使命：帮助宿主重新获得财富，并超越曾经的巅峰。"
-    show pzk home smug at center_stage, hop
-    play sound sfx_sparkle
-    p "好！好好好！我就知道！"
-    p "上天不会抛弃一个这么帅的男人！"
-    p "快，先打一个亿过来，我把小蓝赎回来——"
-    xt soul_leave "本系统不直接发放金钱。"
-    show pzk home normal at center_stage
-    p "……那你有什么用？"
-    xt rage_scream "宿主需要完成指定的恋爱攻略任务，才能领取奖励。"
-
-    n "恋爱攻略。"
-    n "我愣了三秒。"
-    show pzk home smug at center_stage
-    play sound sfx_sparkle
-    n "然后笑出了声。"
-    p "恋爱？攻略？"
-    p "你知道我是谁吗？我潘子恺，万花丛中过，片叶不沾身。"
-    p "这个系统，简直是给我量身定做的。"
-    xt idle "本系统也是这么认为的。"
-    xt evil_grin "所以规则也是给你量身定做的。"
-    pt "……这句话为什么让我后背一凉。"
-
+    xt evil_grin "首次赠与成立：丁虹依的档案已解锁。"
+    call screen person_card("dhy")
+    p "超强体魄？"
+    xt jaw_drop "她的专属攻略奖励。攻略成功后发放。"
+    p "我追她，奖励是我变强壮？"
+    xt mock_laugh "考虑到宿主今天爬了十八楼差点没上来，本系统认为这个奖励很贴心。"
     jump ch4_rules
 
 
 ## ---------------------------------------------------------------------------
-## 规则（不一次讲完：边演示边讲）
+## 规则
 ## ---------------------------------------------------------------------------
 
 label ch4_rules:
     show pzk home normal at center_stage
+    xt idle "下面宣读规则。宿主可以随时在右上角「系统」里查看。"
 
-    xt grimace "规则一：本系统会扫描成年女性，并给出颜值评分。满分一百。"
-    xt mock_laugh "只有评分达到九十分以上，才能成为正式攻略对象。"
-    p "九十分？标准这么高？"
-    xt side_eye "宿主自己就是按九十八分的标准要求别人的。"
-    p "……你怎么知道？"
-    xt jaw_drop "演示一下。"
-
-    play sound sfx_sys_ding
-    n "眼前弹出了一个蓝色的扫描框。框住了——"
-    n "窗户玻璃上，我自己的倒影。"
-    xt eyeroll "扫描对象：男性。不在扫描范围。"
-    xt cry_laugh "附加检测：自恋指数九十八，超过全国百分之九十九点九的人类。"
-    show pzk home smug at center_stage
-    p "谢谢。"
-    xt side_eye "不是夸你。"
-
-    menu:
-        "那……"
-
-        "「扫一下楼下包子铺的老板娘？」":
-            xt evil_grin "对方已婚。本系统不扫描已婚人士。"
-            xt side_eye "也不扫描未成年人。也不扫描对宿主报过警的人。"
-            p "谁对我报过警？"
-            xt soul_leave "暂时没有。系统只是提前把规则说清楚。"
-
-        "「颜值评分这种东西，也太不尊重人了吧？」":
-            $ stat("sincere", 5)
-            xt rage_scream "宿主说得对。"
-            xt idle "所以这个分数只存在于系统内部，仅用于判定任务资格。"
-            xt side_eye "你要是敢在任何人面前说「你是九十六分」，系统会第一个扣你的分。"
-            p "……我本来也没想说。"
-
-    xt grimace "规则二：每个攻略对象有独立的好感度，零到百分之百。"
-    xt mock_laugh "好感度达到百分之九十，视为攻略成功。"
-    xt side_eye "好感度靠互动、靠帮助、靠真心。花钱不一定涨，说错话一定掉。"
-    p "那你直接让她爱上我，不就完了？"
+    xt grimace "规则一：扫描自由。任何人都能扫。陌生人只显示姓名、年龄、颜值评分。"
+    xt side_eye "规则二：成年女性，颜值九十分以上，才符合攻略条件。"
+    xt mock_laugh "规则三：向符合条件的女性成功赠与，解锁她的完整档案：人物特点、当前好感度、专属奖励、攻略状态。"
+    xt eyeroll "对方拒收，不算。没送到，不算。"
+    p "那我送了，她就会喜欢我？"
+    xt soul_leave "不会。礼物只是门票。"
+    xt rage_scream "规则四：每个人好感度独立计算。达到百分之九十，攻略成功，发放她的专属奖励。"
+    xt evil_grin "每个女神的奖励，都不一样。"
+    xt cry_laugh "规则五：可以同时攻略多位。攻略谁，宿主自己决定。本系统不指定，不推荐，不包分配。"
+    p "那你直接让她们爱上我，不就完了？"
     xt jaw_drop "本系统不提供任何精神控制服务。"
     xt side_eye "那叫犯罪。而且不浪漫。"
-    pt "……一个会说「不浪漫」的系统。"
 
-    xt eyeroll "接下来，宣布宿主的第一个攻略对象。"
-    xt evil_grin "由命运匹配算法自动生成。不接受更换。"
-
-    jump ch4_target
-
-
-label ch4_target:
-    stop music fadeout 0.5
-    play sound sfx_sting
-    scene bg rental_room
-    show lxx silhouette at right_stage
-    with dissolve
-    show pzk home normal at left_stage
-    with dissolve
-
-    xt jaw_drop "目标锁定。"
-    $ bind_target("lxx", "李轩翔", 31, "某顶级投资银行 · 投资银行部董事总经理（MD）", 96,
-                  "曾为宿主的直属上司。金色短发，白天西装，晚上十点以后换红色皮衣。强势，冷静，果断。不接受废话，不接受借口，不接受超过二十分钟的会议。")
-    $ add_note("lxx", "宿主入职第一个月，PPT 被她打回 17 次。")
-    play music bgm_lxx fadein 0.3
-    show lxx cold at right_stage
-    with dissolve
-    call sys_scan("lxx")
-
-    show pzk home shock at left_stage, shake
-    play sound sfx_shock
-    p "……"
-    p "…………"
-    p "李轩翔？？？"
-    p "换一个！换一个！我要换一个！！"
-    xt side_eye "不接受更换。"
-    p "你知道她是谁吗？？"
-    xt cry_laugh "知道。你以前的上司。"
-    p "你知道她当年怎么对我的吗？？"
-    xt evil_grin "知道。PPT 打回十七次。"
-    p "你知道第十七次的批注是什么吗？"
-    xt soul_leave "「重做」。"
-    p "……"
-    p "你连这个都知道？？"
-
-    show pzk home gloom at left_stage
-    pt "李轩翔。"
-    pt "在投行的那两年，我每天早上进办公室，第一件事是看她的脸色。"
-    pt "她笑过吗？我想了想。"
-    pt "笑过一次。我把一个估值模型做错了，她看着我，笑了一下，说：「潘子恺，你很有勇气。」"
-    pt "然后那个模型她自己通宵重做了。"
-    pt "第二天，她在所有人面前说，模型是我做的。"
-    pt "……我当时没多想。"
-
-    xt evil_grin "规则四：成功攻略一名对象，系统发放攻略奖金。"
-    xt rage_scream "第一位攻略对象，基础奖金——"
-    play sound sfx_money_rain
-    xt evil_grin "一千万。"
-
-    show pzk home normal at left_stage
-    n "我沉默了。"
-    n "不是被吓到了。是在算。"
-    n "一千万，按我现在的日收入，我需要送……"
-    n "十五万六千二百五十天外卖。"
-    n "四百二十八年。"
-    show pzk home smug at left_stage, hop
-    play sound sfx_sparkle
-    p "我接！"
-    p "李轩翔是吧！"
-    p "我当年搞不定她，是因为我是她下属。"
-    p "现在不一样了。现在我是一个有系统的男人。"
-    xt mock_laugh "也是一个有外卖箱的男人。"
-
-    jump ch4_card
-
-
-## ---------------------------------------------------------------------------
-## 纯爱卡（第一次报销审核）
-## ---------------------------------------------------------------------------
-
-label ch4_card:
-    play music bgm_system fadein 1.0
-    show pzk home normal at left_stage
-    hide lxx with dissolve
-
-    p "等等。攻略要花钱的吧？约会、吃饭、送礼物……"
-    p "我现在全部身家是三百多块。"
-    xt idle "规则三：与攻略目标相关的合理消费，可使用「纯爱卡」。"
-    xt grimace "纯爱卡采用预授权机制：宿主刷卡前，系统实时审核。审核通过，由系统支付。"
-    xt mock_laugh "审核驳回，刷卡失败。宿主可以自己掏钱，前提是你有。"
-    $ credit_limit = 3000
-    play sound sfx_coin
-    xt side_eye "新手期额度：三千元。随攻略进度提升。"
-
-    p "三千？？我以前一顿早餐都不止三千。"
-    xt jaw_drop "所以你现在在这里。"
-
-    p "那我试一下。早餐，豆浆油条，八块。"
-    call sys_audit("豆浆油条 ×1", 8, "宿主早餐", "rejected", "宿主吃早餐与攻略目标无关。另：建议加个鸡蛋，蛋白质有助于提升体能。")
-    show pzk home shock at left_stage
-    p "八块都不给报？？"
-    xt eyeroll "李轩翔不吃你的早餐。"
-    p "那她要是吃呢？"
-    xt cry_laugh "那就是另一个审核结果了。"
-
-    jump ch4_seal
-
-
-## ---------------------------------------------------------------------------
-## 规则五：纯爱封印
-## ---------------------------------------------------------------------------
-
-label ch4_seal:
-    xt eyeroll "最后，附加条款第七条。"
+    xt grimace "最后，附加条款。"
     p "怎么还有附加条款？"
-    xt evil_grin "所有重要的条款，都在附加条款里。你在投行待过，应该知道。"
-    pt "……这个系统是不是在我们行实习过。"
-
-    xt soul_leave "规则五：纯爱封印。"
-    xt rage_scream "对已绑定的攻略对象，在其好感度达到百分之九十之前——"
-    xt idle "宿主对该对象，将保持「功能性失灵」状态。"
-
-    show pzk home normal at left_stage
-    p "功能性……失灵？"
-    p "什么功能？"
+    xt evil_grin "所有重要的条款，都在附加条款里。宿主在投行待过，应该知道。"
+    xt soul_leave "纯爱封印。"
+    xt rage_scream "宿主每正式开始攻略一位对象，封印就对她单独生效。"
+    xt idle "在她的好感度达到百分之九十之前，宿主对她，将保持「功能性失灵」。"
+    p "功能性……什么功能？"
     xt grimace "你想的那个功能。"
+    p "等一下。正式开始攻略……"
+    p "我刚才那十块钱——"
+    xt mock_laugh "对。丁虹依。已生效。"
 
-    stop music
-    scene bg black
-    pause 1.5
-    n "……"
-    n "……………………"
-
-    scene bg rental_room
-    show pzk home gloom at left_stage
-    call seal_alarm("纯爱封印已生效。")
-
-    play music bgm_broke fadein 0.5
-    show pzk home shock at left_stage, shake
-    p "我不接受！！"
+    call seal_alarm("纯爱封印：丁虹依，生效中。")
+    show pzk home shock at center_stage, shake
+    p "十块钱！！我花了十块钱，买了一个封印？？"
     p "这是我身上最后一项没被骗走的资产了！！"
-    xt evil_grin "封印仅针对攻略对象生效。"
-    p "那对其他人呢？"
-    xt mock_laugh "对其他人，你本来也没机会。"
-    p "……"
+    xt cry_laugh "严格来说，十块钱买的是一个系统。封印是赠品。"
 
     menu:
         "……"
 
         "「我要退货！」":
-            p "我要退货！这个系统我不要了！"
+            p "我要退货！"
             xt side_eye "本系统不支持七天无理由退货。"
-            p "那十五天呢？"
-            xt mock_laugh "不支持任何天数。"
+            p "那十块钱能退吗？"
+            xt mock_laugh "那十块钱在丁虹依那里。宿主可以自己去问她。"
 
         "「为什么要设计这种规则？？」":
             p "为什么要设计这种规则？？"
-            xt jaw_drop "因为宿主以前谈恋爱的平均时长是十一天。"
+            xt jaw_drop "因为宿主以前谈恋爱的平均时长，是十一天。"
             xt eyeroll "最长的一次，是因为对方出国了，忘了分手。"
             xt cry_laugh "本系统的名字叫「纯爱」。不是「快餐」。"
-            p "……"
-            pt "我竟然无法反驳。"
+            pt "……我竟然无法反驳。"
             $ stat("sincere", 3)
 
-    xt evil_grin "放心。只要她的好感度达到百分之九十，封印会自动解除。"
-    xt soul_leave "到那时候，你会拿到一千万。"
-    xt rage_scream "以及你的尊严。"
-    p "顺序能不能倒过来？"
-    xt side_eye "不能。"
-
-    jump ch4_tasks
+    jump ch4_fund
 
 
 ## ---------------------------------------------------------------------------
-## 任务发布
+## 舔狗基金
 ## ---------------------------------------------------------------------------
 
-label ch4_tasks:
-    play music bgm_system fadein 1.0
-    show pzk casual normal at left_stage
-    xt idle "发布阶段任务。"
+label ch4_fund:
+    show pzk home normal at center_stage
+    p "好。封印我认了。"
+    p "那「致富」呢？钱呢？"
+    xt soul_leave "本系统不直接发放金钱。"
+    p "……那你叫什么致富系统？"
+    xt evil_grin "但是本系统可以兑换。"
+    xt rage_scream "舔狗基金。宿主充值一元人民币，本系统兑换一万元舔狗基金。"
 
-    $ add_task("lxx_1", "lxx", "重新出现在她的生活里", "自然地。不许冒充快递、不许跟踪、不许在她公司楼下拉横幅。", 5000)
-    pause 0.6
-    $ add_task("lxx_2", "lxx", "在她最擅长的领域，帮她一次", "她不缺钱，不缺人追，缺的东西你自己想。", 20000)
-    pause 0.6
-    $ add_task("lxx_3", "lxx", "？？？", "隐藏任务。触发条件未知。", 10000, hidden=True)
+    show pzk home shock at center_stage
+    n "我愣了三秒。"
+    n "一比一万。"
+    n "我在投行的时候，见过最离谱的杠杆，是一比五十。那家基金第二年就爆了。"
+    p "一万倍？？"
+    xt grimace "注意：舔狗基金不是宿主的钱。"
+    xt side_eye "只能花在颜值九十分以上的成年女性身上。给她转账、发红包、买礼物、请她吃饭、约会，都行。"
+    xt mock_laugh "她收到的，是真钱。宿主花掉的，是基金。"
+    xt eyeroll "充值不可退。"
+    p "那我第一次那十块，能换成十万吗？"
+    xt cry_laugh "激活费不是充值。激活费是学费。"
 
-    xt grimace "任务详情可随时在右上角「系统」中查看。"
-    p "第一个任务……重新出现在她的生活里。"
-    p "她在四十八楼。我在城中村。"
-    p "我们之间的距离，大概是一个保安，加四十七层楼，加一千万。"
-    xt mock_laugh "还有你的自恋。"
-    p "那个不算距离。那是我的魅力。"
+    n "我看了一眼余额。"
+    n "¥[money]。"
+    pt "两年前，我做决策，是一个团队，三份尽调报告，五轮投委会。"
+    pt "两年后，我做决策，是一个人，一张床，一包还没拆的泡面。"
+    p "充一百。"
+    p "剩下的，够吃到后天。"
+    call sys_recharge(100)
 
-    show pzk delivery normal at left_stage
+    play sound sfx_money_rain
+    show pzk home smug at center_stage, hop
+    p "一百万……"
+    p "一百万！！"
+    xt evil_grin "这是宿主的银行卡。"
+    call screen fund_card
+    p "卡号还挺吉利。"
+    p "信用等级……负二百五？"
+    xt mock_laugh "跟宿主本人保持一致。"
+
+    p "好。第一件事。"
+    p "把小蓝买回来。首付总够了吧。"
+    call sys_spend("兰博基尼（小蓝）首付", 1000000, "pzk", "车辆")
+    show pzk home shock at center_stage
+    p "我自己的车也不行？？"
+    xt side_eye "收款人是宿主本人。宿主不是九十分以上的成年女性。"
+    xt cry_laugh "宿主甚至不是零分以上的成年男性。"
+
+    p "……行。那吃饭总可以吧。人是铁饭是钢。"
+    call sys_spend("泡面 ×1", 4.5, None, "宿主晚饭")
+    p "四块五！！"
+    xt eyeroll "宿主的泡面，与纯爱无关。"
+
+    show pzk home smug at center_stage
+    p "那我换个思路。"
+    p "我给丁虹依转一百万，再让她转回来——"
+    call sys_spend("转账给丁虹依（再让她转回来）", 1000000, "dhy", "转账", cashout=True)
+    xt rage_scream "虚假交易，套现，一律驳回。"
+    xt mock_laugh "另外，本系统建议宿主想一想：她会转回来吗？"
+    show pzk home gloom at center_stage
+    p "……"
+    pt "以我对她的了解，她会先把那封情书的错别字再改一遍，然后拉黑我。"
+    $ stat("sincere", 2)
+    jump ch4_slap
+
+
+## ---------------------------------------------------------------------------
+## 现实
+## ---------------------------------------------------------------------------
+
+label ch4_slap:
+    play sound sfx_vibrate
+    n "手机震了。"
+    $ chat_open("丁虹依")
+    $ chat("me", "10.00", "rp")
+    $ chat("note", "丁虹依领取了你的红包")
+    $ chat("her", "不是，潘子恺")
+    $ chat("her", "毕业七年，把我删了，现在加回来，第一件事发十块？")
+    $ chat("her", "你是被盗号了，还是开始做微商了")
+    $ chat("her", "还是借钱之前先铺垫一下？")
+    $ chat("her", "我先收了啊。正好蜜雪冰城")
+    show pzk home gloom at center_stage
+    pt "她收了。"
+    pt "但是她收得，好像在帮我一个忙。"
+    call sys_love("dhy", -5)
+    xt side_eye "提醒：赠礼不等于好感。"
+    $ chat_close()
+
+    play sound sfx_vibrate
+    n "又震了。不是她。是高中班级群。"
+    n "三年没人说话的群，现在九十九加。"
+    show screen phone_moments("丁虹依", "高中同学七年没联系，加回来第一件事发我十块钱红包。\n是什么新型诈骗吗？在线等，挺急的。", "王磊、陈思思、李想、高三七班班长等 37 人", [("陈思思", "潘子恺？？他不是在朋友圈晒过游艇吗"), ("李想", "十块，懂了"), ("高三七班班长", "@潘子恺 出来走两步"), ("丁虹依", "别这么说，人家可能是想请我喝水")])
+    show pzk home shock at center_stage, shake
+    play sound sfx_shock
+    p "她发朋友圈了？？"
+    xt cry_laugh "三十七个赞。宿主两年来朋友圈互动量的总和。"
+    xt mock_laugh "恭喜宿主，重新回到了老同学的视野里。"
+    hide screen phone_moments
+
+    show pzk home normal at center_stage
+    n "我盯着那张截图看了很久。"
+    n "截图里，十块钱的红包，橙色的，很小。"
+    n "我的手指停在聊天框上。"
+    n "卡里有一百万舔狗基金。"
+    n "我只要点几下，十块钱的笑话，就会变成一百万的传说。"
+    xt idle "宿主想转的话，审核会通过的。"
+    pt "我知道。"
+    pt "但是一个七年没联系的人，被嘲笑之后，突然甩过来一百万。"
+    pt "两年前，我会觉得这很帅。"
+    pt "两年后，我知道这叫什么。"
+    pt "这叫剧本。"
+    p "不转。"
+    xt jaw_drop "……"
+    xt evil_grin "本系统记下了。"
+    $ stat("sincere", 5)
+    jump ch4_end
+
+
+## ---------------------------------------------------------------------------
+## 一百万，一包泡面
+## ---------------------------------------------------------------------------
+
+label ch4_end:
+    scene bg convenience_night
+    with fade
+    play music bgm_broke fadein 1.0
+    show pzk delivery normal at center_stage
     with dissolve
-    n "我穿上黄色制服，戴好头盔，推着小黄出了门。"
-    n "巷子口的煎饼摊冒着热气。"
-    n "我不知道接下来要怎么接近李轩翔。"
-    n "但我知道一件事——"
-    n "今天，我又要送外卖了。"
+    n "晚上十一点四十。楼下便利店。"
+    n "我用自己的钱，买了一包泡面。四块五。"
+    $ money -= 4.5
+    play sound sfx_cash
+    n "自己的钱。"
+    n "这四个字，我两年来第一次觉得有分量。"
+
+    xt mock_laugh "宿主当前真实余额：¥[money]。舔狗基金余额：一百万。"
+    p "账户里有一百万。"
+    p "碗里有一包泡面。"
+    xt eyeroll "还有一个封印。"
+    p "……还有一个封印。"
+
+    show pzk delivery smug at center_stage
+    pt "但是。"
+    pt "两年来，这是第一次，我觉得明天可能会不一样。"
+    pt "哪怕只是一点点。"
+    pt "哪怕只是从负二百五，到负二百四。"
+    xt side_eye "明天早上五点五十，闹钟照样响。"
+    p "我知道。"
+    p "我又不是第一次送外卖。"
 
     stop music fadeout 2.0
     scene bg black
     with fade
     tip "—— 第三章 完 ——"
-    jump chapter5
+    tip "—— 后续剧情待更新 ——"
+    return

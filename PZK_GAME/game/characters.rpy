@@ -42,6 +42,11 @@ define shen = Character("沈眠", color="#ffb27f")             # 投资机构创
 
 ## ---- 第五章 ----
 define qin = Character("秦受", color="#7fb0ff", who_outlines=[(3, "#0a1a3a", 0, 0)])
+default dhy_name = "丁虹依"
 define dhy = Character("[dhy_name]", color="#ffb6d9", who_outlines=[(3, "#3a0a24", 0, 0)])
 define clerk = Character("店长", color="#d9c6a5")
 define mall_guard = Character("商场保安", color="#a0a0a0")
+
+## ---- 第三章（新）----
+define xue = Character("小雪", color="#f2a0c0")             # 足疗店门口自称「小雪」的女人
+define wangjie = Character("王姐", color="#d8b48a")         # 足疗店前台

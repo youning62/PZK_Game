@@ -28,19 +28,19 @@ screen sys_hud():
             hbox:
                 spacing 10
                 text "◆" style "hud_icon" color "#5ff3ff"
-                text "纯爱卡" style "hud_label"
-                text fmt_money(credit_left()) style "hud_num" min_width 156
-            if current_target:
-                $ _t = targets[current_target]
+                text "舔狗基金" style "hud_label"
+                text fmt_money(fund) style "hud_num" min_width 156
+            if focus_target and unlocked(focus_target):
+                $ _st = ps(focus_target)
                 hbox:
                     spacing 10
                     text "♥" style "hud_icon" color "#ff7fae"
-                    text _t["name"] style "hud_label"
-                    bar value StaticValue(_t["aff"], 100) style "hud_bar_aff" xsize 140
-                    text "[_t['aff']]%" style "hud_num"
-                text ("纯爱封印：生效中" if _t["sealed"] else "纯爱封印：已解除") style "hud_label" size 18 color ("#ff9fc8" if _t["sealed"] else "#ffe066")
-                if len(active_targets()) > 1:
-                    text ("同时攻略：%d 位（点「系统」切换）" % len(active_targets())) style "hud_label" size 16 color "#9fd8ff"
+                    text PEOPLE[focus_target]["name"] style "hud_label"
+                    bar value StaticValue(_st["aff"], 100) style "hud_bar_aff" xsize 140
+                    text ("%d%%" % _st["aff"]) style "hud_num"
+                text ("纯爱封印：生效中" if _st["sealed"] else "纯爱封印：已解除") style "hud_label" size 18 color ("#ff9fc8" if _st["sealed"] else "#ffe066")
+            if len(pursuing()) > 1:
+                text ("同时攻略：%d 位（点「系统」查看）" % len(pursuing())) style "hud_label" size 16 color "#9fd8ff"
             hbox:
                 spacing 10
                 text "★" style "hud_icon" color "#ffd34d"
@@ -255,9 +255,6 @@ screen chapter_select():
             textbutton "序章 · 入职测试" action Start("start")
             textbutton "第一章 · 梦里的女人 / 第一次晚餐" action Start("chapter1")
             textbutton "第二章 · 浪与骗局" action Start("chapter3")
-            textbutton "第三章 · 骑手潘师傅（系统觉醒）" action Start("chapter4")
-            textbutton "第四章 · 前上司李轩翔" action Start("chapter5")
-            textbutton "第五章 · 九分袖与校花" action Start("chapter6")
-            textbutton "第六章 · 晚宴" action Start("chapter7")
+            textbutton "第三章 · 十块钱的纯爱（系统觉醒）" action Start("chapter4")
             null height 20
             text "从中间章节开始时，之前的选择会按默认值处理。" size 24 color "#9fb6cc"

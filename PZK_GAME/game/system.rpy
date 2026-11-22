@@ -1,190 +1,232 @@
-## system.rpy —— 「纯爱致富系统」：状态、规则、界面
+## system.rpy —— 「纯爱致富系统」：状态、规则、演出、界面
 ##
-## 核心规则（见 docs/system_design.md）：
-##   1. 只扫描成年女性；颜值评分 ≥ 90 才能成为攻略对象
-##   2. 每个对象独立好感度 0~100%；≥ 90% 视为攻略成功，结算奖金
-##   3. 攻略相关消费走「纯爱卡」预授权：审核通过由系统支付，驳回则刷卡失败
-##   4. 成功攻略后发放奖金（基础奖金 × 任务完成度 × 真诚系数）
-##   5. 纯爱封印：对已绑定对象，好感度 < 90% 时宿主对其持续"功能性失灵"
-##   6. 系统不能控制任何人的感情；好感只能靠剧情与选择变化
+## 规则（数据在 system_data.rpy）：
+##   0. 系统分三档：none（未出现）→ primary（初级扫描）→ active（正式激活）。
+##      正式激活条件：向一名颜值 ≥ 90 的成年女性完成一次被接受的真实赠与。
+##   1. 扫描自由：任何人都能扫。陌生人只显示姓名、年龄、颜值评分。
+##   2. 成年女性且评分 ≥ 90 才符合攻略条件。
+##   3. 对符合条件的女性成功赠与 → 解锁人物特点、当前好感度、攻略奖励、攻略状态；
+##      拒收 / 未完成不解锁。赠礼不改变好感度。
+##   4. 好感度每人独立；≥ 90% 攻略成功 → 解除对她的纯爱封印 + 发放她的专属奖励。
+##   5. 纯爱封印：每个已解锁档案的对象单独生效。
+##   6. 舔狗基金：激活后用真钱充值，1 元 = 10,000 元基金，不可退、不设上限。
+##      只能花在评分 ≥ 90 的成年女性身上（对方收到的是真钱）；自购、套现、无关消费一律驳回。
+##      基金余额不是宿主的个人财富；首次激活的赠与不算充值。
+##   7. 多目标从一开始就支持；系统不指定攻略对象，不提供精神控制。
 
 ## ---------------------------------------------------------------------------
-## 状态
+## 状态（存档）
 ## ---------------------------------------------------------------------------
 
-default sys_active = False           # 系统是否已觉醒
+default sys_stage = "none"           # none / primary / active
+default sys_active = False           # 正式激活（HUD、飘字以此为准）
 default money = 0                    # 宿主真实余额（元）
-default credit_limit = 0             # 纯爱卡预授权额度上限
-default credit_used = 0              # 本期已使用额度
-default reimbursed_total = 0         # 累计通过审核的金额
-default rejected_count = 0           # 被驳回的次数（成就用）
-default task_income = 0              # 任务奖励累计
-default targets = {}                 # 攻略对象档案：id -> dict
-default current_target = None        # 当前攻略对象 id
-default tasks = []                   # 任务列表（dict）
-default sys_panel_tab = "profile"    # 系统面板当前页
+default fund = 0                     # 舔狗基金余额
+define FUND_RATE = 10000             # 1 元 = 10,000 元基金
+default fund_recharged_rmb = 0       # 累计充值（真钱）
+default fund_spent = 0               # 累计通过审核的基金消费
+default fund_log = []                # [{item, amount, payee, verdict}]
+default rejected_count = 0
+default people_state = {}            # pid -> {scanned, unlocked, aff, sealed, success, gifts[]}
+default focus_target = None          # HUD 显示谁（宿主在系统面板里自己选）
+default owned_rewards = []
+default sys_pending_announce = []
+default sys_panel_tab = "profile"
+default sys_panel_sel = None
 
 define SYSTEM_NAME = "纯爱致富系统"
-define FIRST_TARGET_BASE_BONUS = 10000000   # 第一个攻略对象的基础奖金：一千万
+define SCORE_THRESHOLD = 90
+define AFF_SUCCESS = 90
+define GIFT_RESULT_TEXT = {"unlocked": "档案解锁", "recorded": "已记录", "refused": "被拒收",
+                           "incomplete": "未完成", "ineligible": "不符合条件", "not_scanned": "未扫描"}
 
 
 init -4 python:
 
     def fmt_money(v):
-        """¥12,345"""
-        return "¥{:,}".format(int(v))
+        return "¥{:,}".format(int(v)) if v == int(v) else "¥{:,.2f}".format(v)
 
-    # ---------------- 攻略对象 ----------------
+    def ps(pid):
+        st = store.people_state.get(pid)
+        if st is None:
+            st = dict(scanned=False, unlocked=False, aff=0, sealed=False, success=False, gifts=[])
+            store.people_state[pid] = st
+        return st
 
-    def bind_target(tid, name, age, job, score, intro, base_bonus=None, focus=True):
-        if base_bonus is None:
-            base_bonus = store.FIRST_TARGET_BASE_BONUS
-        if score < 90:
-            raise Exception("颜值评分不足 90 的对象不能绑定：%s" % name)
-        store.targets[tid] = dict(
-            name=name, age=age, job=job, score=score, intro=intro,
-            aff=0, stage="重逢", sealed=True, status="攻略中",
-            base_bonus=base_bonus, notes=[],
-        )
-        if focus or store.current_target is None:
-            store.current_target = tid
+    def eligible(pid):
+        p = PEOPLE[pid]
+        return p["gender"] == "女" and p["age"] >= 18 and p["score"] >= SCORE_THRESHOLD
 
-    def promote_candidate(tid, focus=False):
-        """候选 → 正式攻略对象（多目标并行：不影响其他对象的好感和封印）。"""
-        t = store.targets[tid]
-        t["status"] = "攻略中"
-        t["sealed"] = True
-        t["stage"] = "绑定"
-        if focus:
-            store.current_target = tid
-        renpy.show_screen("sys_toast", title="新攻略对象", body="{}  纯爱封印 +1".format(t["name"]), _tag="sys_toast")
-        if renpy.loadable(SFX_SEAL_LOCK):
-            renpy.sound.play(SFX_SEAL_LOCK, channel="audio")
+    def unlocked(pid):
+        return ps(pid)["unlocked"]
 
-    def active_targets():
-        return [k for k, v in store.targets.items() if v.get("status") == "攻略中"]
+    def sealed(pid):
+        return ps(pid)["sealed"]
 
-    def unlock_candidate(tid, name, age, job, score, intro):
-        """扫描到新的符合条件的女神：只存入候选，不切换当前攻略对象（一次只开一条攻略线）。"""
-        if score < 90:
-            raise Exception("颜值评分不足 90 的对象不能成为候选：%s" % name)
-        if tid in store.targets:
-            return
-        store.targets[tid] = dict(
-            name=name, age=age, job=job, score=score, intro=intro,
-            aff=0, stage="候选（未绑定）", sealed=False, status="候选",
-            base_bonus=store.FIRST_TARGET_BASE_BONUS, notes=[],
-        )
-        renpy.show_screen("sys_toast", title="新女神解锁", body="{}（候选，未绑定）".format(name), _tag="sys_toast")
-        if renpy.loadable(SFX_SYS_DING):
-            renpy.sound.play(SFX_SYS_DING, channel="audio")
+    def pursuing():
+        return [k for k in PEOPLE if k in store.people_state
+                and store.people_state[k]["unlocked"] and not store.people_state[k]["success"]]
 
-    def tgt(tid=None):
-        return store.targets.get(tid or store.current_target)
+    def scanned_people():
+        return [k for k in PEOPLE if k in store.people_state and store.people_state[k]["scanned"]]
 
-    def love(tid, delta, quiet=False):
-        """修改某个攻略对象的好感度（%）。"""
-        t = store.targets[tid]
-        old = t["aff"]
-        t["aff"] = max(0, min(100, old + delta))
-        if quiet or delta == 0:
-            return
-        good = delta > 0
-        renpy.sound.play(SFX_STAT_UP if good else SFX_STAT_DOWN, channel="audio")
-        sign = "+" if delta > 0 else ""
-        renpy.show_screen("stat_popup", text="{} 好感度 {}{}%".format(t["name"], sign, delta),
-                          good=good, slot=0, _tag="stat_popup_love")
+    def status_text(pid):
+        st = ps(pid)
+        if not eligible(pid):
+            return "不符合攻略条件"
+        if st["success"]:
+            return "攻略成功"
+        if st["unlocked"]:
+            return "攻略进行中"
+        return "未解锁"
 
-    def set_stage(tid, stage):
-        store.targets[tid]["stage"] = stage
+    def reward_name(pid):
+        rid = PEOPLE[pid]["reward"]
+        return REWARDS[rid]["name"] if rid in REWARDS else "待定"
 
-    def add_note(tid, note):
-        store.targets[tid]["notes"].append(note)
+    def scan(pid):
+        ps(pid)["scanned"] = True
 
-    # ---------------- 任务 ----------------
+    def give_gift(pid, item, value=0, kind="礼物", accepted=True, completed=True):
+        """记录一次赠与并判定。返回 unlocked / recorded / refused / incomplete / ineligible / not_scanned。
+        系统处于初级扫描时，第一次 unlocked 同时让系统正式激活（剧情里 call sys_activate 演出）。"""
+        st = ps(pid)
+        if not st["scanned"]:
+            result = "not_scanned"
+        elif not eligible(pid):
+            result = "ineligible"
+        elif not accepted:
+            result = "refused"
+        elif not completed:
+            result = "incomplete"
+        elif st["unlocked"]:
+            result = "recorded"
+        else:
+            result = "unlocked"
+        st["gifts"].append(dict(item=item, value=value, kind=kind, result=result))
+        if result == "unlocked":
+            st["unlocked"] = True
+            st["sealed"] = True
+            if store.focus_target is None:
+                store.focus_target = pid
+            _check_success(pid)
+        return result
 
-    def add_task(task_id, tid, title, desc, reward, hidden=False):
-        for t in store.tasks:
-            if t["id"] == task_id:
-                return
-        store.tasks.append(dict(id=task_id, tid=tid, title=title, desc=desc,
-                                reward=reward, status="进行中", hidden=hidden))
-        renpy.show_screen("sys_toast", title="新任务", body=title, _tag="sys_toast")
-        if renpy.loadable(SFX_SYS_DING):
-            renpy.sound.play(SFX_SYS_DING, channel="audio")
+    def love(pid, delta, quiet=False):
+        """好感度（%）。档案未解锁时也记录但不显示。达到 90% → 成功，播报排队（call sys_flush）。"""
+        st = ps(pid)
+        st["aff"] = max(0, min(100, st["aff"] + delta))
+        if st["unlocked"] and store.sys_active and not quiet and delta != 0:
+            good = delta > 0
+            renpy.sound.play(SFX_STAT_UP if good else SFX_STAT_DOWN, channel="audio")
+            renpy.show_screen("stat_popup", text="{} 好感度 {}{}%".format(PEOPLE[pid]["name"], "+" if good else "", delta),
+                              good=good, slot=0, _tag="stat_popup_love")
+        _check_success(pid)
 
-    def task(task_id):
-        for t in store.tasks:
-            if t["id"] == task_id:
-                return t
-        return None
+    def _check_success(pid):
+        st = ps(pid)
+        if st["unlocked"] and not st["success"] and st["aff"] >= AFF_SUCCESS:
+            st["success"] = True
+            st["sealed"] = False
+            rid = PEOPLE[pid]["reward"]
+            if rid and rid not in store.owned_rewards:
+                store.owned_rewards.append(rid)
+            store.sys_pending_announce.append(pid)
 
-    def complete_task(task_id, grade="完成"):
-        t = task(task_id)
-        if t is None or t["status"] != "进行中":
-            return
-        t["status"] = grade
-        reward = t["reward"] if grade == "完成" else t["reward"] // 2
-        store.money += reward
-        store.task_income += reward
-        renpy.show_screen("sys_toast", title="任务" + grade, body="{}  奖励 {}".format(t["title"], fmt_money(reward)),
-                          _tag="sys_toast")
-        if renpy.loadable(SFX_COIN):
-            renpy.sound.play(SFX_COIN, channel="audio")
+    # ---------------- 舔狗基金 ----------------
 
-    def fail_task(task_id):
-        t = task(task_id)
-        if t and t["status"] == "进行中":
-            t["status"] = "失败"
-            renpy.show_screen("sys_toast", title="任务失败", body=t["title"], _tag="sys_toast")
-            if renpy.loadable(SFX_ERROR):
-                renpy.sound.play(SFX_ERROR, channel="audio")
+    def fund_recharge(rmb):
+        """用真钱充值。返回到账的基金数额。不可退。"""
+        rmb = max(0, min(rmb, store.money))
+        store.money -= rmb
+        store.fund_recharged_rmb += rmb
+        store.fund += rmb * FUND_RATE
+        return rmb * FUND_RATE
 
-    def tasks_done(tid):
-        return len([t for t in store.tasks if t["tid"] == tid and t["status"] == "完成"])
-
-    def tasks_total(tid):
-        return len([t for t in store.tasks if t["tid"] == tid and not t["hidden"]])
-
-    # ---------------- 奖金 ----------------
-
-    def bonus_estimate(tid):
-        """预计奖金 = 基础奖金 × (1 + 0.1 × 已完成任务) × 真诚系数(0.8~1.5)"""
-        t = store.targets[tid]
-        sincerity = 0.8 + min(0.7, store.sincere / 100.0)
-        return int(t["base_bonus"] * (1 + 0.1 * tasks_done(tid)) * sincerity)
-
-    # ---------------- 纯爱卡 ----------------
-
-    def credit_left():
-        return max(0, store.credit_limit - store.credit_used)
+    def fund_check(amount, payee, cashout=False):
+        """消费审核。返回 (verdict, 理由)。payee：PEOPLE 里的 pid，或 None（不是给人的消费）。"""
+        if store.sys_stage != "active":
+            return ("rejected", "系统未激活。")
+        if cashout:
+            return ("rejected", "检测到套现意图。宿主的小算盘声音太大了。")
+        if payee is None:
+            return ("rejected", "收款方不是任何女性。与攻略无关的消费一律驳回。")
+        if payee == "pzk":
+            return ("rejected", "检测到收款人为宿主本人。颜值评分：-250。")
+        if payee not in PEOPLE or not eligible(payee):
+            return ("rejected", "收款方不是颜值 90 分以上的成年女性。")
+        if amount > store.fund:
+            return ("rejected", "基金余额不足。")
+        return ("approved", "符合攻略消费条件。")
 
 
 ## ---------------------------------------------------------------------------
 ## 演出用 label
 ## ---------------------------------------------------------------------------
 
-## 报销 / 预授权审核。verdict: "approved" / "rejected"
-## approved：系统从纯爱卡额度支付；rejected：刷卡失败，宿主自付（如果钱够）或放弃
-label sys_audit(item, amount, category, verdict, comment, self_pay=False):
-    $ renpy.sound.play(SFX_SYS_SCAN, channel="audio")
-    call screen sys_audit_screen(item, amount, category, verdict, comment)
-    if verdict == "approved":
-        $ credit_used += amount
-        $ reimbursed_total += amount
-    else:
-        $ rejected_count += 1
-        if self_pay:
-            $ money -= amount
-    return
-
-## 扫描一个人并显示档案卡（tid 已绑定时显示完整档案）
-label sys_scan(tid):
+## 扫描（任何人；照片也行）：call sys_scan("dhy")
+label sys_scan(pid, photo=False):
     $ renpy.sound.play(SFX_SYS_SCAN, channel="audio")
     show screen scan_overlay
-    pause 1.2
+    pause 1.0
     hide screen scan_overlay
-    call screen target_card(tid)
+    $ scan(pid)
+    call screen person_card(pid, photo)
+    return
+
+## 赠与：call sys_gift("dhy", "红包", 10, "微信红包")
+label sys_gift(pid, item, value=0, kind="礼物", accepted=True, completed=True):
+    $ _gift_result = give_gift(pid, item, value, kind, accepted, completed)
+    if _gift_result == "unlocked" and sys_stage == "active":
+        $ renpy.sound.play(SFX_SEAL_LOCK, channel="audio")
+        $ renpy.show_screen("sys_toast", title="档案解锁", body=PEOPLE[pid]["name"] + "  ·  纯爱封印 +1", _tag="sys_toast")
+        call screen person_card(pid)
+    return
+
+## 好感度 + 成功播报：call sys_love("dhy", 5)
+label sys_love(pid, delta):
+    $ love(pid, delta)
+    call sys_flush
+    return
+
+label sys_flush:
+    while sys_pending_announce:
+        $ _ann = sys_pending_announce.pop(0)
+        call sys_reward_announce(_ann)
+    return
+
+label sys_reward_announce(pid):
+    $ _aname = PEOPLE[pid]["name"]
+    $ _rname = reward_name(pid)
+    play sound sfx_sys_ding
+    xt jaw_drop "叮——！！[_aname]好感度达到百分之九十。攻略成功！"
+    $ renpy.sound.play(SFX_SEAL_LOCK, channel="audio")
+    xt cry_laugh "对[_aname]的纯爱封印：解除。"
+    xt evil_grin "发放专属奖励：「[_rname]」。"
+    call screen person_card(pid)
+    return
+
+## 充值：call sys_recharge(100)
+label sys_recharge(rmb):
+    $ _got = fund_recharge(rmb)
+    $ renpy.sound.play(SFX_COIN, channel="audio")
+    call screen fund_recharge_screen(rmb, _got)
+    return
+
+## 舔狗基金消费审核：call sys_spend("小蓝", 3000000, None, "车辆")
+## payee = 收款女性的 pid；approved 时扣基金，若 gift=True 同时记一次赠与（她收到的是真钱）
+label sys_spend(item, amount, payee, category="攻略消费", cashout=False, comment=None, gift=False):
+    $ _v, _why = fund_check(amount, payee, cashout)
+    $ renpy.sound.play(SFX_SYS_SCAN, channel="audio")
+    call screen sys_audit_screen(item, amount, category, _v, comment or _why)
+    $ fund_log.append(dict(item=item, amount=amount, payee=payee, verdict=_v))
+    if _v == "approved":
+        $ fund -= amount
+        $ fund_spent += amount
+        if gift:
+            call sys_gift(payee, item, amount, category)
+    else:
+        $ rejected_count += 1
     return
 
 ## 纯爱封印触发
@@ -208,7 +250,6 @@ label sys_boot():
     pause 2.2
     hide screen boot_screen
     return
-
 
 ## ---------------------------------------------------------------------------
 ## 界面
@@ -298,50 +339,54 @@ transform scan_anim:
     linear 0.15 alpha 1.0
 
 
-## 攻略对象档案卡
-screen target_card(tid):
+## 人物档案卡（扫描结果）。初级扫描时其余字段显示「系统未激活」，激活后显示「未解锁」
+screen person_card(pid, photo=False):
     modal True
     zorder 115
-    $ t = targets[tid]
     add Solid("#00081488")
     frame:
         at sys_window_in
         xalign 0.5 yalign 0.45
-        xsize 1100 ysize 700
+        xsize 1100 ysize 680
         background Frame("gui/system/panel.png", 72, 90, 72, 72)
         padding (70, 40, 70, 40)
-        vbox:
-            spacing 16
-            text "攻略对象档案" style "sys_title"
-            null height 6
-            hbox:
-                spacing 40
-                vbox:
-                    spacing 12
-                    text "姓名：[t['name']]" style "sys_text" size 34
-                    text "年龄：[t['age']]" style "sys_text"
-                    text "职业：[t['job']]" style "sys_text"
-                    text "颜值评分：[t['score']] / 100" style "sys_text" color "#ffe066"
-                    text "当前好感度：[t['aff']]%" style "sys_text" color "#ff9fc8"
-                    text "攻略进度：[t['stage']]" style "sys_text"
-                vbox:
-                    spacing 10
-                    if t.get("status") == "候选":
-                        add "gui/system/seal_icon.png" xalign 0.5 alpha 0.4
-                        text "纯爱封印：未绑定" style "sys_small" color "#9fb6cc" xalign 0.5
-                    elif t["sealed"]:
-                        add "gui/system/seal_icon.png" xalign 0.5
-                        text "纯爱封印：生效中" style "sys_small" color "#ff9fc8" xalign 0.5
-                    else:
-                        add "gui/system/seal_icon_open.png" xalign 0.5
-                        text "纯爱封印：已解除" style "sys_small" color "#ffe066" xalign 0.5
-            null height 4
-            text t["intro"] style "sys_small" xmaximum 960
-            text ("预计攻略奖金：" + fmt_money(bonus_estimate(tid))) style "sys_text" color "#ffe066"
-    textbutton "关闭档案" action Return() style "sys_button" text_style "sys_button_text" xalign 0.5 ypos 880
+        use person_fields(pid, photo)
+    textbutton "关闭" action Return() style "sys_button" text_style "sys_button_text" xalign 0.5 ypos 880
     if AUTOTEST:
         timer 0.05 action Return()
-    use fairy_badge("evil_grin", 400, 40)
+    use fairy_badge("evil_grin" if unlocked(pid) else "side_eye", 400, 40)
+
+screen person_fields(pid, photo=False):
+    $ p = PEOPLE[pid]
+    $ st = ps(pid)
+    $ _open = st["unlocked"] and sys_stage == "active"
+    $ _lock = "未解锁" if sys_stage == "active" else "系统未激活"
+    $ _dim = "#7f9fb2"
+    vbox:
+        spacing 12
+        hbox:
+            spacing 20
+            text ("攻略对象档案" if _open else ("初级扫描" if sys_stage != "active" else "扫描结果")) style "sys_title"
+            if photo:
+                text "（照片扫描）" style "sys_small" yalign 0.5
+        null height 4
+        hbox:
+            spacing 40
+            vbox:
+                spacing 10
+                xsize 640
+                text "姓名：[p['name']]" style "sys_text" size 34
+                text "年龄：[p['age']]" style "sys_text"
+                text "颜值评分：[p['score']]" style "sys_text" color ("#ffe066" if p["score"] >= 0 else "#ff6b6b") size (28 if p["score"] >= 0 else 40)
+                text ("人物特点：" + (p["traits"] or "—") if _open else "人物特点：" + _lock) style "sys_text" color ("#d8fbff" if _open else _dim) xmaximum 640
+                text ("当前好感度：%d%%" % st["aff"] if _open else "当前好感度：" + _lock) style "sys_text" color ("#ff9fc8" if _open else _dim)
+                text ("攻略奖励：「%s」" % reward_name(pid) if _open else "攻略奖励：" + _lock) style "sys_text" color ("#ffe066" if _open else _dim)
+                text ("攻略状态：" + status_text(pid) if _open else "攻略状态：" + _lock) style "sys_text" color ("#d8fbff" if _open else _dim)
+            vbox:
+                spacing 10
+                if _open:
+                    add ("gui/system/seal_icon.png" if st["sealed"] else "gui/system/seal_icon_open.png") xalign 0.5
+                    text ("纯爱封印：生效中" if st["sealed"] else "纯爱封印：已解除") style "sys_small" color ("#ff9fc8" if st["sealed"] else "#ffe066") xalign 0.5
 
 
 transform sys_window_in:
@@ -362,7 +407,7 @@ screen sys_audit_screen(item, amount, category, verdict, comment):
         padding (70, 40, 70, 40)
         vbox:
             spacing 14
-            text "纯爱卡 · 预授权审核" style "sys_title"
+            text "舔狗基金 · 消费审核" style "sys_title"
             null height 6
             text "申报项目：[item]" style "sys_text" size 32
             text ("申报金额：" + fmt_money(amount)) style "sys_text"
@@ -427,7 +472,61 @@ transform sys_toast_anim:
     easein 0.3 yoffset -160 alpha 0.0
 
 
-## 系统主面板（HUD 按钮打开）
+## 舔狗基金银行卡
+screen fund_card():
+    modal True
+    zorder 115
+    add Solid("#00081499")
+    frame:
+        at sys_window_in
+        xalign 0.5 yalign 0.42 xsize 860 ysize 520
+        background Frame(Solid("#c9a227"), 0, 0)
+        padding (8, 8, 8, 8)
+        frame:
+            xfill True yfill True
+            background Solid("#1a1206")
+            padding (50, 40, 50, 40)
+            vbox:
+                spacing 18
+                hbox:
+                    text "舔狗基金银行卡" style "sys_title" color "#ffd34d" size 46
+                    null width 60
+                    text "PURE LOVE" style "sys_small" color "#c9a227" yalign 0.5
+                frame:
+                    xsize 110 ysize 80
+                    background Solid("#d8b44a")
+                text "6666  8888  5200  1314" style "sys_text" size 44 color "#fff6d0"
+                hbox:
+                    spacing 60
+                    text "持卡人：潘子恺" style "sys_text" color "#fff6d0"
+                    text "信用等级：-250" style "sys_text" color "#ff6b6b"
+                text ("余额：" + fmt_money(fund)) style "sys_text" size 36 color "#ffd34d"
+    textbutton "收下" action Return() style "sys_button" text_style "sys_button_text" xalign 0.5 ypos 860
+    if AUTOTEST:
+        timer 0.05 action Return()
+    use fairy_badge("evil_grin", 380, 120)
+
+## 充值到账
+screen fund_recharge_screen(rmb, got):
+    modal True
+    zorder 115
+    add Solid("#00081499")
+    vbox:
+        at sys_window_in
+        xalign 0.5 yalign 0.4
+        spacing 24
+        text "舔狗基金 · 充值成功" style "sys_title" xalign 0.5
+        text (fmt_money(rmb)) style "sys_text" size 60 xalign 0.5
+        text "× 10,000" style "sys_small" size 36 xalign 0.5
+        text (fmt_money(got)) style "sys_title" size 110 color "#ffd34d" xalign 0.5 at stamp_in
+        text "本充值不可退。" style "sys_small" xalign 0.5
+    textbutton "确认" action Return() style "sys_button" text_style "sys_button_text" xalign 0.5 ypos 880
+    if AUTOTEST:
+        timer 0.05 action Return()
+    use fairy_badge("jaw_drop", 420, 120)
+
+
+## 系统主面板（HUD「系统」按钮打开）
 screen system_panel():
     modal True
     zorder 116
@@ -435,7 +534,7 @@ screen system_panel():
     frame:
         at sys_window_in
         xalign 0.5 yalign 0.5
-        xsize 1100 ysize 760
+        xsize 1240 ysize 800
         background Frame("gui/system/panel.png", 72, 90, 72, 72)
         padding (60, 30, 60, 30)
         vbox:
@@ -444,67 +543,48 @@ screen system_panel():
                 spacing 18
                 text SYSTEM_NAME style "sys_title"
                 null width 40
-                textbutton "档案" action SetVariable("sys_panel_tab", "profile") selected sys_panel_tab == "profile" style "sys_button" text_style "sys_button_text"
-                textbutton "任务" action SetVariable("sys_panel_tab", "tasks") selected sys_panel_tab == "tasks" style "sys_button" text_style "sys_button_text"
-                textbutton "钱包" action SetVariable("sys_panel_tab", "wallet") selected sys_panel_tab == "wallet" style "sys_button" text_style "sys_button_text"
-                textbutton "规则" action SetVariable("sys_panel_tab", "rules") selected sys_panel_tab == "rules" style "sys_button" text_style "sys_button_text"
-            null height 10
+                for _tab, _lab in (("profile", "档案"), ("gifts", "赠与"), ("wallet", "钱包"), ("rules", "规则")):
+                    textbutton _lab action SetVariable("sys_panel_tab", _tab) selected sys_panel_tab == _tab style "sys_button" text_style "sys_button_text"
+            null height 6
             if sys_panel_tab == "profile":
-                if len(active_targets()) > 1:
-                    hbox:
-                        spacing 12
-                        text "攻略中：" style "sys_small"
-                        for _tid in active_targets():
-                            textbutton ("%s %d%%" % (targets[_tid]["name"], targets[_tid]["aff"])) action SetVariable("current_target", _tid) selected (current_target == _tid) style "sys_button" text_style "sys_button_text"
-                if current_target:
-                    $ t = targets[current_target]
-                    text "当前攻略对象：[t['name']]（[t['age']]岁 · [t['job']]）" style "sys_text"
-                    text "颜值评分 [t['score']]    好感度 [t['aff']]%    进度：[t['stage']]" style "sys_text" color "#ff9fc8"
-                    text ("纯爱封印：" + ("生效中" if t["sealed"] else "已解除")) style "sys_text"
-                    text ("预计攻略奖金：" + fmt_money(bonus_estimate(current_target))) style "sys_text" color "#ffe066"
-                    null height 8
-                    $ _cands = [v["name"] for k, v in targets.items() if v.get("status") == "候选"]
-                    if _cands:
-                        text ("女神候选：" + "、".join(_cands)) style "sys_small" color "#ffe066"
-                    text "系统备注：" style "sys_small"
-                    for nline in t["notes"][-5:]:
-                        text "· " + nline style "sys_small"
+                $ _seen = scanned_people()
+                if not _seen:
+                    text "还没有扫描过任何人。" style "sys_text"
                 else:
-                    text "暂无攻略对象。" style "sys_text"
-            elif sys_panel_tab == "tasks":
-                viewport:
-                    ysize 560
-                    scrollbars "vertical"
-                    mousewheel True
-                    vbox:
+                    $ _sel = sys_panel_sel if sys_panel_sel in _seen else _seen[0]
+                    hbox:
+                        box_wrap True
                         spacing 10
-                        for tk in tasks:
-                            if not tk["hidden"] or tk["status"] != "进行中":
-                                frame:
-                                    background Frame("gui/system/card.png", 20, 20)
-                                    padding (24, 12, 24, 12)
-                                    xsize 940
-                                    vbox:
-                                        text "[[" + tk["status"] + "] " + tk["title"] style "sys_text" color ("#ffe066" if tk["status"] == "完成" else "#d8fbff")
-                                        text tk["desc"] style "sys_small" xmaximum 880
-                                        text "奖励：" + fmt_money(tk["reward"]) style "sys_small" color "#ffe066"
+                        for _pid in _seen:
+                            textbutton PEOPLE[_pid]["name"] action SetVariable("sys_panel_sel", _pid) selected (_sel == _pid) style "sys_button" text_style "sys_button_text"
+                    use person_fields(_sel)
+                    if unlocked(_sel) and not ps(_sel)["success"]:
+                        textbutton ("HUD 显示中" if focus_target == _sel else "在 HUD 显示她") action SetVariable("focus_target", _sel) selected (focus_target == _sel) style "sys_button" text_style "sys_button_text"
+            elif sys_panel_tab == "gifts":
+                $ _rows = [(k, g) for k in scanned_people() for g in ps(k)["gifts"]]
+                if not _rows:
+                    text "暂无赠与记录。" style "sys_text"
+                for _k, _g in _rows:
+                    text ("%s ← %s（%s %s）→ %s" % (PEOPLE[_k]["name"], _g["item"], _g["kind"], fmt_money(_g["value"]), GIFT_RESULT_TEXT.get(_g["result"], _g["result"]))) style "sys_small" size 24
             elif sys_panel_tab == "wallet":
                 text ("真实余额：" + fmt_money(money)) style "sys_text" size 34
-                text ("纯爱卡额度：" + fmt_money(credit_left()) + " / " + fmt_money(credit_limit)) style "sys_text"
-                text ("累计报销通过：" + fmt_money(reimbursed_total)) style "sys_text"
+                text ("舔狗基金余额：" + fmt_money(fund)) style "sys_text" color "#ffe066" size 34
+                text "（基金不是宿主的个人财富，只能花在 90 分以上的成年女性身上）" style "sys_small"
+                text ("累计充值：" + fmt_money(fund_recharged_rmb) + "（兑换比例 1 : 10,000，不可退）") style "sys_text"
+                text ("累计基金消费：" + fmt_money(fund_spent)) style "sys_text"
                 text ("累计被驳回：%d 次" % rejected_count) style "sys_text"
-                text ("任务奖励累计：" + fmt_money(task_income)) style "sys_text"
-                text ("今日外卖收入：" + fmt_money(delivery_income)) style "sys_text"
+                text ("已获得奖励：" + ("、".join("「%s」" % REWARDS[r]["name"] for r in owned_rewards) or "无")) style "sys_text" color "#ffe066"
             else:
-                text "一、只扫描成年女性。颜值评分 ≥ 90 方可成为攻略对象。" style "sys_small" size 24
-                text "二、好感度 0~100%。达到 90% 视为攻略成功。" style "sys_small" size 24
-                text "三、攻略相关消费可用纯爱卡预授权。与攻略无关的消费一律驳回。" style "sys_small" size 24
-                text "四、攻略成功后发放奖金：基础奖金 × 任务完成度 × 真诚系数。" style "sys_small" size 24
-                text "五、纯爱封印：对已绑定对象，好感度未达 90% 前，宿主对其保持功能性失灵。" style "sys_small" size 24
-                text "六、本系统不提供任何精神控制服务。感情只能靠宿主自己挣。" style "sys_small" size 24
-                text "七、本系统不支持七天无理由退货。" style "sys_small" size 24
-    textbutton "关闭" action Hide("system_panel") style "sys_button" text_style "sys_button_text" xalign 0.5 ypos 960
-
+                text "一、扫描自由：任何人都能扫。陌生人只显示姓名、年龄、颜值评分。" style "sys_small" size 24
+                text "二、成年女性且颜值评分 ≥ 90，才符合攻略条件。" style "sys_small" size 24
+                text "三、向符合条件的女性成功赠与（红包/转账/礼物/请客等），解锁她的完整档案。拒收或未完成，不解锁。" style "sys_small" size 24 xmaximum 1100
+                text "四、赠礼不等于好感。好感度只看对方的真实反应。" style "sys_small" size 24
+                text "五、每位攻略对象好感度独立。达到 90% 即攻略成功，发放她的专属奖励。" style "sys_small" size 24
+                text "六、纯爱封印：对每一位已解锁档案的对象单独生效，攻略成功后解除。" style "sys_small" size 24
+                text "七、舔狗基金：1 元充值 = 10,000 元基金，不可退。只能花在 90 分以上的成年女性身上，自购、套现、无关消费一律驳回。" style "sys_small" size 24 xmaximum 1100
+                text "八、可以同时攻略多位。攻略谁，宿主自己决定。本系统不提供精神控制服务。" style "sys_small" size 24
+                text "九、本系统不支持七天无理由退货。" style "sys_small" size 24
+    textbutton "关闭" action Hide("system_panel") style "sys_button" text_style "sys_button_text" xalign 0.5 ypos 980
 
 
 ## ---------------------------------------------------------------------------
