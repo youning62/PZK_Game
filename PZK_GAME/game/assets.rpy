@@ -334,9 +334,37 @@ image qin angry = sprite("qin_angry.png")
 image qin shock = sprite("qin_shock.png")
 image qin pale = sprite("qin_pale.png")
 
-## 周沫 · 高中校花 / 精品店柜姐
-image zhou pro_smile = sprite("zhou_pro_smile.png")
-image zhou surprised = sprite("zhou_surprised.png")
-image zhou grin = sprite("zhou_grin.png")
-image zhou awkward = sprite("zhou_awkward.png")
-image zhou tease = sprite("zhou_tease.png")
+## 丁虹依 · 高中校花 / 精品店柜姐（脸参考照片；表情为暴走漫画风）
+image dhy base = sprite("dhy_base.png")
+image dhy jaw_drop = sprite("dhy_jaw_drop.png")
+image dhy mock_laugh = sprite("dhy_mock_laugh.png")
+image dhy side_eye = sprite("dhy_side_eye.png")
+image dhy blush_melt = sprite("dhy_blush_melt.png")
+image dhy evil_grin = sprite("dhy_evil_grin.png")
+image dhy cry_laugh = sprite("dhy_cry_laugh.png")
+image dhy smug = sprite("dhy_smug.png")
+
+
+## ===========================================================================
+## 第六章（Chapter7.rpy）
+## ===========================================================================
+image bg ballroom = "images/bg/ballroom.png"
+image bg hotel_terrace = "images/bg/hotel_terrace.png"
+
+## 李轩翔 · 晚宴深蓝真丝长裙（表情为暴走漫画风）
+image lxx gown base = sprite("lxx_gown_base.png")
+image lxx gown side_eye = sprite("lxx_gown_side_eye.png")
+image lxx gown smug = sprite("lxx_gown_smug.png")
+image lxx gown jaw_drop = sprite("lxx_gown_jaw_drop.png")
+image lxx gown blush_melt = sprite("lxx_gown_blush_melt.png")
+image lxx gown rage = sprite("lxx_gown_rage.png")
+image lxx gown mock_laugh = sprite("lxx_gown_mock_laugh.png")
+
+## 沈眠 · 投资机构创始合伙人（香槟金短礼服；表情为暴走漫画风）
+image shen base = sprite("shen_base.png")
+image shen jaw_drop = sprite("shen_jaw_drop.png")
+image shen mock_laugh = sprite("shen_mock_laugh.png")
+image shen evil_grin = sprite("shen_evil_grin.png")
+image shen smug = sprite("shen_smug.png")
+image shen rage = sprite("shen_rage.png")
+image shen cry_laugh = sprite("shen_cry_laugh.png")

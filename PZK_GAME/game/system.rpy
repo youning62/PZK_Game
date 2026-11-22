@@ -36,7 +36,7 @@ init -4 python:
 
     # ---------------- 攻略对象 ----------------
 
-    def bind_target(tid, name, age, job, score, intro, base_bonus=None):
+    def bind_target(tid, name, age, job, score, intro, base_bonus=None, focus=True):
         if base_bonus is None:
             base_bonus = store.FIRST_TARGET_BASE_BONUS
         if score < 90:
@@ -46,7 +46,23 @@ init -4 python:
             aff=0, stage="重逢", sealed=True, status="攻略中",
             base_bonus=base_bonus, notes=[],
         )
-        store.current_target = tid
+        if focus or store.current_target is None:
+            store.current_target = tid
+
+    def promote_candidate(tid, focus=False):
+        """候选 → 正式攻略对象（多目标并行：不影响其他对象的好感和封印）。"""
+        t = store.targets[tid]
+        t["status"] = "攻略中"
+        t["sealed"] = True
+        t["stage"] = "绑定"
+        if focus:
+            store.current_target = tid
+        renpy.show_screen("sys_toast", title="新攻略对象", body="{}  纯爱封印 +1".format(t["name"]), _tag="sys_toast")
+        if renpy.loadable(SFX_SEAL_LOCK):
+            renpy.sound.play(SFX_SEAL_LOCK, channel="audio")
+
+    def active_targets():
+        return [k for k, v in store.targets.items() if v.get("status") == "攻略中"]
 
     def unlock_candidate(tid, name, age, job, score, intro):
         """扫描到新的符合条件的女神：只存入候选，不切换当前攻略对象（一次只开一条攻略线）。"""
@@ -434,6 +450,12 @@ screen system_panel():
                 textbutton "规则" action SetVariable("sys_panel_tab", "rules") selected sys_panel_tab == "rules" style "sys_button" text_style "sys_button_text"
             null height 10
             if sys_panel_tab == "profile":
+                if len(active_targets()) > 1:
+                    hbox:
+                        spacing 12
+                        text "攻略中：" style "sys_small"
+                        for _tid in active_targets():
+                            textbutton ("%s %d%%" % (targets[_tid]["name"], targets[_tid]["aff"])) action SetVariable("current_target", _tid) selected (current_target == _tid) style "sys_button" text_style "sys_button_text"
                 if current_target:
                     $ t = targets[current_target]
                     text "当前攻略对象：[t['name']]（[t['age']]岁 · [t['job']]）" style "sys_text"

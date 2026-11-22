@@ -3,16 +3,16 @@
 ## 流程：1708 订单（杨永麟的影子）→ 给「没有议程的饭」发明一个议程 → 周末逛商场（他穿外卖服）
 ##       → 富二代追求者秦受嘲讽 + 骚扰 → 系统紧急任务 + 纯爱卡打脸 → 骑手视角拆穿租来的车
 ##       → 业务能力反杀（岛团刷单的幽灵骑手账号就是秦家的）→ 地下美食广场的午饭（任务四完成）
-##       → 柜姐是高中校花周沫，系统扫描 93 分 → 新女神解锁（候选，不切换攻略对象）
+##       → 柜姐是高中校花丁虹依，系统扫描 93 分 → 新女神解锁（候选，不切换攻略对象）
 ##
 ## 运行中的梗：报销审核（给自己买西装 → 驳回；给她买裙子 → 通过）、「九分袖」、封印、精灵每句换表情。
 
-default zhou_name = "柜姐"
+default dhy_name = "柜姐"
 default ch6_1708 = None            # 1708 订单怎么处理：knock / leave / wait
 default ch6_agenda = None          # 发明的议程：gown / audit / cat
 default ch6_clash = None           # 秦受动手时：fight / system / watch
 default ch6_dress_paid = False     # 是否用纯爱卡买下了那条裙子
-default ch6_zhou_greet = None      # 对周沫：greet / pretend
+default ch6_dhy_greet = None      # 对丁虹依：greet / pretend
 
 label chapter6:
     stop music fadeout 1.0
@@ -172,13 +172,13 @@ label ch6_boutique:
     scene bg boutique
     with dissolve
     play music bgm_lxx_soft fadein 1.0
-    show zhou pro_smile at center_stage
+    show dhy base at center_stage
     with dissolve
 
-    zhou "欢迎光临。两位有什么需要——"
+    dhy "欢迎光临。两位有什么需要——"
     n "柜姐的笑容在看到我的外卖服时卡了零点五秒。"
     n "然后完美地恢复了。专业。"
-    hide zhou with dissolve
+    hide dhy with dissolve
     show pzk delivery normal at left_stage
     show lxx weekend cold at right_stage
     with dissolve
@@ -476,69 +476,69 @@ label ch6_lunch:
     xt jaw_drop "任务完成：「和她吃一顿不是工作餐的饭」。"
     xt evil_grin "议程是假的。饭是真的。笑也是真的。"
 
-    jump ch6_zhou
+    jump ch6_dhy
 
 
 ## ---------------------------------------------------------------------------
 ## 校花
 ## ---------------------------------------------------------------------------
 
-label ch6_zhou:
+label ch6_dhy:
     play music bgm_comedy fadein 1.0
     scene bg boutique
     with fade
     n "吃完饭，我们回店里取裙子。"
     n "李轩翔去试衣间改尺寸。我在门口等。"
-    show zhou pro_smile at right_stage
+    show dhy base at right_stage
     show pzk delivery normal at left_stage
     with dissolve
 
-    zhou "先生，您的小票。"
+    dhy "先生，您的小票。"
     n "刚才那个笑容卡了零点五秒的柜姐，把小票递给我。"
     n "我第一次认真看了她的脸。"
     n "然后看到了她胸口的名牌。"
-    tip "周沫"
+    tip "丁虹依"
     play sound sfx_shock
     show pzk delivery shock at left_stage, shake
-    p "……周沫？？"
-    show zhou surprised at right_stage
-    zhou "……你认识我？"
+    p "……丁虹依？？"
+    show dhy jaw_drop at right_stage
+    dhy "……你认识我？"
     p "三中！高三（七）班！你是那年的校花！"
     p "你的照片被贴在学校光荣榜上，然后被偷走了十一次！"
-    $ zhou_name = "周沫"
-    zhou "第十二次是我自己撕的。"
-    show zhou grin at right_stage
-    zhou "等等……你是潘子恺？？那个在毕业典礼上对着镜子说「我是三中最帅的男人」的潘子恺？"
+    $ dhy_name = "丁虹依"
+    dhy "第十二次是我自己撕的。"
+    show dhy mock_laugh at right_stage
+    dhy "等等……你是潘子恺？？那个在毕业典礼上对着镜子说「我是三中最帅的男人」的潘子恺？"
     show pzk delivery awkward at left_stage
     p "……是我。"
-    zhou "你不是发财了吗？我们班群里都说你财富自由，在海岛上开兰博基尼。"
+    dhy "你不是发财了吗？我们班群里都说你财富自由，在海岛上开兰博基尼。"
 
     menu:
         "怎么回答？"
 
         "「说来话长。我现在送外卖。」":
-            $ ch6_zhou_greet = "greet"
+            $ ch6_dhy_greet = "greet"
             show pzk delivery normal at left_stage
             p "说来话长。我现在送外卖。"
-            show zhou surprised at right_stage
-            zhou "……真的假的？"
-            show zhou grin at right_stage
-            zhou "那你比我惨。我好歹在这儿还有底薪。"
+            show dhy jaw_drop at right_stage
+            dhy "……真的假的？"
+            show dhy mock_laugh at right_stage
+            dhy "那你比我惨。我好歹在这儿还有底薪。"
             $ stat("sincere", 3, quiet=True)
 
         "「体验生活。」":
-            $ ch6_zhou_greet = "pretend"
+            $ ch6_dhy_greet = "pretend"
             show pzk delivery proud at left_stage
             p "体验生活。"
-            show zhou tease at right_stage
-            zhou "体验生活，然后用一张我没见过的卡，买了十二万八的裙子？"
-            zhou "潘子恺，你高中撒谎的时候就是这个表情。"
+            show dhy evil_grin at right_stage
+            dhy "体验生活，然后用一张我没见过的卡，买了十二万八的裙子？"
+            dhy "潘子恺，你高中撒谎的时候就是这个表情。"
             $ stat("zb", 3)
 
-    show zhou pro_smile at right_stage
-    zhou "我在这儿干了两年了。攒钱。"
-    zhou "我想开一家自己的工作室，设计衣服。"
-    zhou "……当然，现在离那天还早得很。"
+    show dhy base at right_stage
+    dhy "我在这儿干了两年了。攒钱。"
+    dhy "我想开一家自己的工作室，设计衣服。"
+    dhy "……当然，现在离那天还早得很。"
     n "她说这话的时候，笑得很亮。"
     n "跟高中光荣榜上那张照片一模一样。"
 
@@ -548,27 +548,27 @@ label ch6_zhou:
     hide screen scan_overlay
     xt jaw_drop "叮——！"
     xt evil_grin "检测到新的符合条件的对象。"
-    $ unlock_candidate("zhou", "周沫", 26, "精品店柜姐 · 宿主高中同学（三中校花）", 93,
+    $ unlock_candidate("dhy", "丁虹依", 26, "精品店柜姐 · 宿主高中同学（三中校花）", 93,
                        "开朗，嘴快，比谁都务实。在攒钱开自己的服装设计工作室。认识十七岁时的宿主——包括他最丢人的样子。")
-    call screen target_card("zhou")
+    call screen target_card("dhy")
     xt side_eye "已存入「女神候选」。"
     xt eyeroll "宿主当前攻略对象仍为：李轩翔。本系统一次只开一条攻略线。"
     xt mock_laugh "别想了。你的封印，只有一个。"
     show pzk delivery shock at left_stage
     pt "……这个系统什么时候学会读心了。"
 
-    show zhou tease at right_stage
-    zhou "发什么呆？加个微信，班群里那帮人要是知道你在送外卖——"
+    show dhy evil_grin at right_stage
+    dhy "发什么呆？加个微信，班群里那帮人要是知道你在送外卖——"
     p "别告诉他们！"
-    show zhou grin at right_stage
-    zhou "那就看你表现咯，潘、师、傅。"
+    show dhy mock_laugh at right_stage
+    dhy "那就看你表现咯，潘、师、傅。"
 
-    hide zhou with dissolve
+    hide dhy with dissolve
     show lxx weekend cold at right_stage
     with dissolve
     n "试衣间的门开了。"
     lx "走了。"
-    n "她看了一眼周沫，又看了一眼我。"
+    n "她看了一眼丁虹依，又看了一眼我。"
     show lxx weekend smirk at right_stage
     lx "高中同学？"
     p "……您怎么知道？"
@@ -591,5 +591,4 @@ label ch6_zhou:
     scene bg black
     with fade
     tip "—— 第五章 完 ——"
-    call screen chapter_card("未完待续", "沈眠的晚宴 ／ 秦受的报复 ／ 女神候选：周沫")
-    return
+    jump chapter7
