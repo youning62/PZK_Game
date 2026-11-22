@@ -368,18 +368,18 @@ label ch4_awaken:
     scene cg system_awaken
     with flash
 
-    xt "叮。"
-    xt "检测到宿主：潘子恺。男。二十七岁。前投行分析师。前亿万富翁。现外卖骑手。"
-    xt "宿主资产状况：极度贫困。"
-    xt "宿主自恋指数：极度富裕。"
-    xt "绑定条件全部满足。"
-    xt "「纯爱致富系统」绑定成功。"
+    xt idle "叮。"
+    xt grimace "检测到宿主：潘子恺。男。二十七岁。前投行分析师。前亿万富翁。现外卖骑手。"
+    xt jaw_drop "宿主资产状况：极度贫困。"
+    xt mock_laugh "宿主自恋指数：极度富裕。"
+    xt side_eye "绑定条件全部满足。"
+    xt jaw_drop "「纯爱致富系统」绑定成功。"
 
     p "……"
     p "我是不是昨天淋雨淋出脑炎了。"
 
-    xt "宿主当前余额：¥[money]。"
-    xt "另有五毛钱不在账上。是一枚硬币，在你左脚的袜子里。"
+    xt eyeroll "宿主当前余额：¥[money]。"
+    xt cry_laugh "另有五毛钱不在账上。是一枚硬币，在你左脚的袜子里。"
     n "我脱下袜子。"
     n "叮当。一枚五毛硬币掉在了地上。"
     p "……卧槽。"
@@ -389,38 +389,38 @@ label ch4_awaken:
 
     scene bg rental_room
     with dissolve
-    show pzk casual shock at center_stage
+    show pzk home shock at center_stage
     with dissolve
 
     p "你是系统？那种小说里的系统？"
     p "那我是主角了？？"
-    xt "严格来说，你是我能找到的最穷的帅哥。"
-    show pzk casual proud at center_stage
+    xt mock_laugh "严格来说，你是我能找到的最穷的帅哥。"
+    show pzk home smug at center_stage
     p "你也觉得我帅？"
-    xt "这不是重点。"
+    xt eyeroll "这不是重点。"
     p "这就是重点。"
 
-    xt "本系统的使命：帮助宿主重新获得财富，并超越曾经的巅峰。"
-    show pzk casual smug at center_stage, hop
+    xt evil_grin "本系统的使命：帮助宿主重新获得财富，并超越曾经的巅峰。"
+    show pzk home smug at center_stage, hop
     play sound sfx_sparkle
     p "好！好好好！我就知道！"
     p "上天不会抛弃一个这么帅的男人！"
     p "快，先打一个亿过来，我把小蓝赎回来——"
-    xt "本系统不直接发放金钱。"
-    show pzk casual normal at center_stage
+    xt soul_leave "本系统不直接发放金钱。"
+    show pzk home normal at center_stage
     p "……那你有什么用？"
-    xt "宿主需要完成指定的恋爱攻略任务，才能领取奖励。"
+    xt rage_scream "宿主需要完成指定的恋爱攻略任务，才能领取奖励。"
 
     n "恋爱攻略。"
     n "我愣了三秒。"
-    show pzk casual narcissist at center_stage
+    show pzk home smug at center_stage
     play sound sfx_sparkle
     n "然后笑出了声。"
     p "恋爱？攻略？"
     p "你知道我是谁吗？我潘子恺，万花丛中过，片叶不沾身。"
     p "这个系统，简直是给我量身定做的。"
-    xt "本系统也是这么认为的。"
-    xt "所以规则也是给你量身定做的。"
+    xt idle "本系统也是这么认为的。"
+    xt evil_grin "所以规则也是给你量身定做的。"
     pt "……这句话为什么让我后背一凉。"
 
     jump ch4_rules
@@ -431,50 +431,50 @@ label ch4_awaken:
 ## ---------------------------------------------------------------------------
 
 label ch4_rules:
-    show pzk casual normal at center_stage
+    show pzk home normal at center_stage
 
-    xt "规则一：本系统会扫描成年女性，并给出颜值评分。满分一百。"
-    xt "只有评分达到九十分以上，才能成为正式攻略对象。"
+    xt grimace "规则一：本系统会扫描成年女性，并给出颜值评分。满分一百。"
+    xt mock_laugh "只有评分达到九十分以上，才能成为正式攻略对象。"
     p "九十分？标准这么高？"
-    xt "宿主自己就是按九十八分的标准要求别人的。"
+    xt side_eye "宿主自己就是按九十八分的标准要求别人的。"
     p "……你怎么知道？"
-    xt "演示一下。"
+    xt jaw_drop "演示一下。"
 
     play sound sfx_sys_ding
     n "眼前弹出了一个蓝色的扫描框。框住了——"
     n "窗户玻璃上，我自己的倒影。"
-    xt "扫描对象：男性。不在扫描范围。"
-    xt "附加检测：自恋指数九十八，超过全国百分之九十九点九的人类。"
-    show pzk casual proud at center_stage
+    xt eyeroll "扫描对象：男性。不在扫描范围。"
+    xt cry_laugh "附加检测：自恋指数九十八，超过全国百分之九十九点九的人类。"
+    show pzk home smug at center_stage
     p "谢谢。"
-    xt "不是夸你。"
+    xt side_eye "不是夸你。"
 
     menu:
         "那……"
 
         "「扫一下楼下包子铺的老板娘？」":
-            xt "对方已婚。本系统不扫描已婚人士。"
-            xt "也不扫描未成年人。也不扫描对宿主报过警的人。"
+            xt evil_grin "对方已婚。本系统不扫描已婚人士。"
+            xt side_eye "也不扫描未成年人。也不扫描对宿主报过警的人。"
             p "谁对我报过警？"
-            xt "暂时没有。系统只是提前把规则说清楚。"
+            xt soul_leave "暂时没有。系统只是提前把规则说清楚。"
 
         "「颜值评分这种东西，也太不尊重人了吧？」":
             $ stat("sincere", 5)
-            xt "宿主说得对。"
-            xt "所以这个分数只存在于系统内部，仅用于判定任务资格。"
-            xt "你要是敢在任何人面前说「你是九十六分」，系统会第一个扣你的分。"
+            xt rage_scream "宿主说得对。"
+            xt idle "所以这个分数只存在于系统内部，仅用于判定任务资格。"
+            xt side_eye "你要是敢在任何人面前说「你是九十六分」，系统会第一个扣你的分。"
             p "……我本来也没想说。"
 
-    xt "规则二：每个攻略对象有独立的好感度，零到百分之百。"
-    xt "好感度达到百分之九十，视为攻略成功。"
-    xt "好感度靠互动、靠帮助、靠真心。花钱不一定涨，说错话一定掉。"
+    xt grimace "规则二：每个攻略对象有独立的好感度，零到百分之百。"
+    xt mock_laugh "好感度达到百分之九十，视为攻略成功。"
+    xt side_eye "好感度靠互动、靠帮助、靠真心。花钱不一定涨，说错话一定掉。"
     p "那你直接让她爱上我，不就完了？"
-    xt "本系统不提供任何精神控制服务。"
-    xt "那叫犯罪。而且不浪漫。"
+    xt jaw_drop "本系统不提供任何精神控制服务。"
+    xt side_eye "那叫犯罪。而且不浪漫。"
     pt "……一个会说「不浪漫」的系统。"
 
-    xt "接下来，宣布宿主的第一个攻略对象。"
-    xt "由命运匹配算法自动生成。不接受更换。"
+    xt eyeroll "接下来，宣布宿主的第一个攻略对象。"
+    xt evil_grin "由命运匹配算法自动生成。不接受更换。"
 
     jump ch4_target
 
@@ -485,10 +485,10 @@ label ch4_target:
     scene bg rental_room
     show lxx silhouette at right_stage
     with dissolve
-    show pzk casual normal at left_stage
+    show pzk home normal at left_stage
     with dissolve
 
-    xt "目标锁定。"
+    xt jaw_drop "目标锁定。"
     $ bind_target("lxx", "李轩翔", 31, "某顶级投资银行 · 投资银行部董事总经理（MD）", 96,
                   "曾为宿主的直属上司。金色短发，白天西装，晚上十点以后换红色皮衣。强势，冷静，果断。不接受废话，不接受借口，不接受超过二十分钟的会议。")
     $ add_note("lxx", "宿主入职第一个月，PPT 被她打回 17 次。")
@@ -497,23 +497,23 @@ label ch4_target:
     with dissolve
     call sys_scan("lxx")
 
-    show pzk casual shock at left_stage, shake
+    show pzk home shock at left_stage, shake
     play sound sfx_shock
     p "……"
     p "…………"
     p "李轩翔？？？"
     p "换一个！换一个！我要换一个！！"
-    xt "不接受更换。"
+    xt side_eye "不接受更换。"
     p "你知道她是谁吗？？"
-    xt "知道。你以前的上司。"
+    xt cry_laugh "知道。你以前的上司。"
     p "你知道她当年怎么对我的吗？？"
-    xt "知道。PPT 打回十七次。"
+    xt evil_grin "知道。PPT 打回十七次。"
     p "你知道第十七次的批注是什么吗？"
-    xt "「重做」。"
+    xt soul_leave "「重做」。"
     p "……"
     p "你连这个都知道？？"
 
-    show pzk casual gloom at left_stage
+    show pzk home gloom at left_stage
     pt "李轩翔。"
     pt "在投行的那两年，我每天早上进办公室，第一件事是看她的脸色。"
     pt "她笑过吗？我想了想。"
@@ -522,24 +522,24 @@ label ch4_target:
     pt "第二天，她在所有人面前说，模型是我做的。"
     pt "……我当时没多想。"
 
-    xt "规则四：成功攻略一名对象，系统发放攻略奖金。"
-    xt "第一位攻略对象，基础奖金——"
+    xt evil_grin "规则四：成功攻略一名对象，系统发放攻略奖金。"
+    xt rage_scream "第一位攻略对象，基础奖金——"
     play sound sfx_money_rain
-    xt "一千万。"
+    xt evil_grin "一千万。"
 
-    show pzk casual normal at left_stage
+    show pzk home normal at left_stage
     n "我沉默了。"
     n "不是被吓到了。是在算。"
     n "一千万，按我现在的日收入，我需要送……"
     n "十五万六千二百五十天外卖。"
     n "四百二十八年。"
-    show pzk casual smug at left_stage, hop
+    show pzk home smug at left_stage, hop
     play sound sfx_sparkle
     p "我接！"
     p "李轩翔是吧！"
     p "我当年搞不定她，是因为我是她下属。"
     p "现在不一样了。现在我是一个有系统的男人。"
-    xt "也是一个有外卖箱的男人。"
+    xt mock_laugh "也是一个有外卖箱的男人。"
 
     jump ch4_card
 
@@ -550,28 +550,28 @@ label ch4_target:
 
 label ch4_card:
     play music bgm_system fadein 1.0
-    show pzk casual normal at left_stage
+    show pzk home normal at left_stage
     hide lxx with dissolve
 
     p "等等。攻略要花钱的吧？约会、吃饭、送礼物……"
     p "我现在全部身家是三百多块。"
-    xt "规则三：与攻略目标相关的合理消费，可使用「纯爱卡」。"
-    xt "纯爱卡采用预授权机制：宿主刷卡前，系统实时审核。审核通过，由系统支付。"
-    xt "审核驳回，刷卡失败。宿主可以自己掏钱，前提是你有。"
+    xt idle "规则三：与攻略目标相关的合理消费，可使用「纯爱卡」。"
+    xt grimace "纯爱卡采用预授权机制：宿主刷卡前，系统实时审核。审核通过，由系统支付。"
+    xt mock_laugh "审核驳回，刷卡失败。宿主可以自己掏钱，前提是你有。"
     $ credit_limit = 3000
     play sound sfx_coin
-    xt "新手期额度：三千元。随攻略进度提升。"
+    xt side_eye "新手期额度：三千元。随攻略进度提升。"
 
     p "三千？？我以前一顿早餐都不止三千。"
-    xt "所以你现在在这里。"
+    xt jaw_drop "所以你现在在这里。"
 
     p "那我试一下。早餐，豆浆油条，八块。"
     call sys_audit("豆浆油条 ×1", 8, "宿主早餐", "rejected", "宿主吃早餐与攻略目标无关。另：建议加个鸡蛋，蛋白质有助于提升体能。")
-    show pzk casual angry at left_stage
+    show pzk home shock at left_stage
     p "八块都不给报？？"
-    xt "李轩翔不吃你的早餐。"
+    xt eyeroll "李轩翔不吃你的早餐。"
     p "那她要是吃呢？"
-    xt "那就是另一个审核结果了。"
+    xt cry_laugh "那就是另一个审核结果了。"
 
     jump ch4_seal
 
@@ -581,19 +581,19 @@ label ch4_card:
 ## ---------------------------------------------------------------------------
 
 label ch4_seal:
-    xt "最后，附加条款第七条。"
+    xt eyeroll "最后，附加条款第七条。"
     p "怎么还有附加条款？"
-    xt "所有重要的条款，都在附加条款里。你在投行待过，应该知道。"
+    xt evil_grin "所有重要的条款，都在附加条款里。你在投行待过，应该知道。"
     pt "……这个系统是不是在我们行实习过。"
 
-    xt "规则五：纯爱封印。"
-    xt "对已绑定的攻略对象，在其好感度达到百分之九十之前——"
-    xt "宿主对该对象，将保持「功能性失灵」状态。"
+    xt soul_leave "规则五：纯爱封印。"
+    xt rage_scream "对已绑定的攻略对象，在其好感度达到百分之九十之前——"
+    xt idle "宿主对该对象，将保持「功能性失灵」状态。"
 
-    show pzk casual normal at left_stage
+    show pzk home normal at left_stage
     p "功能性……失灵？"
     p "什么功能？"
-    xt "你想的那个功能。"
+    xt grimace "你想的那个功能。"
 
     stop music
     scene bg black
@@ -602,16 +602,16 @@ label ch4_seal:
     n "……………………"
 
     scene bg rental_room
-    show pzk casual sealed at left_stage
+    show pzk home gloom at left_stage
     call seal_alarm("纯爱封印已生效。")
 
     play music bgm_broke fadein 0.5
-    show pzk casual shock at left_stage, shake
+    show pzk home shock at left_stage, shake
     p "我不接受！！"
     p "这是我身上最后一项没被骗走的资产了！！"
-    xt "封印仅针对攻略对象生效。"
+    xt evil_grin "封印仅针对攻略对象生效。"
     p "那对其他人呢？"
-    xt "对其他人，你本来也没机会。"
+    xt mock_laugh "对其他人，你本来也没机会。"
     p "……"
 
     menu:
@@ -619,24 +619,24 @@ label ch4_seal:
 
         "「我要退货！」":
             p "我要退货！这个系统我不要了！"
-            xt "本系统不支持七天无理由退货。"
+            xt side_eye "本系统不支持七天无理由退货。"
             p "那十五天呢？"
-            xt "不支持任何天数。"
+            xt mock_laugh "不支持任何天数。"
 
         "「为什么要设计这种规则？？」":
             p "为什么要设计这种规则？？"
-            xt "因为宿主以前谈恋爱的平均时长是十一天。"
-            xt "最长的一次，是因为对方出国了，忘了分手。"
-            xt "本系统的名字叫「纯爱」。不是「快餐」。"
+            xt jaw_drop "因为宿主以前谈恋爱的平均时长是十一天。"
+            xt eyeroll "最长的一次，是因为对方出国了，忘了分手。"
+            xt cry_laugh "本系统的名字叫「纯爱」。不是「快餐」。"
             p "……"
             pt "我竟然无法反驳。"
             $ stat("sincere", 3)
 
-    xt "放心。只要她的好感度达到百分之九十，封印会自动解除。"
-    xt "到那时候，你会拿到一千万。"
-    xt "以及你的尊严。"
+    xt evil_grin "放心。只要她的好感度达到百分之九十，封印会自动解除。"
+    xt soul_leave "到那时候，你会拿到一千万。"
+    xt rage_scream "以及你的尊严。"
     p "顺序能不能倒过来？"
-    xt "不能。"
+    xt side_eye "不能。"
 
     jump ch4_tasks
 
@@ -648,7 +648,7 @@ label ch4_seal:
 label ch4_tasks:
     play music bgm_system fadein 1.0
     show pzk casual normal at left_stage
-    xt "发布阶段任务。"
+    xt idle "发布阶段任务。"
 
     $ add_task("lxx_1", "lxx", "重新出现在她的生活里", "自然地。不许冒充快递、不许跟踪、不许在她公司楼下拉横幅。", 5000)
     pause 0.6
@@ -656,11 +656,11 @@ label ch4_tasks:
     pause 0.6
     $ add_task("lxx_3", "lxx", "？？？", "隐藏任务。触发条件未知。", 10000, hidden=True)
 
-    xt "任务详情可随时在右上角「系统」中查看。"
+    xt grimace "任务详情可随时在右上角「系统」中查看。"
     p "第一个任务……重新出现在她的生活里。"
     p "她在四十八楼。我在城中村。"
     p "我们之间的距离，大概是一个保安，加四十七层楼，加一千万。"
-    xt "还有你的自恋。"
+    xt mock_laugh "还有你的自恋。"
     p "那个不算距离。那是我的魅力。"
 
     show pzk delivery normal at left_stage

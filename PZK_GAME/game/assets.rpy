@@ -136,6 +136,14 @@ image pzk surf awkward = sprite("pzk_surf_awkward.png")
 image pzk surf shock = sprite("pzk_surf_shock.png")
 image pzk surf silhouette = sprite("pzk_surf_silhouette.png")
 
+## 潘子恺 · 黑卫衣 + W 口罩（第一次晚餐的穿搭选项，帽子全程戴着）
+image pzk hoodie normal = sprite("pzk_hoodie_normal.png")
+image pzk hoodie proud = sprite("pzk_hoodie_proud.png")
+image pzk hoodie awkward = sprite("pzk_hoodie_awkward.png")
+image pzk hoodie shy = sprite("pzk_hoodie_shy.png")
+image pzk hoodie shock = sprite("pzk_hoodie_shock.png")
+image pzk hoodie gloom = sprite("pzk_hoodie_gloom.png")
+
 ## 潘子恺 · 外卖制服
 image pzk delivery normal = sprite("pzk_delivery_normal.png", DELIVERY_ZOOM)
 image pzk delivery happy = sprite("pzk_delivery_happy.png", DELIVERY_ZOOM)
@@ -154,6 +162,49 @@ image yyl surprised = sprite("yyl_surprised.png")
 image yyl happy = sprite("yyl_happy.png")
 image yyl shy = sprite("yyl_shy.png")
 image yyl silhouette = sprite("yyl_silhouette.png")
+
+## 杨永麟 · 第一次晚餐（黑色缎面吊带裙 + 披肩 + 黑色细高跟）
+image yyl dinner calm = sprite("yyl_dinner_calm.png")
+image yyl dinner cool = sprite("yyl_dinner_cool.png")
+image yyl dinner smile = sprite("yyl_dinner_smile.png")
+image yyl dinner tease = sprite("yyl_dinner_tease.png")
+image yyl dinner speechless = sprite("yyl_dinner_speechless.png")
+image yyl dinner surprised = sprite("yyl_dinner_surprised.png")
+image yyl dinner happy = sprite("yyl_dinner_happy.png")
+image yyl dinner shy = sprite("yyl_dinner_shy.png")
+image yyl dinner jaw_drop = sprite("yyl_dinner_jaw_drop.png")
+image yyl dinner brain_lag = sprite("yyl_dinner_brain_lag.png")
+image yyl dinner dead_fish = sprite("yyl_dinner_dead_fish.png")
+image yyl dinner creepy_smile = sprite("yyl_dinner_creepy_smile.png")
+image yyl dinner smug_chad = sprite("yyl_dinner_smug_chad.png")
+
+## 杨永麟 · 仙人跳之夜（酒红色长礼服）
+image yyl night calm = sprite("yyl_night_calm.png")
+image yyl night smile = sprite("yyl_night_smile.png")
+image yyl night cool = sprite("yyl_night_cool.png")
+
+## 潘子恺 · 破产后居家（洗旧 T 恤 + 大裤衩 + 人字拖）
+image pzk home normal = sprite("pzk_home_normal.png")
+image pzk home shock = sprite("pzk_home_shock.png")
+image pzk home gloom = sprite("pzk_home_gloom.png")
+image pzk home smug = sprite("pzk_home_smug.png")
+
+## 潘子恺 · 租来的西装（小两号，九分袖）
+image pzk rentsuit normal = sprite("pzk_rentsuit_normal.png")
+image pzk rentsuit proud = sprite("pzk_rentsuit_proud.png")
+image pzk rentsuit awkward = sprite("pzk_rentsuit_awkward.png")
+
+## 杨永麟 · 夸张表情（Gemini 生成，用户已审核）
+image yyl jaw_drop = sprite("yyl_jaw_drop.png")
+image yyl derp = sprite("yyl_derp.png")
+image yyl bleh = sprite("yyl_bleh.png")
+image yyl villain = sprite("yyl_villain.png")
+image yyl creepy_smile = sprite("yyl_creepy_smile.png")
+image yyl waterfall_cry = sprite("yyl_waterfall_cry.png")
+image yyl rage = sprite("yyl_rage.png")
+image yyl dead_fish = sprite("yyl_dead_fish.png")
+image yyl smug_chad = sprite("yyl_smug_chad.png")
+image yyl brain_lag = sprite("yyl_brain_lag.png")
 
 ## 梦里尖叫的路人（用剪影表示）
 image crowd = Transform("images/sprites/yyl_silhouette.png", zoom=0.5, alpha=0.55)

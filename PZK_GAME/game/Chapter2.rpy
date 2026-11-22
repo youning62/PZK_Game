@@ -127,6 +127,23 @@ label ch2_closet:
             p "我不需要包装。我就是礼物本身。"
             $ stat("zb", 5)
 
+        "黑色 Alan Walker 卫衣 + 黑色 W 口罩（帽子必须戴着）":
+            $ outfit = "hoodie"
+            show pzk hoodie normal at mirror_view
+            with dissolve
+            play sound sfx_sparkle
+            n "我从衣柜最深处翻出了一套全黑。"
+            n "黑卫衣。黑口罩。口罩正中间一个白色的 W。"
+            n "帽子戴上。拉绳拉紧。只露出一双眼睛和我的眼镜。"
+            show pzk hoodie proud at mirror_view
+            p "神秘感。"
+            p "攻略说了，要保持神秘感。"
+            pt "我把自己藏起来，她就会想知道我是谁。"
+            pt "……虽然她已经知道我是谁了。"
+            p "今晚，我不是潘子恺。"
+            p "我是 Faded 的那个男人。"
+            $ stat("zb", 5)
+
         "花衬衫（入乡随俗，海岛风）":
             $ outfit = "hawaii"
             show pzk surf laugh at mirror_view
@@ -151,6 +168,8 @@ label ch2_mirror:
 
     if outfit == "hawaii":
         show pzk surf normal at mirror_view
+    elif outfit == "hoodie":
+        show pzk hoodie normal at mirror_view
     else:
         show pzk casual normal at mirror_view
     with dissolve
@@ -302,53 +321,77 @@ label ch2_arrive:
     n "嗒。嗒。嗒。"
     n "不急不慢，踩在木地板上，像在倒数。"
 
-    show yyl calm at slide_in_right
+    show yyl dinner calm at slide_in_right
     pause 0.6
-    show yyl calm at seated(0.80)
+    show yyl dinner calm at seated(0.80)
     with dissolve
 
     n "她来了。"
-    n "还是那件花衬衫，头发放了下来，脚上是那双黑色的细高跟。"
+    n "她换掉了白天的花衬衫。"
+    n "黑色缎面吊带裙，肩上搭着一条奶白色的披肩，脚上是那双黑色的细高跟。"
+    n "双马尾还是那对双马尾。"
     n "我承认，在那一秒，我把背了一个小时的法语全忘了。"
 
     if outfit == "hawaii":
-        show yyl speechless at seated(0.80)
+        show yyl dinner brain_lag at seated(0.80)
         y "……"
-        y "你在模仿我？"
-        p "这叫情侣装。"
-        show yyl tease at seated(0.80)
-        y "这叫海岛纪念品店，同一个货架。"
+        n "她盯着我的花衬衫，嘴歪到一边，两只眼睛各看一个方向。"
+        n "我怀疑她的大脑在重新加载。"
+        show yyl dinner speechless at seated(0.80)
+        y "我白天穿花衬衫，晚上换了裙子。"
+        y "你是反过来的？"
+        p "我这叫……接你的班。"
+        show yyl dinner tease at seated(0.80)
+        y "接班的穿的是海岛纪念品店，同一个货架。"
         n "服务生路过，看了看我们，露出了「懂了」的微笑。"
-        show yyl smile at seated(0.80)
+        show yyl dinner smile at seated(0.80)
         n "她低头笑了一下，没有反驳。"
         $ stat("yyl_aff", 5)
+    elif outfit == "hoodie":
+        show yyl dinner speechless at seated(0.80)
+        y "……"
+        n "她看了我很久。从帽子看到口罩，从口罩看到那个 W。"
+        y "你是来吃饭的，还是来打碟的？"
+        p "我是来保持神秘感的。"
+        y "海岛，二十九度，你穿卫衣戴帽子。"
+        p "神秘感不分季节。"
+        show yyl dinner tease at seated(0.80)
+        y "口罩上那个 W，是 Walker，还是 Weird？"
+        p "……是 Wealthy。"
+        n "服务生过来点单，看了我一眼，默默把我们这桌的蜡烛挪远了一点，好像怕我是来抢劫的。"
+        $ stat("zb", 3)
+        $ stat("yyl_aff", 2)
     elif suit_burst:
         y "你的外套为什么搭在肩上？"
         p "松弛感。"
         y "第三颗扣子呢？"
         p "……在镜子里。"
-        show yyl speechless at seated(0.80)
+        show yyl dinner speechless at seated(0.80)
         y "什么？"
         p "没什么。"
     else:
         y "晚上海风大，你穿背心不冷？"
         p "我自带暖气。"
         n "我指了指自己的胸肌。"
-        show yyl tease at seated(0.80)
+        show yyl dinner tease at seated(0.80)
         y "嗯，发电机。"
 
     if ride == "ebike":
-        show yyl smile at seated(0.80)
+        show yyl dinner smile at seated(0.80)
         y "门口那辆黄色电动车，是你的？"
         p "……小黄。"
         y "小黄比小蓝可爱。"
         $ stat("yyl_aff", 5)
     elif ride == "walk":
+        show yyl dinner jaw_drop at seated(0.80)
+        play sound sfx_shock
+        n "她看到我湿透的背心，双手捂住了脸，下巴掉了下来。"
         y "你……是游泳过来的？"
+        show yyl dinner calm at seated(0.80)
         p "走过来的。"
         y "三公里？"
         p "热身。"
-        show yyl smile at seated(0.80)
+        show yyl dinner smile at seated(0.80)
         y "下次可以叫我顺路接你。"
         $ stat("yyl_aff", 3)
     else:
@@ -363,6 +406,8 @@ label ch2_arrive:
 label ch2_show_pzk_seated:
     if outfit == "hawaii":
         show pzk surf normal at seated(0.22)
+    elif outfit == "hoodie":
+        show pzk hoodie normal at seated(0.22)
     else:
         show pzk casual normal at seated(0.22)
     with dissolve
@@ -373,6 +418,8 @@ label ch2_pzk(mood="normal"):
     if outfit == "hawaii":
         $ _m = {"normal": "normal", "proud": "laugh", "awkward": "awkward", "shy": "laugh", "shock": "shock", "gloom": "awkward"}[mood]
         $ renpy.show("pzk surf " + _m, at_list=[seated(0.22)])
+    elif outfit == "hoodie":
+        $ renpy.show("pzk hoodie " + mood, at_list=[seated(0.22)])
     else:
         $ _m = {"normal": "normal", "proud": "proud", "awkward": "awkward", "shy": "shy", "shock": "shock", "gloom": "gloom"}[mood]
         $ renpy.show("pzk casual " + _m, at_list=[seated(0.22)])
@@ -394,12 +441,12 @@ label ch2_order:
             call ch2_pzk("proud")
             p "把你们菜单上最贵的，每样来一份。"
             waiter "好的先生。龙虾三份，鱼子酱两份，还有一份「海风与月光的低语」。"
-            show yyl calm at seated(0.80)
+            show yyl dinner calm at seated(0.80)
             y "「海风与月光的低语」是什么？"
             waiter "是一勺盐，小姐。来自月圆之夜晒的海盐。时价一千八百八十八。"
             call ch2_pzk("awkward")
             p "……"
-            show yyl tease at seated(0.80)
+            show yyl dinner tease at seated(0.80)
             y "很好。它会是今晚最低调的一道菜。"
             $ stat("zb", 5)
             if search_tip == "money":
@@ -411,12 +458,12 @@ label ch2_order:
             p "咳。Je voudrais……「拉 啵 赛 嘞 嘚 吗 嗐」……"
             waiter "……"
             waiter "先生，我们老板是潮汕人，您说中文就行。"
-            show yyl smile at seated(0.80)
+            show yyl dinner smile at seated(0.80)
             y "他想说 la bouillabaisse，马赛鱼汤。"
             n "她的发音轻得像海风，跟我那个东北博主完全是两个物种。"
             call ch2_pzk("shock")
             p "你会法语？"
-            show yyl calm at seated(0.80)
+            show yyl dinner calm at seated(0.80)
             y "在里昂待过两年。"
             y "那边的鱼汤没有这里的好喝。"
             pt "……我背了一个小时，她一句话就超过了我。"
@@ -428,16 +475,16 @@ label ch2_order:
             $ ordered = "her"
             call ch2_pzk("normal")
             p "你来点吧。你是常客。"
-            show yyl surprised at seated(0.80)
+            show yyl dinner surprised at seated(0.80)
             n "她看了我一眼，好像有点意外。"
-            show yyl calm at seated(0.80)
+            show yyl dinner calm at seated(0.80)
             y "老样子，两份。"
             manager "好嘞，杨小姐。"
             n "十分钟后，端上来的是两盘……海鲜炒粉。"
             n "不在菜单上。锅气很足，虾比我的拳头还大。"
             call ch2_pzk("shock")
             p "这家法餐厅……有炒粉？"
-            show yyl smile at seated(0.80)
+            show yyl dinner smile at seated(0.80)
             y "后厨的阿伯是我冲浪认识的。"
             y "法餐是给游客的。这个是给自己人的。"
             pt "自己人。"
@@ -453,20 +500,31 @@ label ch2_order:
 ## ---------------------------------------------------------------------------
 
 label ch2_talk:
-    show yyl calm at seated(0.80)
+    show yyl dinner calm at seated(0.80)
     call ch2_pzk("normal")
+
+    if outfit == "hoodie":
+        n "菜上来了。"
+        n "我吃一口，把口罩拉下来一点。嚼完，再拉上去。"
+        n "再吃一口，再拉下来。再拉上去。"
+        n "帽子不能摘。摘了就不神秘了。"
+        show yyl dinner speechless at seated(0.80)
+        y "你这样吃饭，像在做贼。"
+        call ch2_pzk("awkward")
+        p "我在给食物营造仪式感。"
+        show yyl dinner calm at seated(0.80)
 
     y "你呢？除了送外卖，平时做什么？"
     p "金融投资。"
     y "嗯。我做风控。"
     p "风控？控制风的？冲浪那种？"
-    show yyl tease at seated(0.80)
+    show yyl dinner tease at seated(0.80)
     y "控制风险。"
     y "我的工作，就是看一个人在撒什么谎。"
     call ch2_pzk("awkward")
     pt "……这句话为什么让我后背一凉。"
 
-    show yyl calm at seated(0.80)
+    show yyl dinner calm at seated(0.80)
     y "所以，你投资什么？"
 
     menu:
@@ -475,7 +533,7 @@ label ch2_talk:
         "「你知道我一年赚多少吗？」":
             call ch2_pzk("proud")
             p "你知道我一年赚多少吗？"
-            show yyl cool at seated(0.80)
+            show yyl dinner cool at seated(0.80)
             y "不知道。也不想知道。"
             y "一个人反复提他有多少钱，一般说明他除了钱，没什么可聊的。"
             call ch2_pzk("gloom")
@@ -487,10 +545,10 @@ label ch2_talk:
             call ch2_pzk("normal")
             p "运气好。早年押对了几只股票。"
             p "后来就……一直挺无聊的。"
-            show yyl surprised at seated(0.80)
+            show yyl dinner surprised at seated(0.80)
             y "无聊？"
             p "钱多了以后，每天都像同一天。"
-            show yyl calm at seated(0.80)
+            show yyl dinner calm at seated(0.80)
             y "所以去送外卖。"
             p "……你怎么知道是这个原因？"
             y "风控的职业病。"
@@ -500,24 +558,24 @@ label ch2_talk:
         "反问她：「你呢？为什么来岛上？」":
             call ch2_pzk("normal")
             p "先说你。你为什么来岛上？"
-            show yyl calm at seated(0.80)
+            show yyl dinner calm at seated(0.80)
             y "以前在大城市，银行风控部。"
             y "每天看几百份报表，找里面的谎。"
             y "后来发现，找得越准，越不相信任何人。"
             y "两年前辞职，搬到岛上。现在接点自由咨询，每天早上六点冲浪。"
-            show yyl smile at seated(0.80)
+            show yyl dinner smile at seated(0.80)
             y "浪不会撒谎。它要拍你，就真的拍你。"
             pt "……她说这句话的时候，眼睛在看海，不在看我。"
             pt "但我觉得，我好像离她近了一点。"
             $ stat("yyl_aff", 5)
             $ stat("sincere", 3)
 
-    show yyl calm at seated(0.80)
+    show yyl dinner calm at seated(0.80)
     y "对了。你这种人，钱一般放在哪？"
     y "瑞士？开曼？还是全放在一个账户里？"
     call ch2_pzk("proud")
     p "放在心里。"
-    show yyl tease at seated(0.80)
+    show yyl dinner tease at seated(0.80)
     y "……职业病，别介意。"
     n "她笑着端起了水杯。"
     n "我也笑了。"
@@ -536,7 +594,7 @@ label ch2_line_check:
         p "就是离我太远。"
         stop music fadeout 0.3
         play sound sfx_crickets
-        show yyl speechless at seated(0.80)
+        show yyl dinner dead_fish at seated(0.80)
         n "……"
         n "邻桌的大叔放下了刀叉。"
         n "远处的海浪都安静了。"
@@ -545,15 +603,17 @@ label ch2_line_check:
         call ch2_pzk("awkward")
         p "两小时。"
         y "辛苦了。"
-        show yyl smile at seated(0.80)
+        show yyl dinner creepy_smile at seated(0.80)
         y "不过——挺好笑的。"
+        n "她慢慢地笑了。嘴角一直咧到了耳根。"
+        pt "……为什么她夸我的时候，我后背发凉。"
         $ stat("yyl_aff", 2)
         play music bgm_dinner fadein 1.0
 
     elif practiced_line == "dream":
         call ch2_pzk("normal")
         p "我昨晚梦见你了。"
-        show yyl surprised at seated(0.80)
+        show yyl dinner surprised at seated(0.80)
         n "她的水杯停在半空。"
         y "……梦见我什么？"
         p "梦里我在冲浪，很帅，一堆人尖叫。"
@@ -561,7 +621,7 @@ label ch2_line_check:
         y "然后呢？"
         call ch2_pzk("awkward")
         p "我让你去后面排队。"
-        show yyl happy at seated(0.80)
+        show yyl dinner happy at seated(0.80)
         n "她笑出了声。"
         y "那现实里呢？你排队了吗？"
         call ch2_pzk("shy")
@@ -570,7 +630,7 @@ label ch2_line_check:
         $ stat("yyl_aff", 5)
 
         play music bgm_tension fadein 0.5
-        show yyl calm at seated(0.80)
+        show yyl dinner calm at seated(0.80)
         y "梦里，冲浪的人是你？"
         p "嗯。"
         y "……有意思。"
@@ -581,17 +641,17 @@ label ch2_line_check:
     else:
         call ch2_pzk("shy")
         p "……其实我很紧张。"
-        show yyl surprised at seated(0.80)
+        show yyl dinner surprised at seated(0.80)
         y "你？"
         if wait_style == "pushup":
             y "白天在沙滩上做俯卧撑的那个人？"
         else:
             y "白天被冲浪板拍了脸的那个人？"
         p "我练了一下午的台词，结果说出口的是这句。"
-        show yyl smile at seated(0.80)
+        show yyl dinner smile at seated(0.80)
         y "那你练的其他台词呢？"
         p "都很烂。这句是最不烂的。"
-        show yyl shy at seated(0.80)
+        show yyl dinner shy at seated(0.80)
         n "她没说话，低头拨了一下盘子里的虾。"
         n "耳朵好像有点红。"
         n "……也可能是夕阳。"
@@ -627,13 +687,13 @@ label ch2_order_ping:
             hide screen timed_choice_bar
             call ch2_pzk("normal")
             n "我按下了「拒单」。"
-            show yyl calm at seated(0.80)
+            show yyl dinner calm at seated(0.80)
             y "拒单会扣分吧？"
             p "扣就扣。今晚我不是骑手。"
             y "那你是什么？"
             call ch2_pzk("proud")
             p "我是你的约会对象。"
-            show yyl tease at seated(0.80)
+            show yyl dinner tease at seated(0.80)
             y "……扣分的那种。"
             $ stat("yyl_aff", 2)
             jump ch2_night
@@ -645,7 +705,7 @@ label ch2_order_ping:
 label ch2_order_timeout:
     hide screen timed_choice_bar
     n "我犹豫了太久。"
-    show yyl smile at seated(0.80)
+    show yyl dinner smile at seated(0.80)
     y "去吧，骑手。"
     y "我在这儿等你。"
     jump ch2_take_order
@@ -675,11 +735,11 @@ label ch2_take_order:
     play music bgm_dinner fadein 1.5
     call ch2_pzk("shy")
     n "我坐回位子上。"
-    show yyl smile at seated(0.80)
+    show yyl dinner smile at seated(0.80)
     n "她一手撑着下巴看我。看了很久。"
     y "潘子恺。"
     p "嗯？"
-    show yyl happy at seated(0.80)
+    show yyl dinner happy at seated(0.80)
     play sound sfx_heart
     y "你送外卖的时候，比你装逼的时候好看。"
     pt "……"
@@ -708,9 +768,11 @@ label ch2_night:
 
     if outfit == "hawaii":
         show pzk surf normal at left_stage
+    elif outfit == "hoodie":
+        show pzk hoodie normal at left_stage
     else:
         show pzk casual normal at left_stage
-    show yyl calm at right_stage
+    show yyl dinner calm at right_stage
     with dissolve
 
     if not told_truth:
@@ -722,7 +784,7 @@ label ch2_night:
 
             "开个玩笑糊弄过去":
                 p "体验生活。顺便给顾客提供超跑级配送体验。"
-                show yyl calm at right_stage
+                show yyl dinner calm at right_stage
                 y "嗯。标准答案。"
                 n "她没有追问。"
                 n "但我知道，她听出来了。"
@@ -736,10 +798,10 @@ label ch2_night:
                 p "我妈说我好，是因为……好吧，我妈是真的。"
                 p "但送外卖的时候，顾客骂我送得慢，那是真的。"
                 p "阿姨给我五块钱小费，也是真的。"
-                show yyl surprised at right_stage
+                show yyl dinner surprised at right_stage
                 n "她转过头看我。"
                 n "这是今晚她第一次，没有立刻接我的话。"
-                show yyl calm at right_stage
+                show yyl dinner calm at right_stage
                 y "浪也是。"
                 y "浪不会因为你有钱，就对你客气。"
                 y "所以我喜欢它。"
@@ -749,7 +811,7 @@ label ch2_night:
 
     if told_truth or sincere >= 20:
         $ got_sea_glass = True
-        show yyl smile at right_stage
+        show yyl dinner smile at right_stage
         n "她从口袋里摸出一个小东西，放在我手心。"
         n "一块蓝色的玻璃。边缘圆圆的，摸上去像一颗糖。"
         y "海玻璃。"
@@ -758,17 +820,19 @@ label ch2_night:
         y "送你。"
         if outfit == "hawaii":
             show pzk surf laugh at left_stage
+        elif outfit == "hoodie":
+            show pzk hoodie shy at left_stage
         else:
             show pzk casual shy at left_stage
         p "为什么送我？"
-        show yyl tease at right_stage
+        show yyl dinner tease at right_stage
         y "因为你现在，还有点扎手。"
         pt "……"
         pt "我把它攥在手心里，攥得很紧。"
         $ stat("yyl_aff", 5)
 
     play sound sfx_vibrate
-    show yyl calm at right_stage
+    show yyl dinner calm at right_stage
     n "她的手机在栏杆上亮了一下。"
     n "我不是故意看的。只是屏幕正对着我。"
     tip "K：到了吗？"
@@ -781,10 +845,10 @@ label ch2_night:
         "「K是谁？」":
             $ asked_k = True
             p "K是谁？"
-            show yyl cool at right_stage
+            show yyl dinner cool at right_stage
             y "一个朋友。"
             n "停了一秒。"
-            show yyl calm at right_stage
+            show yyl dinner calm at right_stage
             y "……很啰嗦的朋友。"
             pt "她说这句话的时候，语气跟说「浪不会撒谎」的时候一模一样。"
             pt "我分不清，那是真话，还是她很会说真话的样子。"
@@ -806,9 +870,11 @@ label ch2_bill:
     hide night_sparkles
     if outfit == "hawaii":
         show pzk surf laugh at left_stage
+    elif outfit == "hoodie":
+        show pzk hoodie proud at left_stage
     else:
         show pzk casual proud at left_stage
-    show yyl calm at right_stage
+    show yyl dinner calm at right_stage
 
     n "回到桌边，我潇洒地抬手。"
     p "买单。"
@@ -817,13 +883,16 @@ label ch2_bill:
 
     if outfit == "hawaii":
         show pzk surf shock at left_stage
+    elif outfit == "hoodie":
+        show pzk hoodie shock at left_stage
     else:
         show pzk casual shock at left_stage
     p "？？？"
     p "你不是说我请吗？"
-    show yyl tease at right_stage
+    show yyl dinner smug_chad at right_stage
     y "我说的是「我知道你请」。"
     y "我没说我会让你请。"
+    n "她抱着胳膊，下巴抬得很高，用眼角看着我。"
 
     if yyl_aff >= 45 and sincere >= 30:
         jump ch1_ending_a
@@ -835,8 +904,17 @@ label ch2_bill:
 
 label ch1_ending_a:
     $ ch1_ending = "A"
-    scene cg first_dinner
-    with dissolve
+    if outfit == "hoodie" or outfit == "hawaii":
+        scene bg restaurant_night
+        if outfit == "hoodie":
+            show pzk hoodie shy at seated(0.22)
+        else:
+            show pzk surf laugh at seated(0.22)
+        show yyl dinner smile at seated(0.80)
+        with dissolve
+    else:
+        scene cg first_dinner
+        with dissolve
     play sound sfx_heart
     y "下次你请。"
     y "不过不是在这里。"
@@ -860,13 +938,15 @@ label ch1_ending_a:
 
 label ch1_ending_b:
     $ ch1_ending = "B"
-    show yyl smile at right_stage
+    show yyl dinner smile at right_stage
     y "下次你请。"
     p "下次？"
     y "嗯。如果有下次的话。"
     n "她说完就走了。没有回头。"
     if outfit == "hawaii":
         show pzk surf normal at left_stage
+    elif outfit == "hoodie":
+        show pzk hoodie normal at left_stage
     else:
         show pzk casual normal at left_stage
     pt "「如果有下次的话」。"
@@ -878,12 +958,14 @@ label ch1_ending_b:
 
 label ch1_ending_c:
     $ ch1_ending = "C"
-    show yyl cool at right_stage
+    show yyl dinner cool at right_stage
     y "谢谢你的晚餐表演。"
     y "挺精彩的。"
     n "她拎起包走了。高跟鞋的声音越来越远。"
     if outfit == "hawaii":
         show pzk surf awkward at left_stage
+    elif outfit == "hoodie":
+        show pzk hoodie gloom at left_stage
     else:
         show pzk casual gloom at left_stage
     pt "……「表演」。"
@@ -935,6 +1017,11 @@ label ch1_epilogue:
     n "海是黑的。浪很安静。"
     n "她站在岸边，背对着我。手里拿着一部手机。"
     n "屏幕的光，是蓝色的。"
+    show yyl creepy_smile at right_stage
+    with dissolve
+    play sound sfx_sting
+    n "她转过头，冲我笑了一下。"
+    n "嘴角一直咧到了耳根。"
     n "跟我的余额页面一个颜色。"
     mystery_voice "……别信——"
     stop music

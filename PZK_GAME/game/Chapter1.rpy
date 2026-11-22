@@ -74,6 +74,9 @@ label ch1_dream:
             n "我抬手一指。"
             n "她身后，排队加我微信的人一直排到了海平线。"
             n "队尾有人在发号码牌。"
+            show yyl rage at right_stage
+            play sound sfx_shock
+            n "她看着那条队，额头上的青筋跳了一下，头顶开始冒烟。"
 
         "「微信？我只加有缘人。你先跟这片海聊聊。」":
             $ dream_reply = "sea"
@@ -82,6 +85,10 @@ label ch1_dream:
             p "我只加有缘人。"
             p "你先跟这片海聊聊，它同意了，我再考虑。"
             n "大海适时地拍了一个浪，表示拒绝。"
+            show yyl derp at right_stage
+            play sound sfx_boing
+            n "她鼓起腮帮子，眼睛对成了斗鸡眼。"
+            n "梦里的女人，表情包都这么丰富。"
 
         "「我没有微信。我只有私人飞机的塔台频率。」":
             $ dream_reply = "tower"
@@ -90,10 +97,20 @@ label ch1_dream:
             p "我只有私人飞机的塔台频率。"
             p "118.6，记得报暗号。"
             n "她身后有个女孩当场开始学航空无线电。"
+            show yyl brain_lag at right_stage
+            n "她本人歪着嘴、摸着下巴，两只眼睛各看一个方向。"
+            n "我怀疑她的大脑在重启。"
 
     $ stat("zb", 5)
 
     show yyl smile at right_stage
+    show yyl waterfall_cry at right_stage, shake
+    play sound sfx_sad
+    n "下一秒，她哭了。"
+    n "不是普通的哭。是两道瀑布，外加一个鼻涕泡。"
+    pt "梦里的我，杀伤力就是这么大。"
+    show yyl calm at right_stage
+    n "然后眼泪像倒放的视频一样，嗖地缩了回去。"
     n "奇怪的是，她并没有失望。"
     n "她只是笑了一下，好像早就知道我会这么说。"
     y "好。"
@@ -615,6 +632,7 @@ label ch1_collision:
             y "见过。"
             y "三秒前，你用后脑勺跟沙滩见的。"
             p "不是，我是说……在别的地方。比如梦里？"
+            show yyl dead_fish at right_stage
             y "这句话我今年听过十一次。"
             y "你是第一个躺在地上说的。"
 
@@ -829,7 +847,10 @@ label ch1_invite:
             show yyl happy at far_right
             n "她愣了一下，然后——"
             n "笑了。"
+            show yyl villain at far_right
+            play sound sfx_boing
             n "不是刚才那种嘴角动一下的笑。是真的笑出了声，笑得要扶着救生塔。"
+            n "仰着头，一只手捂着半张脸，笑得像个刚统治了世界的反派。"
             pt "……原来她笑起来是这样的。"
             play sound sfx_heart
             y "好。看在你诚实的份上。"
@@ -877,7 +898,9 @@ label ch1_invite:
             y "沙滩上不算。"
             p "规则里没说要在海上。"
             y "嗯，没说。"
+            show yyl bleh at far_right
             y "冲浪不算，脸皮厚度可以算。"
+            n "她冲我拉下眼皮，吐了吐舌头。"
             $ stat("yyl_aff", 3)
             $ stat("zb", 5)
 

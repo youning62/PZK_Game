@@ -105,9 +105,9 @@ label ch3_scam:
 
     n "酒店顶层套房。"
     n "满床玫瑰花瓣，烛光，阳台外面是月亮和海。"
-    n "她穿着那双黑色高跟鞋，倒了两杯酒。"
+    n "她穿着一条酒红色的长礼服，脚上还是那双黑色高跟鞋，倒了两杯酒。"
 
-    show yyl calm at right_stage
+    show yyl night calm at right_stage
     with dissolve
     y "手机给我。"
     p "啊？"
@@ -115,7 +115,7 @@ label ch3_scam:
     n "我把手机递了过去。解锁的。"
     n "这是我那天晚上犯的第一个错误。"
 
-    show yyl smile at right_stage
+    show yyl night smile at right_stage
     y "先去洗个澡吧。"
     show pzk casual proud at left_stage
     with dissolve

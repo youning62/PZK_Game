@@ -110,7 +110,8 @@ screen say(who, what):
     ## 如果有对话框头像，会将其显示在文本之上。请不要在手机界面下显示这个，因
     ## 为没有空间。
     if not renpy.variant("small"):
-        add SideImage() xalign 0.0 yalign 1.0
+        ## 系统小精灵：浮在系统对话框的左上角
+        add SideImage() at fairy_float xpos 120 ypos 840 xanchor 0.0 yanchor 1.0
 
 
 ## 通过 Character 对象使名称框可用于样式化。

@@ -66,8 +66,8 @@ label ch5_approach:
             guard "这位外卖小哥，你的单子是送到沙发上吗？"
             show pzk delivery awkward at left_stage
             n "我被请了出去。"
-            xt "提醒：这不叫偶遇。这叫蹲守。"
-            xt "再蹲一次，系统建议你直接去派出所自首。"
+            xt side_eye "提醒：这不叫偶遇。这叫蹲守。"
+            xt jaw_drop "再蹲一次，系统建议你直接去派出所自首。"
 
         "给她发微信":
             show pzk delivery normal at left_stage
@@ -81,8 +81,8 @@ label ch5_approach:
             p "「李总，好久不见。最近还好吗？」"
             n "已读。"
             n "没有回复。"
-            xt "消息发送成功。对方已读。"
-            xt "系统为宿主分析：这条消息信息量为零。她没有理由回复。"
+            xt eyeroll "消息发送成功。对方已读。"
+            xt side_eye "系统为宿主分析：这条消息信息量为零。她没有理由回复。"
 
         "找前同事赵磊帮忙":
             show pzk delivery normal at left_stage
@@ -120,8 +120,8 @@ label ch5_order:
     n "上一个让我「放在黑色高跟鞋旁边」的女人，把我骗得只剩一辆电动车。"
     pt "但这个不一样。"
     pt "双份浓缩，不加糖。四年前，我每天晚上十一点给她买的就是这个。"
-    xt "检测到命运。"
-    xt "也可能只是她懒得换口味。"
+    xt cry_laugh "检测到命运。"
+    xt evil_grin "也可能只是她懒得换口味。"
 
     stop ambient fadeout 1.0
     scene bg elevator
@@ -253,7 +253,7 @@ label ch5_order:
     show pzk delivery shock at left_stage, shake
     pt "我什么都没想！！"
     pt "我真的什么都没——好吧我想了一点点——"
-    xt "已记录。"
+    xt soul_leave "已记录。"
 
     show lxx speechless at right_stage
     with move
@@ -299,23 +299,23 @@ label ch5_audit:
     play music bgm_system fadein 1.0
     scene bg rental_room
     with fade
-    show pzk casual normal at left_stage
+    show pzk home normal at left_stage
     with dissolve
 
     n "第二天。"
     n "我躺在床上，思考一个深刻的问题。"
     p "系统。"
     p "我觉得，要攻略李轩翔，我需要一辆车。"
-    xt "宿主有小黄。"
+    xt rage_scream "宿主有小黄。"
     p "我是说，像样的车。比如……兰博基尼。"
     p "约会的时候总得接送吧？这叫约会交通费。"
 
     call sys_audit("兰博基尼 Huracán（二手，蓝色）", 2800000, "约会交通费", "rejected", "约会交通费不包括车辆所有权。另：宿主目前没有约会。另另：她有司机。")
-    show pzk casual angry at left_stage
+    show pzk home shock at left_stage
     p "那租呢？租一天！"
-    xt "租一天的费用超过宿主纯爱卡额度九百倍。"
-    xt "另，系统查询到：上一次宿主开蓝色跑车接女生，结果是现在这样。"
-    show pzk casual gloom at left_stage
+    xt idle "租一天的费用超过宿主纯爱卡额度九百倍。"
+    xt grimace "另，系统查询到：上一次宿主开蓝色跑车接女生，结果是现在这样。"
+    show pzk home gloom at left_stage
     p "……你戳人痛处的能力，跟她有一拼。"
 
     menu:
@@ -326,13 +326,13 @@ label ch5_audit:
             $ add_note("lxx", "租了一套西装。袖子短一截。")
             $ lxx_suit = True
             p "等等，为什么是四年前的尺码——"
-            xt "因为四年前，你还没开始练胸。"
+            xt mock_laugh "因为四年前，你还没开始练胸。"
             pt "这句话我好像在哪听过。"
 
         "一束花，送到她办公室":
             call sys_audit("玫瑰 99 朵", 1314, "攻略礼物", "rejected", "她办公室不允许摆花，花粉影响空调过滤网。另：99 朵玫瑰属于宿主的旧套路，旧套路的平均有效期是 11 天。")
             p "你怎么知道她办公室不许摆花？"
-            xt "系统做了尽调。宿主也应该做。"
+            xt side_eye "系统做了尽调。宿主也应该做。"
             pt "……尽调。"
 
     jump ch5_clue
@@ -390,8 +390,8 @@ label ch5_clue:
     pt "她早就在怀疑了。她只是缺一样东西。"
     pt "缺一个真的在这个平台上跑过的人。"
 
-    xt "提示：任务二「在她最擅长的领域，帮她一次」触发条件已满足。"
-    xt "提醒：她最擅长的领域，也是宿主曾经擅长的领域。"
+    xt jaw_drop "提示：任务二「在她最擅长的领域，帮她一次」触发条件已满足。"
+    xt eyeroll "提醒：她最擅长的领域，也是宿主曾经擅长的领域。"
 
     jump ch5_pitch
 
@@ -464,7 +464,7 @@ label ch5_pitch_memo:
     with dissolve
     play music bgm_office fadein 0.5
     play sound sfx_typing
-    show pzk casual normal at left_stage
+    show pzk home normal at left_stage
     with dissolve
     n "我借了楼下网吧的电脑。"
     n "一页纸。她当年教我的格式。"
@@ -507,7 +507,7 @@ label ch5_pitch_snack:
     call sys_audit("煎饼果子 ×1（加三个蛋）", 12, "攻略对象夜宵", "approved", "李轩翔吃你的早餐了。审核通过。另：检测到宿主用自己的钱给自己买了一个，系统表示欣慰。")
     pt "……她吃我的早餐了。"
     pt "等等，现在是半夜。"
-    xt "夜宵也是早餐。从时区上讲。"
+    xt cry_laugh "夜宵也是早餐。从时区上讲。"
 
     scene bg ib_office_night
     with dissolve
@@ -539,9 +539,9 @@ label ch5_pitch_snack:
     n "下一秒，她已经低头看文件了，好像什么都没发生。"
     pt "……我刚才看到了什么。"
     pt "全行最年轻的MD，对一个外卖员，吐舌头？"
-    xt "已截图。"
+    xt evil_grin "已截图。"
     pt "你还能截图？？"
-    xt "仅供系统内部存档。宿主无权查看。"
+    xt soul_leave "仅供系统内部存档。宿主无权查看。"
     $ love("lxx", 10)
     $ stat("sincere", 5)
     jump ch5_meeting
@@ -567,12 +567,17 @@ label ch5_meeting:
     show lxx cold at right_stage
     with dissolve
     if lxx_suit:
+        show pzk rentsuit normal at left_stage
+        with dissolve
         n "我穿着那套系统批准的租赁西装。"
         n "袖子短一截。一抬手就露出手腕。"
         show lxx speechless at right_stage
         lx "……你的袖子。"
+        show pzk rentsuit awkward at left_stage
         p "这叫九分袖。今年流行。"
     else:
+        show pzk delivery normal at left_stage
+        with dissolve
         n "我没有西装。我穿着洗干净的外卖制服。"
         lx "我说穿得像个人。"
         p "我现在就是一个人。一个外卖员。"
@@ -592,6 +597,10 @@ label ch5_meeting:
 
         "结论先行。三条证据。五分钟讲完，剩下的时间留给提问":
             $ lxx_meeting_style = "concise"
+            if lxx_suit:
+                show pzk rentsuit proud at left_stage
+            else:
+                show pzk delivery proud at left_stage
             n "我站起来。"
             p "结论：岛团外卖的活跃骑手数虚增约百分之六十四，订单量中存在规模化的自刷单。"
             p "三条证据。第一，凌晨零米订单……"
@@ -614,6 +623,10 @@ label ch5_meeting:
 
         "这是我的高光时刻！讲一讲我从亿万富翁到外卖员的心路历程":
             $ lxx_meeting_style = "show"
+            if lxx_suit:
+                show pzk rentsuit proud at left_stage
+            else:
+                show pzk delivery proud at left_stage
             n "我站起来。"
             p "各位。在讲数据之前，我想先讲一个故事。"
             p "一个关于财富、背叛、和一辆蓝色兰博基尼的故事——"
@@ -638,7 +651,7 @@ label ch5_meeting:
     $ complete_task("lxx_2")
     $ set_stage("lxx", "并肩作战")
     $ credit_limit = 8000
-    xt "攻略进度提升。纯爱卡额度提升至八千元。"
+    xt rage_scream "攻略进度提升。纯爱卡额度提升至八千元。"
     $ add_note("lxx", "她叫停了一个几十亿的项目。张总不太高兴。")
 
     jump ch5_arcade
@@ -848,8 +861,8 @@ label ch5_arcade:
     call seal_alarm()
     pt "我这次真的什么都没想。"
     pt "真的。"
-    xt "系统知道。"
-    xt "所以这次，只是例行提示。"
+    xt soul_leave "系统知道。"
+    xt idle "所以这次，只是例行提示。"
     pt "……"
     pt "这个系统，好像比我先一步知道，我在想什么。"
 
@@ -909,28 +922,28 @@ label ch5_end:
             n "我把猫猫放在枕头边。旁边是那张写着K的便签纸。"
         n "我的枕头边，越来越像一个失物招领处了。"
 
-    xt "阶段结算。"
+    xt grimace "阶段结算。"
     call screen target_card("lxx")
 
     $ _aff = targets["lxx"]["aff"]
     if _aff >= 45:
-        xt "当前好感度：[_aff]%%。宿主表现超出系统预期。"
-        xt "系统原本预估，宿主会在第三天被保安列入黑名单。"
+        xt cry_laugh "当前好感度：[_aff]%%。宿主表现超出系统预期。"
+        xt mock_laugh "系统原本预估，宿主会在第三天被保安列入黑名单。"
     elif _aff >= 30:
-        xt "当前好感度：[_aff]%%。进度正常。"
-        xt "距离解除封印还有很长的路。距离一千万也是。"
+        xt side_eye "当前好感度：[_aff]%%。进度正常。"
+        xt evil_grin "距离解除封印还有很长的路。距离一千万也是。"
     else:
-        xt "当前好感度：[_aff]%%。宿主的装逼行为对攻略造成了显著拖累。"
-        xt "建议宿主少讲故事，多讲数据。"
+        xt eyeroll "当前好感度：[_aff]%%。宿主的装逼行为对攻略造成了显著拖累。"
+        xt jaw_drop "建议宿主少讲故事，多讲数据。"
 
     p "系统。"
     p "我问你个事。"
     p "她最后说的那句话。四年前那件事。你知道是什么吗？"
-    xt "知道。"
+    xt eyeroll "知道。"
     p "告诉我。"
-    xt "不能。"
-    xt "那是她的事。等她愿意告诉你的时候，你自然会知道。"
-    xt "本系统不剧透。"
+    xt side_eye "不能。"
+    xt eyeroll "那是她的事。等她愿意告诉你的时候，你自然会知道。"
+    xt cry_laugh "本系统不剧透。"
     pt "……一个不剧透的系统。"
     pt "我竟然有点感动。"
 
@@ -938,7 +951,7 @@ label ch5_end:
 
     p "没有议程的饭……"
     p "上一个跟她说「没有议程，就是吃饭」的MD，被她拒绝了。"
-    xt "所以这是任务。不是福利。"
+    xt evil_grin "所以这是任务。不是福利。"
 
     stop music fadeout 1.0
     play sound sfx_call

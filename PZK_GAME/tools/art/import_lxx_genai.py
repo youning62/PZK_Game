@@ -14,6 +14,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, 'ref', 'genai')
 DST = os.path.join(HERE, '..', '..', 'game', 'images', 'sprites')
 CW, CH = 1024, 1536
+LIKE = None
 TOP, FEET = 55, 1880          # 头顶 / 脚底（脚底在画布外：与潘子恺立绘的头部大小一致，裁到小腿）
 
 
@@ -38,6 +39,9 @@ def to_sprite(path, tmp):
     y0, y1 = ys.min(), ys.max()
     cx = (xs.min() + xs.max()) / 2
     s = (FEET - TOP) / (y1 - y0)
+    if LIKE is not None:            # reuse another image's scale, align by the feet
+        s = LIKE
+        y0 = y1 - (FEET - TOP) / s
     rgba = Image.fromarray(np.dstack([np.array(im), (m * 255).astype(np.uint8)]))
     rgba = rgba.resize((round(im.size[0] * s), round(im.size[1] * s)), Image.LANCZOS)
     out = Image.new('RGBA', (CW, CH), (0, 0, 0, 0))
@@ -61,4 +65,28 @@ def main(names):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    # 通用参数（给其他角色用）：--src <目录>  --top <头顶y>  --feet <脚底y>
+    args = sys.argv[1:]
+    if '--like' in args:
+        i = args.index('--like'); like_name = args[i + 1]; del args[i:i + 2]
+    else:
+        like_name = None
+    for flag in ('--src', '--top', '--feet'):
+        if flag in args:
+            i = args.index(flag); val = args[i + 1]; del args[i:i + 2]
+            if flag == '--src':
+                SRC = os.path.join(HERE, val) if not os.path.isabs(val) else val
+            elif flag == '--top':
+                TOP = int(val)
+            else:
+                FEET = int(val)
+    if like_name:
+        import tempfile as _t
+        with _t.TemporaryDirectory() as tmp:
+            p = os.path.join(SRC, like_name + '.png')
+            im = Image.open(p)
+            m = mask_for(p, tmp)
+            m = np.array(Image.fromarray((m * 255).astype(np.uint8)).resize(im.size), float) / 255
+            ys, _ = np.where(m > 0.4)
+            LIKE = (FEET - TOP) / (ys.max() - ys.min())
+    main(args)

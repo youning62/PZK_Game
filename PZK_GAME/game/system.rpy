@@ -164,7 +164,7 @@ label seal_alarm(line=None):
     pause 0.8
     hide screen seal_flash
     if line:
-        xt "[line]"
+        xt soul_leave "[line]"
     return
 
 ## 系统启动动画
@@ -184,7 +184,7 @@ label sys_boot():
 ## ---------------------------------------------------------------------------
 
 ## 系统说话时的对话框：蓝色全息
-define xt = Character("系统", color="#5ff3ff", what_color="#d8fbff", what_prefix="【", what_suffix="】",
+define xt = Character("系统", image="fairy", color="#5ff3ff", what_color="#d8fbff", what_prefix="【", what_suffix="】",
                       window_background=Frame("gui/system/toast.png", 40, 30), window_ysize=220,
                       window_yalign=0.92, window_xsize=1500, window_xalign=0.5,
                       who_outlines=[(3, "#003344", 0, 0)])
@@ -232,6 +232,8 @@ screen boot_screen():
         text SYSTEM_NAME style "sys_title" size 90 xalign 0.5
         text "绑定宿主：潘子恺 ……  成功" style "sys_text" xalign 0.5
     add "gui/system/scanlines.png"
+    use fairy_badge("jaw_drop", 560, 260, 1.2)
+
 
 transform boot_anim:
     alpha 0.0 zoom 1.1
@@ -305,6 +307,8 @@ screen target_card(tid):
     textbutton "关闭档案" action Return() style "sys_button" text_style "sys_button_text" xalign 0.5 ypos 880
     if AUTOTEST:
         timer 0.05 action Return()
+    use fairy_badge("evil_grin", 400, 40)
+
 
 transform sys_window_in:
     alpha 0.0 yoffset 30
@@ -339,6 +343,8 @@ screen sys_audit_screen(item, amount, category, verdict, comment):
     textbutton "确认" action Return() style "sys_button" text_style "sys_button_text" xalign 0.5 ypos 860
     if AUTOTEST:
         timer 0.05 action Return()
+    use fairy_badge("mock_laugh" if verdict == "approved" else "eyeroll", 440, 90)
+
 
 transform stamp_in:
     anchor (0.5, 0.5) alpha 0.0 zoom 2.2 rotate -18
@@ -356,6 +362,8 @@ screen seal_flash():
         spacing 10
         add "gui/system/seal_icon.png" xalign 0.5 zoom 1.6
         text "纯爱封印 · 生效中" style "sys_title" color "#ff9fc8" xalign 0.5 size 56
+    use fairy_badge("evil_grin", 1380, 260, 1.1)
+
 
 transform seal_anim:
     alpha 0.0 zoom 1.5
@@ -375,6 +383,8 @@ screen sys_toast(title, body):
         vbox:
             text title style "sys_small" color "#5ff3ff"
             text body style "sys_text" size 30
+    use fairy_badge("side_eye", 470, 0, 0.55)
+
 
 transform sys_toast_anim:
     yoffset -160 alpha 0.0
@@ -451,3 +461,39 @@ screen system_panel():
                 text "六、本系统不提供任何精神控制服务。感情只能靠宿主自己挣。" style "sys_small" size 24
                 text "七、本系统不支持七天无理由退货。" style "sys_small" size 24
     textbutton "关闭" action Hide("system_panel") style "sys_button" text_style "sys_button_text" xalign 0.5 ypos 960
+
+
+
+## ---------------------------------------------------------------------------
+## 系统小精灵
+## ---------------------------------------------------------------------------
+## 说话时：xt <表情> "台词"，精灵以侧边头像出现在系统对话框左上角（screens.rpy 的 say 屏幕）。
+## 弹窗时：use fairy_badge("表情")。
+## 表情：idle（默认嘟嘴斜眼）/ mock_laugh / grimace / side_eye / rage_scream / jaw_drop /
+##       cry_laugh / soul_leave / evil_grin / eyeroll
+
+define FAIRY_MOODS = ["idle", "mock_laugh", "grimace", "side_eye", "rage_scream", "jaw_drop",
+                      "cry_laugh", "soul_leave", "evil_grin", "eyeroll"]
+
+init python:
+    for _fm in FAIRY_MOODS:
+        renpy.image(("side", "fairy", _fm), Transform("images/fairy/fairy_%s.png" % _fm, zoom=0.62))
+        renpy.image(("fairy", _fm), Transform("images/fairy/fairy_%s.png" % _fm, zoom=0.5))
+
+transform fairy_float:
+    yoffset 0
+    ease 1.2 yoffset -10
+    ease 1.2 yoffset 0
+    repeat
+
+transform fairy_pop:
+    zoom 0.4 alpha 0.0
+    easeout 0.25 zoom 1.0 alpha 1.0
+    block:
+        ease 1.2 yoffset -8
+        ease 1.2 yoffset 0
+        repeat
+
+## 弹窗里的精灵角标
+screen fairy_badge(mood="idle", x=250, y=60, z=1.0):
+    add Transform("fairy " + mood, zoom=z) at fairy_pop xpos x ypos y xanchor 0.5 yanchor 0.0
